@@ -1,0 +1,86 @@
+flowchart TB
+
+%% CLIENT LAYER
+A[Mobile Apps iOS/Android]
+B[Web Dashboard]
+C[API Clients / Partners]
+
+%% EDGE
+D[CDN + WAF]
+E[API Gateway]
+
+%% IDENTITY
+F[Auth Service OAuth2 MFA]
+G[User & Org Service]
+
+%% CORE DOMAIN
+H[Project Service]
+I[Wallet & Ledger Service]
+J[Payments Orchestrator]
+K[Escrow Service]
+L[Settlement Engine]
+M[Compliance & KYC/KYB]
+N[Document Service]
+O[Notification Service]
+P[Marketplace Service]
+Q[Pricing & Bidding Engine]
+R[Financing & Credit Engine]
+
+%% DATA
+S[(PostgreSQL Cluster)]
+T[(Ledger DB - Immutable)]
+U[(Redis Cache)]
+V[(Search - OpenSearch)]
+W[(Object Storage S3)]
+
+%% ANALYTICS
+X[Event Stream Kafka]
+Y[Data Warehouse]
+Z[AI / Risk Models]
+
+%% EXTERNAL
+AA[Banking Partner]
+AB[ACH / RTP Network]
+AC[Identity Providers]
+AD[Insurance APIs]
+AE[Gov License Databases]
+
+%% FLOWS
+A --> D
+B --> D
+C --> D
+D --> E
+
+E --> F
+F --> G
+
+E --> H
+E --> I
+E --> J
+E --> P
+E --> R
+
+J --> K
+J --> L
+
+I --> T
+H --> S
+P --> S
+G --> S
+N --> W
+
+I --> U
+H --> V
+
+J --> AA
+AA --> AB
+
+M --> AC
+M --> AE
+
+X --> Y
+Y --> Z
+
+H --> X
+I --> X
+J --> X
