@@ -2700,6 +2700,1249 @@ BaaS Integration Layer (Unit, Treasury, Marqeta) [
 
 
 
+/////////////////////////  from Copillot craeation Mardis Eldorado KS.////////////////   //////////////   
+
+# NEXUS (BuildBrainOS) – Operating System for the Real Economy
+
+> "Build Faster. Pay Instantly. Risk Nothing."
+
+---
+
+## Executive Summary
+
+NEXUS is a decacorn‑grade vertical platform that combines construction project management, skilled trades marketplace, embedded finance, and government procurement intelligence into a single operating system. We are not building another SaaS; we are launching the AWS/Stripe/Palantir of the physical world – financial infrastructure that captures 1–6% of trillion‑dollar cash flows trapped in paper, PDF, and slow rails. This blueprint is constructed as a wartime execution order: zero fluff, only actionable strategy for capital capture.
+
+### Thesis
+Colonize the $4.2 trillion embedded‑finance river underlying construction, skilled trades, and government procurement by becoming the compliance‑first orchestration layer and payment nervous system for the built world.
+
+### Vision
+A global super‑app where developers, contractors, governments, and workers interact, transact, and automate workflows with instant settlement, intelligent routing, and AI agents acting as virtual staff.
+
+
+## Market Opportunity
+
+| Segment | TAM (U.S.) | Global TAM | Structural Waste | NEXUS Solution |
+|---------|------------|------------|------------------|----------------|
+| Progress payments | $1.4 T | – | 90‑day cycles, paper waivers, 30 % fraud | Milestone escrow + instant settlement |
+| Skilled trades marketplace | $200 B | – | Fragmented, no integrated payments | "Uber for trades" w/ payroll & insurance |
+| Bidding & procurement | $2 T | – | Email/PDF, no transparency | Centralized AI bid marketplace |
+| Lien waivers | $40 B+ | – | Manual, risky | Digital lien exchange with auto‑verification |
+| Embedded finance (high‑risk) | $4.2 T | – | Banks avoid small contractors | Underwriting via job data + closed‑loop ledger |
+| Gov. procurement | – | $13 T | Clunky portals, compliance mess | AI intelligence + proposal agents |
+
+**Beachhead:** start with commercial construction progress payments and disaster restoration trades – customers desperate for cash and reliability.
+
+
+## Business Model
+
+### Revenue Streams
+1. **Processing fees (PayFac):** 2.5‑3.5 % on payments, 20‑60 bps margin; instant payout surcharge 1 %. Float yield on held balances.
+2. **SaaS subscriptions:** $299‑$999/mo per contractor + premium features (per‑project escrow, analytics).
+3. **Escrow fees:** 0.5‑1 % holdback per milestone.
+4. **Material financing & invoice factoring:** 8‑18 % APR on advance financing.
+5. **Intelligence & data:** benchmarking reports sold to insurers, banks, hedge funds.
+6. **Proposal tokens & compliance audits:** $0.10/page + $1,500 review fee.
+7. **Success fees:** 1‑5 % of contract value for government bids.
+
+### Pricing Strategy
+- Freemium for discovery/alerts (gov. procurement, bid board).
+- Outcome‑based subscription for contractors.
+- Volume discounts and enterprise contracts for large GCs and agencies.
+
+
+## Legal & Compliance Strategy
+
+- **Regulatory Loophole:** operate as a software provider with BaaS/PayFac partners; use closed‑loop internal ledger to avoid money‑transmitter licenses. External rails triggered only on fiat on/off‑ramps.
+- **KYC/AML:** tiered identity (email→ID verification→business verification). Partners: Persona, SumSub, Middesk.
+- **MSB/MTL:** initially rely on licensed banking partners (Synapse, Unit, Stripe Treasury); register FinCEN MSB; postpone state MTL by acting purely as software.
+- **Stablecoin optional:** USDC via Circle API; treat as a settlement mechanism after year 1 once fiat rails hardened. Avoid algorithmic coins; use fully‑backed tokens.
+- **Compliance engine:** AI agents monitor every transaction and document, building an audit trail that satisfies regulators and reduces chargebacks.
+- **Segregation of funds:** omnibus custodian wallets, Proof‑of‑Reserves, no prop trading, zero leverage.
+
+
+## Technical Architecture
+
+### High‑Level Stack
+- **Frontend:** Next.js (web), React Native (mobile), Electron (desktop); TailwindCSS for styling.
+- **Backend:** Node.js/NestJS microservices behind API gateway (Kong or AWS API GW); Python/FastAPI for AI/ML workloads.
+- **Databases:** PostgreSQL (ledger/transactions), MongoDB (documents), Redis (cache), ClickHouse (analytics), Weaviate/Qdrant (vector store).
+- **AI/ML:** self‑hosted Llama 3 / Qwen 2.5‑VL for vision; LangChain/CrewAI for agent orchestration; vLLM or Groq for inference.
+- **Files & storage:** S3/MinIO for blueprints, photos, PDFs; Tika/PyMuPDF for parsing.
+- **Messaging:** Kafka/RabbitMQ for events; Temporal.io for workflows.
+- **Integration partners:** Stripe Connect, Dwolla (ACH), Plaid, Mapbox, Circle (USDC), Fireblocks (custody), AWS GovCloud for FedRAMP.
+- **Infrastructure:** Kubernetes (EKS/GKE) with Terraform; CI/CD via GitHub Actions.
+
+### Microservice Map
+```
+[Auth] [User] [Project] [Marketplace] [Payment] [Wallet] [Compliance] [AI/Agent] [Notification] [GovProc] ...
+``` 
+Each service deploys independently; role‑based ACL and JWT auth at gateway.
+
+### Agent Architecture
+- **Scout Agent:** scrapes RFPs, bid boards.
+- **Analyst Agent:** scores eligibility, win probability.
+- **Writer Agent:** drafts proposals & pay apps.
+- **Compliance Agent:** verifies licenses, lien waivers, insurance via OCR & rules.
+- **Matchmaking Agent:** finds subcontractors and crews.
+
+Agents communicate via LangGraph/Temporal; state and embeddings stored in vector DB.
+
+
+## MVP Build Plan (10‑Day Sprint)
+
+1. **Day 1:** scaffold monorepo, basic auth service, Postgres schema (Prisma approximate).
+2. **Day 2:** payment service with test stripe/dwolla integration; simple ledger entries.
+3. **Day 3:** project service, ability to create projects and upload blueprints (S3 stub).
+4. **Day 4:** bid board scraper & simple UI listing scraped opportunities.
+5. **Day 5:** AI extraction pipeline for PDFs (mock with local parser).
+6. **Day 6:** milestone escrow UI + mock payment flow.
+7. **Day 7:** simple React dashboard with navigation (payments, bids, tasks).
+8. **Day 8:** mobile‑friendly skeleton in React Native (Expo).
+9. **Day 9:** simple compliance engine with mock rules and a human‑in‑loop review screen.
+10. **Day 10:** deploy to a low‑cost VPS (DigitalOcean/AWS t3.micro) using Docker Compose; test end‑to‑end flows.
+
+Deliverables: GitHub repo skeleton, two frontend pages (`index.html`, `preview.html`), Postgres migrations.
+
+
+## Cost Breakdown (Carousel)
+
+| Category | Notes | Estimated First‑Year Cost (USD) |
+|----------|-------|-------------------------------|
+| Entity formation | LLC + EIN + basic legal docs | $1k |
+| Compliance/legal | MSB registration, T&Cs, privacy | $20k |
+| Hosting & infra | Dev VPS, prod K8s (AWS or GCP) | $5k/mo → $60k |
+| Dev team | 2‑3 engineers (outsourced) | $200k‑$300k |
+| AI costs | GPU instances for LLMs | $50k |
+| Licenses & subscriptions | Stripe fees, BaaS | variable (volume‑based) |
+| Marketing / sales | initial field reps, ads | $100k |
+| Total bootstrap | ~ $500k ‑ $1M initial spend |
+
+Launch cost can be kept under $1 M by leveraging open source, remote dev, and cloud credits; first revenue expected within 6‑9 months.
+
+
+## Risk Matrix & Mitigation
+
+| Risk | Impact | Likelihood | Mitigation |
+|------|--------|------------|------------|
+| Regulatory (MTL/MSB) | High | Medium | BaaS partner, closed‑loop ledger, legal retainer |
+| Payment partner cut‑off | High | Medium | Secondary rails (Dwolla, Unit), fall back to escrow partnerships |
+| AI accuracy failure | Medium | High | Human‑in‑loop gating, incremental rollout, insurance backstop |
+| Competition from Procore/Stripe | Medium | Low | Vertical focus, data moat, timeline lead |
+| Fraud & chargebacks | High | Medium | Computer vision, AML agents, holdback insurance |
+
+
+## Competitive Moats & Defensibility
+
+- **Data moat:** Transactional history, lien waiver outcomes, bid win patterns create unbeatable models.
+- **Regulatory moat:** Once integrated with BaaS & layered compliance, switching costs are enormous; liability risk deters churn.
+- **Network effects:** More projects → more crews → deeper pricing intelligence → better matching.
+- **Float economics:** Holding wallet balances funds growth and creates a cash moat.
+- **AI agent ecosystem:** Autonomous agents trained on proprietary construction data outperform generic competitors.
+
+
+## Path to $60 B ARR (month 16)
+1. Ramp merchant volume via disaster restoration pilot → capture $100 M/mo payments.
+2. Add escrow & financing, increasing take‑rate to 3 %.
+3. Expand to bidding marketplace & government procurement; cross‑sell analytics.
+4. Launch global remittance / closed‑loop wallet for cross‑border crews – new 1 % fee on $1 T annual volume.
+5. Roll‑out permitting & AI project co‑pilot as high‑margin SaaS upsells.
+
+
+## Prototype Pages
+See `index.html` and `preview.html` created alongside this document. They demonstrate the landing dashboard and a mobile preview. Use them to produce an investor PDF via browser print.
+
+
+## Boilerplate & GitHub Setup
+A starter repo (`/nexus-os`) contains:
+- `package.json` with dependencies for NestJS, React, Prisma, Expo.
+- `docker-compose.yml` for local Postgres, Redis.
+- `prisma/schema.prisma` (see previously generated schema snippet); extend with RFP, government data tables.
+- API route examples for project creation and payment.
+
+**Local dev steps:**
+```bash
+cd nexus-os
+npm install
+npm run prisma:migrate
+npm run start:dev  # backend
+cd frontend && npm start
+``` 
+
+**Deploy:**
+- Use AWS EKS with Terraform template included.
+- CI/CD pipeline via GitHub Actions builds Docker images and deploys to ECR.
+
+Full code is available in the created workspace; clone and continue development.
+
+
+## UI Prototypes
+- `index.html`: Main dashboard skeleton with navigation tiles (Payments, Bids, Workers, AI Co‑Pilot).
+- `preview.html`: Mobile‑first preview with sample bid listings and payment cards.
+
+They are static HTML/CSS but can be extended into React components.
+
+
+## Legal & Launch Notes
+- **Entity:** Form Delaware C‑corp (VC friendly) with construction trade legal counsel.
+- **Licenses:** MSB registration with FinCEN, register as PayFac via Stripe Connect/Unit to avoid state MTL in first 12 months.
+- **Compliance:** Build internal LegalOps to track lien law by state and procurement rules globally.
+- **Privacy/Terms:** Strict GDPR/CCPA compliance; user consent flows in UI.
+
+
+## Next Steps
+1. Finalize early‑stage team: CTO with payments + construction background.
+2. Secure BaaS/PayFac partnership and cloud credits.
+3. Build minimum‑viable bidder & escrow flow; run pilots with two GC partners.
+4. Iterate AI agents with real pay apps and bid documents.
+5. Raise seed round using investor pitch deck (see `investor_pitch.html`).
+
+
+---
+
+> *NEXUS is not an app. It is infrastructure. If you control the money flow in construction and government procurement, you control the economy that builds the world.*
+
+
+
+///////////////////   DATA BASE MONGO \
+
+
+////  the Old Prisma Without Gov Rfp Procurr////
+  
+//  Use this Prisam or create new One 
+ // Or create  secure Data base for ledger Non hacble 
+
+/// Update the data to ADD Gov RFp and compliance 
+ ///Update data what i smissing 
+
+/
+///### `data/mongodb/schema.prisma`
+
+//```prisma
+
+// This is your Prisma schema file
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+// ============================================
+// CORE ENTITIES
+// ============================================
+
+enum UserRole {
+  SUPER_ADMIN
+  GC_ADMIN
+  GC_PM
+  SUPERINTENDENT
+  SUBCONTRACTOR_ADMIN
+  SUBCONTRACTOR_WORKER
+  WORKER
+}
+
+enum OrgType {
+  GENERAL_CONTRACTOR
+  SUBCONTRACTOR
+  SUPPLIER
+  ARCHITECT
+  ENGINEER
+}
+
+enum ProjectStatus {
+  PLANNING
+  BIDDING
+  AWARDED
+  IN_PROGRESS
+  COMPLETED
+  ON_HOLD
+  CANCELLED
+}
+
+enum BidStatus {
+  DRAFT
+  SUBMITTED
+  UNDER_REVIEW
+  ACCEPTED
+  REJECTED
+  WITHDRAWN
+}
+
+enum AssignmentStatus {
+  SCHEDULED
+  IN_PROGRESS
+  COMPLETED
+  DELAYED
+  CANCELLED
+}
+
+enum RFIStatus {
+  OPEN
+  ANSWERED
+  CLOSED
+  ESCALATED
+}
+
+enum PaymentStatus {
+  DRAFT
+  SUBMITTED
+  UNDER_REVIEW
+  APPROVED
+  PAID
+  DISPUTED
+  REJECTED
+}
+
+enum SafetyIncidentSeverity {
+  LOW
+  MEDIUM
+  HIGH
+  CRITICAL
+}
+
+model Organization {
+  id              String   @id @default(auto()) @map("_id") @db.ObjectId
+  name            String
+  type            OrgType
+  email           String   @unique
+  phone           String?
+  website         String?
+  
+  // Address
+  address         Json?    // { street, city, state, zip, country }
+  
+  // Compliance & Credentials
+  insuranceDocs   Json[]   // [{ type, url, expiryDate, verified }]
+  licenses        Json[]   // [{ type, number, state, expiryDate }]
+  bondingCapacity Float?
+  dunsNumber      String?
+  
+  // Business Info
+  ein             String?
+  businessType    String?  // LLC, Corp, etc.
+  yearEstablished Int?
+  employeeCount   Int?
+  
+  // Financial
+  stripeAccountId String?  @unique
+  stripeOnboarded Boolean  @default(false)
+  bankVerified    Boolean  @default(false)
+  
+  // Ratings & Performance
+  safetyScore     Float?   @default(0)
+  qualityScore    Float?   @default(0)
+  onTimeScore     Float?   @default(0)
+  
+  // Relationships
+  users           User[]
+  projects        Project[]       @relation("GCProjects")
+  subProjects     Project[]       @relation("SubProjects")
+  bids            Bid[]
+  
+  // Subscription
+  subscriptionTier String?        @default("free")
+  subscriptionStatus String?      @default("inactive")
+  trialEndsAt     DateTime?
+  
+  // Metadata
+  isActive        Boolean  @default(true)
+  isVerified      Boolean  @default(false)
+  settings        Json?    // Custom org settings
+  
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  
+  @@map("organizations")
+  @@index([type])
+  @@index([stripeAccountId])
+}
+
+model User {
+  id              String   @id @default(auto()) @map("_id") @db.ObjectId
+  email           String   @unique
+  phone           String?
+  phoneVerified   Boolean  @default(false)
+  
+  // Profile
+  firstName       String
+  lastName        String
+  avatar          String?
+  title           String?
+  bio             String?
+  
+  // Auth
+  auth0Id         String?  @unique
+  passwordHash    String?
+  emailVerified   Boolean  @default(false)
+  twoFactorEnabled Boolean @default(false)
+  
+  // Role & Permissions
+  role            UserRole
+  permissions     Json?    // Custom permissions array
+  
+  // Location & Tracking
+  currentLocation Json?    // { lat, lng, accuracy, timestamp }
+  lastCheckIn     DateTime?
+  geofenceEnabled Boolean  @default(false)
+  
+  // Professional Info
+  certifications  Json[]   // [{ name, number, expiryDate }]
+  skills          String[] // ["Electrical", "HVAC", etc.]
+  languages       String[] @default(["en"])
+  
+  // Organization
+  orgId           String   @db.ObjectId
+  organization    Organization @relation(fields: [orgId], references: [id], onDelete: Cascade)
+  
+  // Relationships
+  assignments     Assignment[]
+  submittedBids   Bid[]        @relation("BidSubmitter")
+  createdProjects Project[]    @relation("ProjectCreator")
+  rfis            RFI[]
+  safetyReports   SafetyIncident[]
+  
+  // Notifications
+  notificationPrefs Json?    // { email, sms, push }
+  fcmToken        String?    // Firebase push token
+  
+  // Activity
+  lastActiveAt    DateTime?
+  isOnline        Boolean  @default(false)
+  
+  // Metadata
+  isActive        Boolean  @default(true)
+  metadata        Json?
+  
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  
+  @@map("users")
+  @@index([orgId])
+  @@index([email])
+  @@index([role])
+}
+
+model Project {
+  id              String   @id @default(auto()) @map("_id") @db.ObjectId
+  name            String
+  projectNumber   String   @unique
+  description     String?  @db.String
+  
+  // Status & Timeline
+  status          ProjectStatus
+  startDate       DateTime
+  expectedEndDate DateTime
+  actualEndDate   DateTime?
+  
+  // Location
+  address         Json     // { street, city, state, zip, coordinates }
+  geofenceRadius  Float?   @default(100) // meters
+  timezone        String?  @default("America/New_York")
+  
+  // Financial
+  totalBudget     Float
+  currentSpend    Float    @default(0)
+  contingency     Float?
+  
+  // Project Type
+  projectType     String   // Commercial, Residential, Infrastructure
+  constructionType String? // New Construction, Renovation, etc.
+  squareFootage   Float?
+  
+  // AI Analysis
+  riskScore       Float?
+  safetyScore     Float?
+  completionScore Float?
+  predictions     Json?    // AI predictions and insights
+  
+  // Owner Info
+  ownerName       String?
+  ownerContact    Json?
+  architectFirm   String?
+  
+  // General Contractor (Owner)
+  gcOrgId         String   @db.ObjectId
+  gc              Organization @relation("GCProjects", fields: [gcOrgId], references: [id])
+  
+  // Subcontractors
+  subcontractorIds String[] @db.ObjectId
+  subcontractors  Organization[] @relation("SubProjects", fields: [subcontractorIds], references: [id])
+  
+  // Creator
+  createdById     String   @db.ObjectId
+  createdBy       User     @relation("ProjectCreator", fields: [createdById], references: [id])
+  
+  // Documents & Media
+  blueprints      Blueprint[]
+  contracts       Contract[]
+  photos          ProjectPhoto[]
+  
+  // Work Management
+  assignments     Assignment[]
+  rfis            RFI[]
+  changeOrders    ChangeOrder[]
+  paymentApps     PaymentApplication[]
+  
+  // Safety & Compliance
+  safetyIncidents SafetyIncident[]
+  inspections     Inspection[]
+  permits         Json[]   // [{ type, number, issuedDate, expiryDate }]
+  
+  // Bidding
+  bids            Bid[]
+  
+  // Metadata
+  tags            String[]
+  customFields    Json?
+  isArchived      Boolean  @default(false)
+  
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  
+  @@map("projects")
+  @@index([gcOrgId])
+  @@index([status])
+  @@index([projectNumber])
+}
+
+model Blueprint {
+  id              String   @id @default(auto()) @map("_id") @db.ObjectId
+  projectId       String   @db.ObjectId
+  project         Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  
+  // File Info
+  fileName        String
+  fileUrl         String
+  fileSize        Int
+  fileType        String   // PDF, DWG, etc.
+  thumbnailUrl    String?
+  
+  // Metadata
+  discipline      String?  // Architectural, Structural, MEP, etc.
+  drawingNumber   String?
+  revision        String?
+  version         Int      @default(1)
+  
+  // AI Extracted Data
+  extractedText   String?  @db.String
+  components      Json[]   // [{ type, name, location, specs }]
+  dependencies    Json[]   // [{ from, to, type }]
+  conflicts       Json[]   // Detected clashes
+  materials       Json[]   // Material takeoff
+  
+  // Processing Status
+  processed       Boolean  @default(false)
+  processingStatus String? // pending, processing, completed, failed
+  aiConfidence    Float?
+  
+  // Upload Info
+  uploadedById    String   @db.ObjectId
+  uploadedAt      DateTime @default(now())
+  
+  // Usage
+  viewCount       Int      @default(0)
+  lastViewedAt    DateTime?
+  
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  
+  @@map("blueprints")
+  @@index([projectId])
+}
+
+model Contract {
+  id              String   @id @default(auto()) @map("_id") @db.ObjectId
+  projectId       String   @db.ObjectId
+  project         Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  
+  // Contract Info
+  contractNumber  String
+  contractType    String   // Prime, Subcontract, Purchase Order
+  title           String
+  description     String?  @db.String
+  
+  // Parties
+  contractorOrgId String   @db.ObjectId
+  scope           String   @db.String
+  
+  // Financial Terms
+  contractValue   Float
+  paymentTerms    Json     // { schedule, retainage, milestones }
+  
+  // Timeline
+  startDate       DateTime
+  endDate         DateTime
+  
+  // Documents
+  documentUrl     String
+  signedDocUrl    String?
+  
+  // AI Analysis
+  extractedTerms  Json?    // Key terms extracted by AI
+  riskFlags       Json[]   // Potential issues
+  
+  // Compliance
+  insuranceReqs   Json?    // Required insurance
+  bondRequired    Boolean  @default(false)
+  bondAmount      Float?
+  
+  // Status
+  status          String   // Draft, Pending, Signed, Active, Completed
+  signedDate      DateTime?
+  
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  
+  @@map("contracts")
+  @@index([projectId])
+  @@index([contractNumber])
+}
+
+model Assignment {
+  id              String   @id @default(auto()) @map("_id") @db.ObjectId
+  projectId       String   @db.ObjectId
+  project         Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  
+  userId          String   @db.ObjectId
+  user            User     @relation(fields: [userId], references: [id])
+  
+  // Work Details
+  trade           String   // ELECTRICAL, PLUMBING, HVAC, CONCRETE, etc.
+  scope           String   @db.String
+  workArea        String?  // Floor, Zone, etc.
+  
+  // Scheduling
+  scheduledStart  DateTime
+  scheduledEnd    DateTime
+  actualStart     DateTime?
+  actualEnd       DateTime?
+  durationHours   Float?
+  
+  // GPS Verification
+  requiresCheckIn Boolean  @default(true)
+  checkIns        Json[]   // [{ timestamp, lat, lng, type }]
+  geofenceVerified Boolean @default(false)
+  
+  // Prerequisites
+  dependencies    String[] @db.ObjectId // Other assignment IDs
+  prerequisitesMet Boolean @default(false)
+  
+  // Compliance
+  insuranceVerified Boolean @default(false)
+  licenseVerified   Boolean @default(false)
+  safetyBriefing    Boolean @default(false)
+  
+  // Progress
+  status          AssignmentStatus
+  completionPercent Float  @default(0)
+  notes           String?  @db.String
+  
+  // Resources
+  crew            Json[]   // [{ userId, role }]
+  equipment       Json[]   // [{ name, quantity }]
+  materials       Json[]   // [{ name, quantity, unit }]
+  
+  // Quality & Safety
+  inspectionRequired Boolean @default(false)
+  inspectionPassed   Boolean?
+  photosRequired     Int?    @default(0)
+  photosSubmitted    Int?    @default(0)
+  
+  // Payment
+  laborCost       Float?
+  materialCost    Float?
+  totalCost       Float?
+  
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  
+  @@map("assignments")
+  @@index([projectId])
+  @@index([userId])
+  @@index([status])
+  @@index([scheduledStart])
+}
+
+model Bid {
+  id              String   @id @default(auto()) @map("_id") @db.ObjectId
+  projectId       String   @db.ObjectId
+  project         Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  
+  // Bidder Info
+  bidderOrgId     String   @db.ObjectId
+  bidder          Organization @relation(fields: [bidderOrgId], references: [id])
+  
+  submittedById   String   @db.ObjectId
+  submittedBy     User     @relation("BidSubmitter", fields: [submittedById], references: [id])
+  
+  // Bid Package
+  bidPackageId    String?
+  trade           String   // Trade category
+  scope           String   @db.String
+  
+  // Financial
+  bidAmount       Float
+  breakdown       Json?    // Detailed cost breakdown
+  paymentTerms    String?
+  
+  // Timeline
+  proposedStart   DateTime
+  proposedEnd     DateTime
+  durationDays    Int
+  
+  // AI Scoring
+  matchScore      Float?   // 0-100
+  riskScore       Float?
+  qualityScore    Float?
+  pastPerformance Json?    // Historical data
+  
+  // Analysis
+  strengths       String[] // AI-identified strengths
+  concerns        String[] // AI-identified concerns
+  recommendation  String?  // AI recommendation
+  
+  // Documents
+  documents       Json[]   // [{ name, url, type }]
+  references      Json[]   // Past projects
+  
+  // Status
+  status          BidStatus
+  reviewNotes     String?  @db.String
+  
+  // Response
+  respondedAt     DateTime?
+  responseNotes   String?  @db.String
+  
+  // Metadata
+  isPublic        Boolean  @default(false)
+  source          String?  // Direct, Marketplace, Scraped
+  
+  submittedAt     DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  
+  @@map("bids")
+  @@index([projectId])
+  @@index([bidderOrgId])
+  @@index([status])
+}
+
+model RFI {
+  id              String   @id @default(auto()) @map("_id") @db.ObjectId
+  projectId       String   @db.ObjectId
+  project         Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  
+  // RFI Details
+  rfiNumber       String
+  title           String
+  description     String   @db.String
+  question        String   @db.String
+  
+  // Context
+  drawingRefs     String[] // Referenced drawing numbers
+  specRefs        String[] // Spec section references
+  location        String?  // Physical location
+  
+  // Detection
+  detectedBy      String   // USER, AI_AGENT
+  aiConfidence    Float?
+  triggerSource   String?  // Email, Drawing, Spec Conflict
+  
+  // Classification
+  category        String?  // Design, Specification, Coordination
+  priority        String   // LOW, MEDIUM, HIGH, CRITICAL
+  
+  // Assignment
+  submittedById   String   @db.ObjectId
+  submittedBy     User     @relation(fields: [submittedById], references: [id])
+  
+  assignedTo      String?  @db.ObjectId
+  assignedToRole  String?  // Architect, Engineer, GC
+  
+  // Response
+  status          RFIStatus
+  response        String?  @db.String
+  respondedAt     DateTime?
+  respondedBy     String?
+  
+  // Impact
+  costImpact      Float?
+  scheduleImpact  Int?     // Days
+  changeOrderReq  Boolean  @default(false)
+  
+  // Documents
+  attachments     Json[]   // [{ name, url, type }]
+  photos          Json[]
+  
+  // Related
+  relatedRFIs     String[] @db.ObjectId
+  changeOrderId   String?  @db.ObjectId
+  
+  // Timeline
+  dueDate         DateTime?
+  closedAt        DateTime?
+  
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  
+  @@map("rfis")
+  @@index([projectId])
+  @@index([status])
+  @@index([priority])
+}
+
+model ChangeOrder {
+  id              String   @id @default(auto()) @map("_id") @db.ObjectId
+  projectId       String   @db.ObjectId
+  project         Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  
+  // Change Order Info
+  coNumber        String
+  title           String
+  description     String   @db.String
+  reason          String   @db.String
+  
+  // Impact
+  costImpact      Float
+  scheduleImpact  Int      // Days
+  scopeChange     String   @db.String
+  
+  // Source
+  initiatedBy     String   // Owner, Architect, GC, Sub
+  relatedRFIs     String[] @db.ObjectId
+  
+  // Approval
+  status          String   // Draft, Pending, Approved, Rejected
+  approvals       Json[]   // [{ role, userId, approved, date }]
+  
+  // Documents
+  documents       Json[]
+  
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  
+  @@map("change_orders")
+  @@index([projectId])
+}
+
+model PaymentApplication {
+  id              String   @id @default(auto()) @map("_id") @db.ObjectId
+  projectId       String   @db.ObjectId
+  assignmentId    String?  @db.ObjectId
+  
+  // AIA G702/G703 Fields
+  applicationNumber Int
+  periodStart     DateTime
+  periodEnd       DateTime
+  
+  // Financials
+  originalContract Float
+  netChangeOrders  Float    @default(0)
+  contractTotal    Float
+  workCompleted    Float
+  materialsStored  Float    @default(0)
+  totalEarned      Float
+  previousPayments Float    @default(0)
+  currentDue       Float
+  retainage        Float    @default(0)
+  
+  // Line Items (G703)
+  lineItems       Json[]   // [{ description, scheduledValue, completed, balance }]
+  
+  // AI Verification
+  photos          Json[]   // Verification photos
+  gpsLogs         Json[]   // GPS check-ins
+  aiVerified      Boolean  @default(false)
+  verificationScore Float?
+  aiNotes         String?  @db.String
+  
+  // Manual Review
+  manualReview    Boolean  @default(false)
+  reviewNotes     String?  @db.String
+  reviewedBy      String?  @db.ObjectId
+  reviewedAt      DateTime?
+  
+  // Payment Processing
+  status          PaymentStatus
+  stripePaymentId String?
+  paidAmount      Float?
+  paidAt          DateTime?
+  paymentMethod   String?  // ACH, Wire, Check
+  
+  // Fees (PayBrain)
+  platformFee     Float?   @default(0)
+  processingFee   Float?   @default(0)
+  
+  // Documents
+  pdfUrl          String?
+  signedPdfUrl    String?
+  
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  
+  @@map("payment_applications")
+  @@index([projectId])
+  @@index([status])
+}
+
+model SafetyIncident {
+  id              String   @id @default(auto()) @map("_id") @db.ObjectId
+  projectId       String   @db.ObjectId
+  project         Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  
+  // Incident Details
+  incidentNumber  String   @unique
+  type            String   // PPE_VIOLATION, FALL_HAZARD, EQUIPMENT, INJURY
+  severity        SafetyIncidentSeverity
+  
+  // Detection
+  detectedBy      String   // AI_VISION, MANUAL_REPORT, WORKER_REPORT
+  detectionMethod String?  // Photo, Video, Sensor
+  
+  // Location
+  location        Json     // { lat, lng, area }
+  photoUrl        String?
+  videoUrl        String?
+  
+  // Description
+  description     String   @db.String
+  violations      String[] // Specific violations
+  
+  // AI Analysis
+  aiAnalysis      Json?    // { confidence, detectedObjects, recommendations }
+  
+  // People Involved
+  reportedById    String?  @db.ObjectId
+  reportedBy      User?    @relation(fields: [reportedById], references: [id])
+  
+  involvedWorkers Json[]   // [{ userId, role }]
+  
+  // Response
+  actionsTaken    String?  @db.String
+  correctiveActions Json[] // [{ action, responsible, dueDate, completed }]
+  
+  // Status
+  status          String   // OPEN, INVESTIGATING, RESOLVED, CLOSED
+  resolvedAt      DateTime?
+  
+  // OSHA
+  oshaReportable  Boolean  @default(false)
+  oshaReported    Boolean  @default(false)
+  oshaReportDate  DateTime?
+  
+  // Impact
+  workStopped     Boolean  @default(false)
+  injuryOccurred  Boolean  @default(false)
+  medicalAttention Boolean @default(false)
+  lostTimeDays    Int?
+  
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  
+  @@map("safety_incidents")
+  @@index([projectId])
+  @@index([severity])
+  @@index([status])
+}
+
+model Inspection {
+  id              String   @id @default(auto()) @map("_id") @db.ObjectId
+  projectId       String   @db.ObjectId
+  project         Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  
+  // Inspection Info
+  inspectionType  String   // Building, Fire, Electrical, Plumbing
+  inspector       String
+  inspectorOrg    String?
+  
+  // Scheduling
+  scheduledDate   DateTime
+  completedDate   DateTime?
+  
+  // Results
+  status          String   // Scheduled, Passed, Failed, Conditional
+  passed          Boolean?
+  
+  // Findings
+  findings        Json[]   // [{ item, status, notes }]
+  violations      Json[]
+  corrections     Json[]   // Required corrections
+  
+  // Documents
+  reportUrl       String?
+  photos          Json[]
+  
+  // Follow-up
+  reInspectionReq Boolean  @default(false)
+  reInspectionDate DateTime?
+  
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  
+  @@map("inspections")
+  @@index([projectId])
+}
+
+model ProjectPhoto {
+  id              String   @id @default(auto()) @map("_id") @db.ObjectId
+  projectId       String   @db.ObjectId
+  project         Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  
+  // File Info
+  url             String
+  thumbnailUrl    String?
+  size            Int
+  
+  // Context
+  category        String?  // Progress, Safety, Issue, Completion
+  location        Json?    // { lat, lng, area }
+  tags            String[]
+  
+  // AI Analysis
+  aiTags          String[] // AI-detected objects
+  aiDescription   String?
+  safetyIssues    Json[]   // Detected safety issues
+  
+  // Metadata
+  capturedAt      DateTime
+  uploadedBy      String   @db.ObjectId
+  
+  createdAt       DateTime @default(now())
+  
+  @@map("project_photos")
+  @@index([projectId])
+  @@index([category])
+}
+
+// ============================================
+// MARKETPLACE & OPPORTUNITIES
+// ============================================
+
+model BidOpportunity {
+  id              String   @id @default(auto()) @map("_id") @db.ObjectId
+  
+  // Project Info
+  title           String
+  description     String   @db.String
+  projectType     String
+  
+  // Owner/GC
+  ownerName       String
+  gcName          String?
+  
+  // Location
+  location        Json     // { city, state, address }
+  
+  // Financial
+  estimatedValue  Float?
+  bondRequired    Boolean  @default(false)
+  
+  // Timeline
+  bidDueDate      DateTime
+  projectStartDate DateTime?
+  projectEndDate   DateTime?
+  
+  // Trades Needed
+  trades          String[] // Multiple trades
+  
+  // Source
+  source          String   // DODGE, CONSTRUCT_CONNECT, SAM_GOV, DIRECT
+  sourceUrl       String?
+  sourceId        String?
+  
+  // Documents
+  documents       Json[]
+  
+  // AI Matching
+  matchedOrgs     String[] @db.ObjectId
+  notified        Boolean  @default(false)
+  
+  // Status
+  status          String   // ACTIVE, CLOSED, AWARDED
+  
+  scrapedAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  
+  @@map("bid_opportunities")
+  @@index([bidDueDate])
+  @@index([status])
+  @@index([source])
+}
+
+// ============================================
+// NOTIFICATIONS & COMMUNICATIONS
+// ============================================
+
+model Notification {
+  id              String   @id @default(auto()) @map("_id") @db.ObjectId
+  
+  // Recipient
+  userId          String   @db.ObjectId
+  orgId           String?  @db.ObjectId
+  
+  // Content
+  type            String   // ALERT, INFO, WARNING, SUCCESS
+  category        String   // SAFETY, PAYMENT, BID, RFI, SCHEDULE
+  title           String
+  message         String   @db.String
+  
+  // Action
+  actionUrl       String?
+  actionLabel     String?
+  
+  // Related Entity
+  relatedType     String?  // project, rfi, payment, etc.
+  relatedId       String?  @db.ObjectId
+  
+  // Status
+  read            Boolean  @default(false)
+  readAt          DateTime?
+  
+  // Delivery
+  channels        String[] // email, sms, push
+  sentVia         String[]
+  
+  createdAt       DateTime @default(now())
+  
+  @@map("notifications")
+  @@index([userId])
+  @@index([read])
+}
+
+// ============================================
+// ANALYTICS & METRICS
+// ============================================
+
+model ProjectMetrics {
+  id              String   @id @default(auto()) @map("_id") @db.ObjectId
+  projectId       String   @db.ObjectId @unique
+  
+  // Progress
+  completionPercent Float  @default(0)
+  onSchedule      Boolean  @default(true)
+  daysAhead       Int?
+  daysBehind      Int?
+  
+  // Financial
+  budgetUsed      Float    @default(0)
+  budgetRemaining Float
+  overBudget      Boolean  @default(false)
+  
+  // Quality
+  rfiCount        Int      @default(0)
+  changeOrderCount Int     @default(0)
+  defectRate      Float?
+  
+  // Safety
+  safetyScore     Float    @default(100)
+  incidentCount   Int      @default(0)
+  daysWithoutIncident Int  @default(0)
+  
+  // Productivity
+  laborEfficiency Float?
+  equipmentUtilization Float?
+  
+  // Updated
+  lastCalculated  DateTime @default(now())
+  
+  @@map("project_metrics")
+}
+
+// ============================================
+// SUBSCRIPTIONS & BILLING
+// ============================================
+
+model Subscription {
+  id              String   @id @default(auto()) @map("_id") @db.ObjectId
+  orgId           String   @db.ObjectId @unique
+  
+  // Plan
+  tier            String   // FREE, BASIC, PRO, ENTERPRISE
+  status          String   // ACTIVE, CANCELLED, PAST_DUE, TRIALING
+  
+  // Stripe
+  stripeSubscriptionId String? @unique
+  stripeCustomerId     String?
+  
+  // Billing
+  billingCycle    String   // MONTHLY, ANNUAL
+  amount          Float
+  currency        String   @default("USD")
+  
+  // Usage
+  userCount       Int      @default(0)
+  projectCount    Int      @default(0)
+  storageUsedGB   Float    @default(0)
+  
+  // Limits
+  userLimit       Int?
+  projectLimit    Int?
+  storageLimit    Float?
+  
+  // Dates
+  trialEndsAt     DateTime?
+  currentPeriodStart DateTime
+  currentPeriodEnd   DateTime
+  cancelAt        DateTime?
+  canceledAt      DateTime?
+  
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  
+  @@map("subscriptions")
+}
+
+model UsageLog {
+  id              String   @id @default(auto()) @map("_id") @db.ObjectId
+  orgId           String   @db.ObjectId
+  
+  // Event
+  eventType       String   // API_CALL, AI_PROCESSING, STORAGE
+  resource        String   // blueprint_analysis, safety_detection, etc.
+  
+  // Usage
+  quantity        Float    @default(1)
+  unit            String   // calls, minutes, GB, etc.
+  
+  // Cost
+  cost            Float?
+  
+  //
+
+
+  
+// ============================================
+// GOVERNMENT AND pROCUREMENTS
+// ============================================
+
+ADD THIS 
+
+
+// ============================================
+// BANKING AND FINTECH
+// ============================================
+
+ADD THIS 
+
+
+
+// ============================================
+// LENDING AND INVOICE
+// ============================================
+
+ADD THIS 
+
+
+
+
+/////////////////
+
+
+
+
+
 
 
 
