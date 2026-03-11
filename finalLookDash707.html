@@ -1,0 +1,335 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BuildNexus Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .sidebar { background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%); }
+    </style>
+</head>
+<body class="bg-gray-50">
+
+    <div class="flex h-screen overflow-hidden">
+        
+        <!-- Sidebar -->
+        <aside class="sidebar w-64 flex-shrink-0 text-white hidden md:flex flex-col">
+            <div class="h-16 flex items-center px-6 border-b border-gray-700">
+                <span class="text-2xl font-bold">BuildNexus</span>
+            </div>
+            
+            <nav class="flex-1 px-4 py-6 space-y-2">
+                <a href="#" class="flex items-center space-x-3 px-4 py-3 bg-indigo-600 rounded-lg">
+                    <i data-lucide="layout-dashboard" class="w-5 h-5"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="#" class="flex items-center space-x-3 px-4 py-3 hover:bg-gray-800 rounded-lg transition">
+                    <i data-lucide="briefcase" class="w-5 h-5"></i>
+                    <span>Projects</span>
+                </a>
+                <a href="#" class="flex items-center space-x-3 px-4 py-3 hover:bg-gray-800 rounded-lg transition">
+                    <i data-lucide="users" class="w-5 h-5"></i>
+                    <span>Workers</span>
+                </a>
+                <a href="#" class="flex items-center space-x-3 px-4 py-3 hover:bg-gray-800 rounded-lg transition">
+                    <i data-lucide="wallet" class="w-5 h-5"></i>
+                    <span>Wallet</span>
+                    <span class="ml-auto bg-green-500 text-xs px-2 py-1 rounded-full">$12.4K</span>
+                </a>
+                <a href="#" class="flex items-center space-x-3 px-4 py-3 hover:bg-gray-800 rounded-lg transition">
+                    <i data-lucide="file-text" class="w-5 h-5"></i>
+                    <span>Lien Waivers</span>
+                </a>
+                <a href="#" class="flex items-center space-x-3 px-4 py-3 hover:bg-gray-800 rounded-lg transition">
+                    <i data-lucide="calendar" class="w-5 h-5"></i>
+                    <span>Schedule</span>
+                </a>
+                <a href="#" class="flex items-center space-x-3 px-4 py-3 hover:bg-gray-800 rounded-lg transition">
+                    <i data-lucide="bar-chart-3" class="w-5 h-5"></i>
+                    <span>Analytics</span>
+                </a>
+                <a href="#" class="flex items-center space-x-3 px-4 py-3 hover:bg-gray-800 rounded-lg transition">
+                    <i data-lucide="settings" class="w-5 h-5"></i>
+                    <span>Settings</span>
+                </a>
+            </nav>
+
+            <div class="p-4 border-t border-gray-700">
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 rounded-full bg-indigo-500 flex items-center justify-center">
+                        <span class="font-semibold">JD</span>
+                    </div>
+                    <div>
+                        <div class="font-medium">John Doe</div>
+                        <div class="text-sm text-gray-400">General Contractor</div>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <div class="flex-1 flex flex-col overflow-hidden">
+            
+            <!-- Top Header -->
+            <header class="h-16 bg-white border-b flex items-center justify-between px-6">
+                <div class="flex items-center space-x-4">
+                    <button class="md:hidden">
+                        <i data-lucide="menu" class="w-6 h-6"></i>
+                    </button>
+                    <h1 class="text-xl font-semibold text-gray-800">Dashboard</h1>
+                </div>
+                
+                <div class="flex items-center space-x-4">
+                    <button class="relative p-2 text-gray-600 hover:bg-gray-100 rounded-lg">
+                        <i data-lucide="bell" class="w-5 h-5"></i>
+                        <span class="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
+                    </button>
+                    <button class="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 flex items-center space-x-2">
+                        <i data-lucide="plus" class="w-4 h-4"></i>
+                        <span>New Project</span>
+                    </button>
+                </div>
+            </header>
+
+            <!-- Dashboard Content -->
+            <main class="flex-1 overflow-y-auto p-6">
+                
+                <!-- Stats Cards -->
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+                    <div class="bg-white p-6 rounded-xl shadow-sm border">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="text-gray-600 text-sm font-medium">Active Projects</div>
+                            <div class="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
+                                <i data-lucide="briefcase" class="w-5 h-5 text-blue-600"></i>
+                            </div>
+                        </div>
+                        <div class="text-3xl font-bold text-gray-900">12</div>
+                        <div class="text-sm text-green-600 mt-2 flex items-center">
+                            <i data-lucide="trending-up" class="w-4 h-4 mr-1"></i>
+                            +3 this month
+                        </div>
+                    </div>
+
+                    <div class="bg-white p-6 rounded-xl shadow-sm border">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="text-gray-600 text-sm font-medium">Total Volume</div>
+                            <div class="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center">
+                                <i data-lucide="dollar-sign" class="w-5 h-5 text-green-600"></i>
+                            </div>
+                        </div>
+                        <div class="text-3xl font-bold text-gray-900">$847K</div>
+                        <div class="text-sm text-green-600 mt-2 flex items-center">
+                            <i data-lucide="trending-up" class="w-4 h-4 mr-1"></i>
+                            +12.5% vs last month
+                        </div>
+                    </div>
+
+                    <div class="bg-white p-6 rounded-xl shadow-sm border">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="text-gray-600 text-sm font-medium">Pending Payments</div>
+                            <div class="w-10 h-10 bg-yellow-100 rounded-lg flex items-center justify-center">
+                                <i data-lucide="clock" class="w-5 h-5 text-yellow-600"></i>
+                            </div>
+                        </div>
+                        <div class="text-3xl font-bold text-gray-900">$124K</div>
+                        <div class="text-sm text-gray-600 mt-2">8 awaiting approval</div>
+                    </div>
+
+                    <div class="bg-white p-6 rounded-xl shadow-sm border">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="text-gray-600 text-sm font-medium">Active Workers</div>
+                            <div class="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center">
+                                <i data-lucide="users" class="w-5 h-5 text-purple-600"></i>
+                            </div>
+                        </div>
+                        <div class="text-3xl font-bold text-gray-900">47</div>
+                        <div class="text-sm text-gray-600 mt-2">Across 6 trades</div>
+                    </div>
+                </div>
+
+                <!-- Main Grid -->
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    
+                    <!-- Active Projects Table -->
+                    <div class="lg:col-span-2 bg-white rounded-xl shadow-sm border">
+                        <div class="p-6 border-b flex items-center justify-between">
+                            <h2 class="text-lg font-semibold">Active Projects</h2>
+                            <button class="text-indigo-600 text-sm font-medium hover:underline">View All</button>
+                        </div>
+                        <div class="overflow-x-auto">
+                            <table class="w-full">
+                                <thead class="bg-gray-50">
+                                    <tr>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Project</th>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Client</th>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Value</th>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y">
+                                    <tr class="hover:bg-gray-50">
+                                        <td class="px-6 py-4">
+                                            <div class="font-medium text-gray-900">Downtown Office Complex</div>
+                                            <div class="text-sm text-gray-500">Phase 2 - Electrical</div>
+                                        </td>
+                                        <td class="px-6 py-4 text-sm text-gray-600">Acme Corp</td>
+                                        <td class="px-6 py-4 text-sm font-medium">$245K</td>
+                                        <td class="px-6 py-4">
+                                            <span class="px-3 py-1 text-xs font-medium bg-green-100 text-green-700 rounded-full">In Progress</span>
+                                        </td>
+                                        <td class="px-6 py-4">
+                                            <button class="text-indigo-600 text-sm font-medium hover:underline">View</button>
+                                        </td>
+                                    </tr>
+                                    <tr class="hover:bg-gray-50">
+                                        <td class="px-6 py-4">
+                                            <div class="font-medium text-gray-900">Residential Tower A</div>
+                                            <div class="text-sm text-gray-500">HVAC Installation</div>
+                                        </td>
+                                        <td class="px-6 py-4 text-sm text-gray-600">Skyline Developments</td>
+                                        <td class="px-6 py-4 text-sm font-medium">$180K</td>
+                                        <td class="px-6 py-4">
+                                            <span class="px-3 py-1 text-xs font-medium bg-yellow-100 text-yellow-700 rounded-full">Pending</span>
+                                        </td>
+                                        <td class="px-6 py-4">
+                                            <button class="text-indigo-600 text-sm font-medium hover:underline">Approve</button>
+                                        </td>
+                                    </tr>
+                                    <tr class="hover:bg-gray-50">
+                                        <td class="px-6 py-4">
+                                            <div class="font-medium text-gray-900">Warehouse Expansion</div>
+                                            <div class="text-sm text-gray-500">Plumbing & Fire</div>
+                                        </td>
+                                        <td class="px-6 py-4 text-sm text-gray-600">LogiCorp</td>
+                                        <td class="px-6 py-4 text-sm font-medium">$95K</td>
+                                        <td class="px-6 py-4">
+                                            <span class="px-3 py-1 text-xs font-medium bg-blue-100 text-blue-700 rounded-full">Escrow Funded</span>
+                                        </td>
+                                        <td class="px-6 py-4">
+                                            <button class="text-indigo-600 text-sm font-medium hover:underline">Details</button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Recent Activity -->
+                    <div class="bg-white rounded-xl shadow-sm border">
+                        <div class="p-6 border-b">
+                            <h2 class="text-lg font-semibold">Recent Activity</h2>
+                        </div>
+                        <div class="p-6 space-y-6">
+                            <div class="flex space-x-3">
+                                <div class="w-2 h-2 bg-green-500 rounded-full mt-2"></div>
+                                <div>
+                                    <div class="text-sm font-medium text-gray-900">Payment Released</div>
+                                    <div class="text-sm text-gray-600">$15K to Mike's Electric</div>
+                                    <div class="text-xs text-gray-500 mt-1">2 hours ago</div>
+                                </div>
+                            </div>
+                            <div class="flex space-x-3">
+                                <div class="w-2 h-2 bg-blue-500 rounded-full mt-2"></div>
+                                <div>
+                                    <div class="text-sm font-medium text-gray-900">New Worker Verified</div>
+                                    <div class="text-sm text-gray-600">John Smith - Plumber</div>
+                                    <div class="text-xs text-gray-500 mt-1">5 hours ago</div>
+                                </div>
+                            </div>
+                            <div class="flex space-x-3">
+                                <div class="w-2 h-2 bg-purple-500 rounded-full mt-2"></div>
+                                <div>
+                                    <div class="text-sm font-medium text-gray-900">Lien Waiver Signed</div>
+                                    <div class="text-sm text-gray-600">Downtown Office - Phase 1</div>
+                                    <div class="text-xs text-gray-500 mt-1">1 day ago</div>
+                                </div>
+                            </div>
+                            <div class="flex space-x-3">
+                                <div class="w-2 h-2 bg-yellow-500 rounded-full mt-2"></div>
+                                <div>
+                                    <div class="text-sm font-medium text-gray-900">Milestone Completed</div>
+                                    <div class="text-sm text-gray-600">Residential Tower - Foundation</div>
+                                    <div class="text-xs text-gray-500 mt-1">2 days ago</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Wallet & Quick Actions -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
+                    
+                    <!-- Wallet Balance -->
+                    <div class="bg-gradient-to-br from-indigo-600 to-purple-700 rounded-xl p-6 text-white">
+                        <div class="flex items-center justify-between mb-6">
+                            <div>
+                                <div class="text-indigo-200 text-sm mb-1">Total Balance</div>
+                                <div class="text-4xl font-bold">$12,450.00</div>
+                            </div>
+                            <div class="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center">
+                                <i data-lucide="wallet" class="w-6 h-6"></i>
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-2 gap-4">
+                            <button class="bg-white text-indigo-600 py-3 rounded-lg font-semibold hover:bg-indigo-50">
+                                Deposit
+                            </button>
+                            <button class="bg-white/20 text-white py-3 rounded-lg font-semibold hover:bg-white/30">
+                                Withdraw
+                            </button>
+                        </div>
+                        <div class="mt-6 pt-6 border-t border-white/20">
+                            <div class="flex justify-between text-sm mb-2">
+                                <span class="text-indigo-200">USD</span>
+                                <span class="font-semibold">$8,200</span>
+                            </div>
+                            <div class="flex justify-between text-sm mb-2">
+                                <span class="text-indigo-200">USDC</span>
+                                <span class="font-semibold">$3,500</span>
+                            </div>
+                            <div class="flex justify-between text-sm">
+                                <span class="text-indigo-200">Pending</span>
+                                <span class="font-semibold">$750</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Quick Actions -->
+                    <div class="bg-white rounded-xl shadow-sm border p-6">
+                        <h3 class="text-lg font-semibold mb-4">Quick Actions</h3>
+                        <div class="grid grid-cols-2 gap-4">
+                            <button class="p-4 border-2 border-dashed border-gray-300 rounded-xl hover:border-indigo-500 hover:bg-indigo-50 transition text-center">
+                                <i data-lucide="plus-circle" class="w-8 h-8 text-gray-400 mx-auto mb-2"></i>
+                                <div class="text-sm font-medium text-gray-700">New Project</div>
+                            </button>
+                            <button class="p-4 border-2 border-dashed border-gray-300 rounded-xl hover:border-indigo-500 hover:bg-indigo-50 transition text-center">
+                                <i data-lucide="user-plus" class="w-8 h-8 text-gray-400 mx-auto mb-2"></i>
+                                <div class="text-sm font-medium text-gray-700">Hire Worker</div>
+                            </button>
+                            <button class="p-4 border-2 border-dashed border-gray-300 rounded-xl hover:border-indigo-500 hover:bg-indigo-50 transition text-center">
+                                <i data-lucide="file-plus" class="w-8 h-8 text-gray-400 mx-auto mb-2"></i>
+                                <div class="text-sm font-medium text-gray-700">Lien Waiver</div>
+                            </button>
+                            <button class="p-4 border-2 border-dashed border-gray-300 rounded-xl hover:border-indigo-500 hover:bg-indigo-50 transition text-center">
+                                <i data-lucide="send" class="w-8 h-8 text-gray-400 mx-auto mb-2"></i>
+                                <div class="text-sm font-medium text-gray-700">Send Payment</div>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+            </main>
+        </div>
+    </div>
+
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+</html>

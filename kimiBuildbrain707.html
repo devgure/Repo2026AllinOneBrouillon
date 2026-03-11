@@ -1,0 +1,1352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NEXUS | The Operating System for Construction</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;700&display=swap');
+        
+        :root {
+            --nexus-orange: #FF6B35;
+            --nexus-navy: #0A1929;
+            --nexus-cyan: #00D4AA;
+            --nexus-gold: #FFD700;
+        }
+        
+        body { font-family: 'Inter', sans-serif; }
+        .font-mono { font-family: 'JetBrains Mono', monospace; }
+        
+        .gradient-text {
+            background: linear-gradient(135deg, #FF6B35 0%, #FFD700 50%, #00D4AA 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .glass-panel {
+            background: rgba(10, 25, 41, 0.8);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .neon-border {
+            box-shadow: 0 0 20px rgba(0, 212, 170, 0.3), inset 0 0 20px rgba(0, 212, 170, 0.1);
+        }
+        
+        .hover-lift {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .hover-lift:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+        
+        .grid-bg {
+            background-image: 
+                linear-gradient(rgba(0, 212, 170, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 212, 170, 0.05) 1px, transparent 1px);
+            background-size: 50px 50px;
+        }
+        
+        .pulse-ring {
+            animation: pulse-ring 2s cubic-bezier(0.215, 0.61, 0.355, 1) infinite;
+        }
+        
+        @keyframes pulse-ring {
+            0% { transform: scale(0.8); opacity: 1; }
+            100% { transform: scale(2); opacity: 0; }
+        }
+        
+        .typing-effect::after {
+            content: '|';
+            animation: blink 1s infinite;
+        }
+        
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+        
+        .tab-active {
+            border-bottom: 3px solid #FF6B35;
+            color: #FF6B35;
+        }
+        
+        .code-block {
+            background: #0d1117;
+            border-radius: 8px;
+            overflow-x: auto;
+        }
+        
+        .metric-card {
+            background: linear-gradient(145deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.02) 100%);
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+    </style>
+<base target="_blank">
+</head>
+<body class="bg-slate-950 text-white overflow-x-hidden">
+
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full z-50 glass-panel border-b border-white/10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16 items-center">
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 bg-gradient-to-br from-orange-500 to-yellow-500 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-bolt text-white text-xl"></i>
+                    </div>
+                    <span class="text-2xl font-black tracking-tighter">NEXUS</span>
+                    <span class="px-2 py-0.5 bg-cyan-500/20 text-cyan-400 text-xs rounded-full border border-cyan-500/30">BETA</span>
+                </div>
+                <div class="hidden md:flex space-x-8">
+                    <a href="#platform" class="text-sm font-medium hover:text-orange-400 transition">Platform</a>
+                    <a href="#finance" class="text-sm font-medium hover:text-orange-400 transition">Finance</a>
+                    <a href="#marketplace" class="text-sm font-medium hover:text-orange-400 transition">Marketplace</a>
+                    <a href="#blueprint" class="text-sm font-medium hover:text-orange-400 transition">Blueprint</a>
+                    <a href="#investors" class="text-sm font-medium hover:text-orange-400 transition">Investors</a>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <button class="hidden md:block text-sm font-medium hover:text-white text-gray-300">Sign In</button>
+                    <button class="bg-gradient-to-r from-orange-500 to-yellow-500 px-6 py-2 rounded-full font-bold text-sm hover:shadow-lg hover:shadow-orange-500/25 transition transform hover:scale-105">
+                        Get Early Access
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="relative pt-32 pb-20 grid-bg overflow-hidden">
+        <div class="absolute inset-0 bg-gradient-to-b from-slate-950 via-transparent to-slate-950"></div>
+        
+        <!-- Animated Background Elements -->
+        <div class="absolute top-20 left-10 w-72 h-72 bg-orange-500/20 rounded-full blur-3xl animate-pulse"></div>
+        <div class="absolute bottom-20 right-10 w-96 h-96 bg-cyan-500/20 rounded-full blur-3xl animate-pulse delay-1000"></div>
+        
+        <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid lg:grid-cols-2 gap-12 items-center">
+                <div class="space-y-8">
+                    <div class="inline-flex items-center space-x-2 px-4 py-2 rounded-full bg-white/5 border border-white/10">
+                        <span class="w-2 h-2 bg-green-400 rounded-full animate-pulse"></span>
+                        <span class="text-xs font-mono text-gray-400">SYSTEM STATUS: OPERATIONAL</span>
+                    </div>
+                    
+                    <h1 class="text-5xl md:text-7xl font-black leading-tight">
+                        The <span class="gradient-text">Operating System</span><br>
+                        for the Real Economy
+                    </h1>
+                    
+                    <p class="text-xl text-gray-400 max-w-lg leading-relaxed">
+                        Construction payments + Skilled trades marketplace + Embedded finance. 
+                        One platform to rule them all. <span class="text-cyan-400 font-mono">$40B+ Decacorn Thesis</span>
+                    </p>
+                    
+                    <div class="flex flex-wrap gap-4">
+                        <button class="group bg-white text-slate-900 px-8 py-4 rounded-full font-bold hover:bg-gray-100 transition flex items-center space-x-2">
+                            <span>Launch Platform</span>
+                            <i class="fas fa-arrow-right group-hover:translate-x-1 transition"></i>
+                        </button>
+                        <button class="px-8 py-4 rounded-full font-bold border border-white/20 hover:bg-white/5 transition flex items-center space-x-2">
+                            <i class="fas fa-play-circle"></i>
+                            <span>Watch Demo</span>
+                        </button>
+                    </div>
+                    
+                    <div class="flex items-center space-x-6 text-sm text-gray-500">
+                        <div class="flex -space-x-2">
+                            <div class="w-8 h-8 rounded-full bg-orange-500 border-2 border-slate-950"></div>
+                            <div class="w-8 h-8 rounded-full bg-cyan-500 border-2 border-slate-950"></div>
+                            <div class="w-8 h-8 rounded-full bg-yellow-500 border-2 border-slate-950"></div>
+                        </div>
+                        <span>Trusted by 2,000+ contractors</span>
+                    </div>
+                </div>
+                
+                <!-- Interactive Dashboard Preview -->
+                <div class="relative">
+                    <div class="glass-panel rounded-2xl p-6 neon-border transform rotate-1 hover:rotate-0 transition duration-500">
+                        <div class="flex justify-between items-center mb-6">
+                            <div class="flex space-x-2">
+                                <div class="w-3 h-3 rounded-full bg-red-500"></div>
+                                <div class="w-3 h-3 rounded-full bg-yellow-500"></div>
+                                <div class="w-3 h-3 rounded-full bg-green-500"></div>
+                            </div>
+                            <div class="text-xs font-mono text-gray-400">NEXUS DASHBOARD v2.4</div>
+                        </div>
+                        
+                        <div class="grid grid-cols-2 gap-4 mb-6">
+                            <div class="metric-card p-4 rounded-xl">
+                                <div class="text-gray-400 text-xs mb-1">Total Volume</div>
+                                <div class="text-2xl font-bold text-cyan-400">$<span id="counter">0</span>M</div>
+                                <div class="text-xs text-green-400 mt-1">+24.5% this week</div>
+                            </div>
+                            <div class="metric-card p-4 rounded-xl">
+                                <div class="text-gray-400 text-xs mb-1">Active Projects</div>
+                                <div class="text-2xl font-bold text-orange-400">847</div>
+                                <div class="text-xs text-green-400 mt-1">+12 new today</div>
+                            </div>
+                        </div>
+                        
+                        <div class="space-y-3">
+                            <div class="flex items-center justify-between p-3 bg-white/5 rounded-lg">
+                                <div class="flex items-center space-x-3">
+                                    <div class="w-10 h-10 rounded-lg bg-orange-500/20 flex items-center justify-center">
+                                        <i class="fas fa-hard-hat text-orange-400"></i>
+                                    </div>
+                                    <div>
+                                        <div class="text-sm font-medium">Downtown Tower</div>
+                                        <div class="text-xs text-gray-500">Milestone 3/5 • $450K</div>
+                                    </div>
+                                </div>
+                                <div class="px-3 py-1 bg-green-500/20 text-green-400 text-xs rounded-full">Released</div>
+                            </div>
+                            
+                            <div class="flex items-center justify-between p-3 bg-white/5 rounded-lg">
+                                <div class="flex items-center space-x-3">
+                                    <div class="w-10 h-10 rounded-lg bg-cyan-500/20 flex items-center justify-center">
+                                        <i class="fas fa-users text-cyan-400"></i>
+                                    </div>
+                                    <div>
+                                        <div class="text-sm font-medium">Electrical Crew #4</div>
+                                        <div class="text-xs text-gray-500">On-site • 6 workers</div>
+                                    </div>
+                                </div>
+                                <div class="px-3 py-1 bg-yellow-500/20 text-yellow-400 text-xs rounded-full">In Progress</div>
+                            </div>
+                            
+                            <div class="flex items-center justify-between p-3 bg-white/5 rounded-lg">
+                                <div class="flex items-center space-x-3">
+                                    <div class="w-10 h-10 rounded-lg bg-purple-500/20 flex items-center justify-center">
+                                        <i class="fas fa-file-invoice-dollar text-purple-400"></i>
+                                    </div>
+                                    <div>
+                                        <div class="text-sm font-medium">Lien Waiver #2847</div>
+                                        <div class="text-xs text-gray-500">Pending signature</div>
+                                    </div>
+                                </div>
+                                <div class="px-3 py-1 bg-orange-500/20 text-orange-400 text-xs rounded-full">Action Needed</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Floating Stats -->
+                    <div class="absolute -bottom-6 -left-6 glass-panel px-4 py-3 rounded-xl border border-cyan-500/30">
+                        <div class="flex items-center space-x-2">
+                            <div class="w-2 h-2 bg-cyan-400 rounded-full pulse-ring"></div>
+                            <span class="text-xs font-mono text-cyan-400">Live Settlement</span>
+                        </div>
+                        <div class="text-lg font-bold">$2.4M <span class="text-xs text-gray-400">today</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Market Opportunity Matrix -->
+    <section id="platform" class="py-20 bg-slate-900/50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-5xl font-bold mb-4">The <span class="text-orange-400">$40B+</span> Opportunity</h2>
+                <p class="text-gray-400 max-w-2xl mx-auto">Three massive, fragmented markets. One unified platform. Zero competition with our feature set.</p>
+            </div>
+            
+            <div class="grid md:grid-cols-3 gap-6">
+                <!-- Construction Payments -->
+                <div class="glass-panel rounded-2xl p-8 hover-lift border-t-4 border-orange-500">
+                    <div class="w-14 h-14 bg-orange-500/20 rounded-xl flex items-center justify-center mb-6">
+                        <i class="fas fa-building text-2xl text-orange-400"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">Construction Payments</h3>
+                    <div class="text-3xl font-black text-orange-400 mb-4">$1.4T</div>
+                    <ul class="space-y-3 text-sm text-gray-400 mb-6">
+                        <li class="flex items-start space-x-2">
+                            <i class="fas fa-times-circle text-red-400 mt-1"></i>
+                            <span>90-day payment cycles</span>
+                        </li>
+                        <li class="flex items-start space-x-2">
+                            <i class="fas fa-times-circle text-red-400 mt-1"></i>
+                            <span>Paper lien waivers</span>
+                        </li>
+                        <li class="flex items-start space-x-2">
+                            <i class="fas fa-times-circle text-red-400 mt-1"></i>
+                            <span>30% fraud rate</span>
+                        </li>
+                    </ul>
+                    <div class="p-4 bg-orange-500/10 rounded-lg border border-orange-500/20">
+                        <div class="text-xs text-orange-400 font-mono mb-1">NEXUS SOLUTION</div>
+                        <div class="text-sm">Automated milestone escrow + instant stablecoin settlement</div>
+                    </div>
+                </div>
+                
+                <!-- Skilled Trades -->
+                <div class="glass-panel rounded-2xl p-8 hover-lift border-t-4 border-cyan-500">
+                    <div class="w-14 h-14 bg-cyan-500/20 rounded-xl flex items-center justify-center mb-6">
+                        <i class="fas fa-hard-hat text-2xl text-cyan-400"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">Skilled Trades</h3>
+                    <div class="text-3xl font-black text-cyan-400 mb-4">$200B</div>
+                    <ul class="space-y-3 text-sm text-gray-400 mb-6">
+                        <li class="flex items-start space-x-2">
+                            <i class="fas fa-times-circle text-red-400 mt-1"></i>
+                            <span>Pen/paper scheduling</span>
+                        </li>
+                        <li class="flex items-start space-x-2">
+                            <i class="fas fa-times-circle text-red-400 mt-1"></i>
+                            <span>No integrated payments</span>
+                        </li>
+                        <li class="flex items-start space-x-2">
+                            <i class="fas fa-times-circle text-red-400 mt-1"></i>
+                            <span>40% crew idle time</span>
+                        </li>
+                    </ul>
+                    <div class="p-4 bg-cyan-500/10 rounded-lg border border-cyan-500/20">
+                        <div class="text-xs text-cyan-400 font-mono mb-1">NEXUS SOLUTION</div>
+                        <div class="text-sm">"Uber for Trades" with embedded payroll & escrow</div>
+                    </div>
+                </div>
+                
+                <!-- Embedded Finance -->
+                <div class="glass-panel rounded-2xl p-8 hover-lift border-t-4 border-yellow-500">
+                    <div class="w-14 h-14 bg-yellow-500/20 rounded-xl flex items-center justify-center mb-6">
+                        <i class="fas fa-wallet text-2xl text-yellow-400"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">Embedded Finance</h3>
+                    <div class="text-3xl font-black text-yellow-400 mb-4">$4.2T</div>
+                    <ul class="space-y-3 text-sm text-gray-400 mb-6">
+                        <li class="flex items-start space-x-2">
+                            <i class="fas fa-times-circle text-red-400 mt-1"></i>
+                            <span>High-risk merchants banned</span>
+                        </li>
+                        <li class="flex items-start space-x-2">
+                            <i class="fas fa-times-circle text-red-400 mt-1"></i>
+                            <span>7% remittance fees</span>
+                        </li>
+                        <li class="flex items-start space-x-2">
+                            <i class="fas fa-times-circle text-red-400 mt-1"></i>
+                            <span>No B2B stablecoin rails</span>
+                        </li>
+                    </ul>
+                    <div class="p-4 bg-yellow-500/10 rounded-lg border border-yellow-500/20">
+                        <div class="text-xs text-yellow-400 font-mono mb-1">NEXUS SOLUTION</div>
+                        <div class="text-sm">Closed-loop ledger + multi-chain stablecoin settlement</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Unified Architecture -->
+    <section id="finance" class="py-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid lg:grid-cols-2 gap-12 items-center">
+                <div>
+                    <h2 class="text-3xl md:text-5xl font-bold mb-6">The <span class="gradient-text">NEXUS Stack</span></h2>
+                    <p class="text-gray-400 mb-8 text-lg">Not just software. Financial infrastructure. We combine the best of Stripe, Palantir, Uber, and Coinbase into one verticalized platform.</p>
+                    
+                    <div class="space-y-6">
+                        <div class="flex items-start space-x-4">
+                            <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-orange-500 to-red-500 flex items-center justify-center flex-shrink-0">
+                                <i class="fas fa-layer-group text-white"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-lg">Vertical SaaS Layer</h4>
+                                <p class="text-gray-400 text-sm">Project management, scheduling, compliance, bidding - purpose-built for construction workflows</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start space-x-4">
+                            <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-cyan-500 to-blue-500 flex items-center justify-center flex-shrink-0">
+                                <i class="fas fa-network-wired text-white"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-lg">Marketplace Layer</h4>
+                                <p class="text-gray-400 text-sm">AI-powered matching of crews to projects. Real-time availability, ratings, compliance verification</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start space-x-4">
+                            <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-yellow-500 to-orange-500 flex items-center justify-center flex-shrink-0">
+                                <i class="fas fa-coins text-white"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-lg">Finance Layer</h4>
+                                <p class="text-gray-400 text-sm">Embedded wallet, stablecoin settlement, automated escrow, instant payroll, cross-border rails</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start space-x-4">
+                            <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center flex-shrink-0">
+                                <i class="fas fa-brain text-white"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-lg">AI Intelligence Layer</h4>
+                                <p class="text-gray-400 text-sm">Fraud detection, predictive scheduling, automated compliance, risk scoring</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="relative">
+                    <div class="glass-panel rounded-2xl p-8">
+                        <div class="text-center mb-6">
+                            <div class="inline-block px-4 py-2 rounded-full bg-white/5 border border-white/10 text-sm font-mono mb-4">CLOSED-LOOP LEDGER</div>
+                            <h3 class="text-2xl font-bold">How Money Flows</h3>
+                        </div>
+                        
+                        <div class="space-y-4">
+                            <div class="flex items-center justify-between p-4 bg-white/5 rounded-lg border border-white/10">
+                                <div class="flex items-center space-x-3">
+                                    <div class="w-8 h-8 rounded-full bg-blue-500 flex items-center justify-center text-xs font-bold">GC</div>
+                                    <div>
+                                        <div class="text-sm font-medium">General Contractor</div>
+                                        <div class="text-xs text-gray-500">Deposits $500K USDC</div>
+                                    </div>
+                                </div>
+                                <i class="fas fa-arrow-right text-gray-600"></i>
+                            </div>
+                            
+                            <div class="flex items-center justify-between p-4 bg-orange-500/10 rounded-lg border border-orange-500/30">
+                                <div class="flex items-center space-x-3">
+                                    <div class="w-8 h-8 rounded-full bg-orange-500 flex items-center justify-center">
+                                        <i class="fas fa-lock text-xs"></i>
+                                    </div>
+                                    <div>
+                                        <div class="text-sm font-medium">Smart Escrow</div>
+                                        <div class="text-xs text-orange-400">Milestone-triggered release</div>
+                                    </div>
+                                </div>
+                                <i class="fas fa-arrow-right text-orange-400"></i>
+                            </div>
+                            
+                            <div class="flex items-center justify-between p-4 bg-white/5 rounded-lg border border-white/10">
+                                <div class="flex items-center space-x-3">
+                                    <div class="w-8 h-8 rounded-full bg-cyan-500 flex items-center justify-center text-xs font-bold">SC</div>
+                                    <div>
+                                        <div class="text-sm font-medium">Subcontractor</div>
+                                        <div class="text-xs text-gray-500">Receives instant USDC</div>
+                                    </div>
+                                </div>
+                                <div class="flex space-x-2">
+                                    <i class="fas fa-exchange-alt text-gray-600"></i>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-center justify-between p-4 bg-green-500/10 rounded-lg border border-green-500/30">
+                                <div class="flex items-center space-x-3">
+                                    <div class="w-8 h-8 rounded-full bg-green-500 flex items-center justify-center text-xs font-bold">W</div>
+                                    <div>
+                                        <div class="text-sm font-medium">Workers</div>
+                                        <div class="text-xs text-green-400">Daily payroll via NEXUS Card</div>
+                                    </div>
+                                </div>
+                                <div class="text-xs text-green-400">Off-ramp to Fiat</div>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-6 p-4 bg-slate-800 rounded-lg">
+                            <div class="flex justify-between items-center text-sm">
+                                <span class="text-gray-400">Settlement Time</span>
+                                <span class="text-cyan-400 font-bold">< 3 seconds</span>
+                            </div>
+                            <div class="flex justify-between items-center text-sm mt-2">
+                                <span class="text-gray-400">Platform Fee</span>
+                                <span class="text-green-400 font-bold">0.5% - 1.5%</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Technical Blueprint -->
+    <section id="blueprint" class="py-20 bg-slate-900/50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-3xl md:text-5xl font-bold text-center mb-12">Technical <span class="text-cyan-400">Blueprint</span></h2>
+            
+            <!-- Tabs -->
+            <div class="flex justify-center mb-8 border-b border-white/10">
+                <button onclick="switchTab('stack')" id="tab-stack" class="tab-active px-6 py-3 text-sm font-medium transition">Tech Stack</button>
+                <button onclick="switchTab('compliance')" id="tab-compliance" class="px-6 py-3 text-sm font-medium text-gray-400 hover:text-white transition">Compliance</button>
+                <button onclick="switchTab('costs')" id="tab-costs" class="px-6 py-3 text-sm font-medium text-gray-400 hover:text-white transition">Cost Breakdown</button>
+                <button onclick="switchTab('roadmap')" id="tab-roadmap" class="px-6 py-3 text-sm font-medium text-gray-400 hover:text-white transition">Roadmap</button>
+            </div>
+            
+            <!-- Stack Tab -->
+            <div id="content-stack" class="tab-content">
+                <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <div class="glass-panel p-6 rounded-xl">
+                        <div class="text-orange-400 text-xs font-mono mb-2">FRONTEND</div>
+                        <h4 class="font-bold mb-3">React + Next.js 14</h4>
+                        <ul class="text-sm text-gray-400 space-y-1">
+                            <li>• Tailwind CSS</li>
+                            <li>• Framer Motion</li>
+                            <li>• React Query</li>
+                            <li>• PWA Support</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="glass-panel p-6 rounded-xl">
+                        <div class="text-cyan-400 text-xs font-mono mb-2">BACKEND</div>
+                        <h4 class="font-bold mb-3">Node.js + PostgreSQL</h4>
+                        <ul class="text-sm text-gray-400 space-y-1">
+                            <li>• Express/Fastify</li>
+                            <li>• Prisma ORM</li>
+                            <li>• Redis Cache</li>
+                            <li>• Bull Queue</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="glass-panel p-6 rounded-xl">
+                        <div class="text-yellow-400 text-xs font-mono mb-2">BLOCKCHAIN</div>
+                        <h4 class="font-bold mb-3">Multi-Chain Architecture</h4>
+                        <ul class="text-sm text-gray-400 space-y-1">
+                            <li>• Ethereum (Settlement)</li>
+                            <li>• Polygon (Payments)</li>
+                            <li>• Solana (High Freq)</li>
+                            <li>• USDC/USDT Primary</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="glass-panel p-6 rounded-xl">
+                        <div class="text-purple-400 text-xs font-mono mb-2">INFRASTRUCTURE</div>
+                        <h4 class="font-bold mb-3">AWS + Vercel</h4>
+                        <ul class="text-sm text-gray-400 space-y-1">
+                            <li>• ECS Fargate</li>
+                            <li>• RDS PostgreSQL</li>
+                            <li>• S3 + CloudFront</li>
+                            <li>• Route 53</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="mt-8 glass-panel rounded-xl p-6 overflow-x-auto">
+                    <div class="flex justify-between items-center mb-4">
+                        <h4 class="font-bold">System Architecture</h4>
+                        <span class="text-xs text-gray-500 font-mono">nexus-architecture-v1.0</span>
+                    </div>
+                    <pre class="code-block p-4 text-xs font-mono text-gray-300">
+┌─────────────────────────────────────────────────────────────┐
+│                    NEXUS PLATFORM ARCHITECTURE               │
+├─────────────────────────────────────────────────────────────┤
+│  CLIENT LAYER                                                │
+│  ┌─────────────┐ ┌─────────────┐ ┌─────────────────────┐   │
+│  │   Web App   │ │  Mobile App │ │   Contractor Kiosk  │   │
+│  │  (Next.js)  │ │  (React Nat)│ │   (Tablet/QR)       │   │
+│  └──────┬──────┘ └──────┬──────┘ └──────────┬──────────┘   │
+│         └─────────────────┴───────────────────┘              │
+│                           │                                  │
+│  API GATEWAY (Kong/AWS)    │                                  │
+│                           ▼                                  │
+│  ┌─────────────────────────────────────────────────────┐    │
+│  │              MICROSERVICES LAYER                     │    │
+│  │  ┌──────────┐ ┌──────────┐ ┌──────────┐ ┌────────┐ │    │
+│  │  │  Auth    │ │ Payments │ │ Projects │ │Marketpl│ │    │
+│  │  │Service   │ │Service   │ │Service   │ │Service │ │    │
+│  │  └──────────┘ └──────────┘ └──────────┘ └────────┘ │    │
+│  │  ┌──────────┐ ┌──────────┐ ┌──────────┐ ┌────────┐ │    │
+│  │  │  Wallet  │ │Compliance│ │  AI/ML   │ │Notifier│ │    │
+│  │  │Service   │ │Service   │ │Service   │ │Service │ │    │
+│  │  └──────────┘ └──────────┘ └──────────┘ └────────┘ │    │
+│  └─────────────────────────────────────────────────────┘    │
+│                           │                                  │
+│  DATA LAYER                ▼                                  │
+│  ┌──────────┐ ┌──────────┐ ┌──────────┐ ┌──────────────┐    │
+│  │PostgreSQL│ │   Redis  │ │ClickHouse│ │   IPFS       │    │
+│  │(Primary) │ │  (Cache) │ │(Analytics│ │  (Docs)      │    │
+│  └──────────┘ └──────────┘ └──────────┘ └──────────────┘    │
+│                           │                                  │
+│  BLOCKCHAIN LAYER          ▼                                  │
+│  ┌──────────────┐ ┌──────────────┐ ┌──────────────────┐    │
+│  │  Ethereum    │ │   Polygon    │ │  Solana          │    │
+│  │(Settlement)  │ │  (Payments)  │ │ (Micro-payments) │    │
+│  └──────────────┘ └──────────────┘ └──────────────────┘    │
+│                           │                                  │
+│  FIAT RAILS                ▼                                  │
+│  ┌──────────────┐ ┌──────────────┐ ┌──────────────────┐    │
+│  │   Circle     │ │   Wyre       │ │  Banking Partners│    │
+│  │  (USDC)      │ │  (On/Off)    │ │  (Evolve/Sutton) │    │
+│  └──────────────┘ └──────────────┘ └──────────────────┘    │
+└─────────────────────────────────────────────────────────────┘</pre>
+                </div>
+            </div>
+            
+            <!-- Compliance Tab -->
+            <div id="content-compliance" class="tab-content hidden">
+                <div class="grid md:grid-cols-2 gap-8">
+                    <div class="glass-panel p-6 rounded-xl">
+                        <h4 class="font-bold text-lg mb-4 text-orange-400">Legal Structure</h4>
+                        <div class="space-y-4">
+                            <div class="p-4 bg-white/5 rounded-lg">
+                                <div class="font-medium mb-1">Delaware C-Corp (Holding)</div>
+                                <div class="text-sm text-gray-400">NEXUS Global Inc. - IP holding, fundraising</div>
+                            </div>
+                            <div class="p-4 bg-white/5 rounded-lg">
+                                <div class="font-medium mb-1">Wyoming LLC (Operations)</div>
+                                <div class="text-sm text-gray-400">NEXUS Labs LLC - Software development, crypto-friendly</div>
+                            </div>
+                            <div class="p-4 bg-white/5 rounded-lg">
+                                <div class="font-medium mb-1">Puerto Rico Act 60</div>
+                                <div class="text-sm text-gray-400">NEXUS Financial LLC - 4% corporate tax, banking access</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="glass-panel p-6 rounded-xl">
+                        <h4 class="font-bold text-lg mb-4 text-cyan-400">Compliance Stack</h4>
+                        <div class="space-y-3">
+                            <div class="flex items-center justify-between p-3 bg-white/5 rounded-lg">
+                                <span class="text-sm">MSB Registration (FinCEN)</span>
+                                <span class="text-xs bg-green-500/20 text-green-400 px-2 py-1 rounded">Required</span>
+                            </div>
+                            <div class="flex items-center justify-between p-3 bg-white/5 rounded-lg">
+                                <span class="text-sm">State Money Transmitter Licenses</span>
+                                <span class="text-xs bg-yellow-500/20 text-yellow-400 px-2 py-1 rounded">Selective</span>
+                            </div>
+                            <div class="flex items-center justify-between p-3 bg-white/5 rounded-lg">
+                                <span class="text-sm">SOC 2 Type II</span>
+                                <span class="text-xs bg-blue-500/20 text-blue-400 px-2 py-1 rounded">Year 1</span>
+                            </div>
+                            <div class="flex items-center justify-between p-3 bg-white/5 rounded-lg">
+                                <span class="text-sm">KYC/AML (SumSub/Onfido)</span>
+                                <span class="text-xs bg-green-500/20 text-green-400 px-2 py-1 rounded">Integrated</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mt-8 glass-panel p-6 rounded-xl">
+                    <h4 class="font-bold mb-4">The "Software-First" Loophole Strategy</h4>
+                    <div class="grid md:grid-cols-3 gap-4">
+                        <div class="p-4 border border-orange-500/30 rounded-lg bg-orange-500/5">
+                            <div class="font-mono text-xs text-orange-400 mb-2">01. SaaS Wedge</div>
+                            <p class="text-sm text-gray-300">Position as "construction management software" first. Payments are "feature" not "primary business."</p>
+                        </div>
+                        <div class="p-4 border border-cyan-500/30 rounded-lg bg-cyan-500/5">
+                            <div class="font-mono text-xs text-cyan-400 mb-2">02. Agent Model</div>
+                            <p class="text-sm text-gray-300">Partner with licensed MSB for fiat rails. We provide software layer only. They hold the licenses.</p>
+                        </div>
+                        <div class="p-4 border border-yellow-500/30 rounded-lg bg-yellow-500/5">
+                            <div class="font-mono text-xs text-yellow-400 mb-2">03. Stablecoin Native</div>
+                            <p class="text-sm text-gray-300">USDC is "digital goods." Closed-loop ledger is internal accounting. Only off-ramp triggers regulation.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Costs Tab -->
+            <div id="content-costs" class="tab-content hidden">
+                <div class="glass-panel rounded-xl overflow-hidden">
+                    <div class="p-6 border-b border-white/10">
+                        <h4 class="font-bold text-xl">MVP Launch Budget: <span class="text-green-400">$47,500</span></h4>
+                        <p class="text-sm text-gray-400 mt-1">90-day runway to first revenue</p>
+                    </div>
+                    
+                    <div class="grid md:grid-cols-2 gap-0">
+                        <div class="p-6 border-r border-white/10">
+                            <h5 class="font-bold mb-4 text-orange-400">Technical Infrastructure</h5>
+                            <div class="space-y-3 text-sm">
+                                <div class="flex justify-between">
+                                    <span class="text-gray-400">AWS/Vercel (3 months)</span>
+                                    <span>$1,500</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-gray-400">Database & Storage</span>
+                                    <span>$800</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-gray-400">Security (Auth0/HashiCorp)</span>
+                                    <span>$1,200</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-gray-400">Monitoring (Datadog)</span>
+                                    <span>$600</span>
+                                </div>
+                                <div class="flex justify-between border-t border-white/10 pt-2 font-bold">
+                                    <span>Subtotal</span>
+                                    <span class="text-orange-400">$4,100</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="p-6">
+                            <h5 class="font-bold mb-4 text-cyan-400">Legal & Compliance</h5>
+                            <div class="space-y-3 text-sm">
+                                <div class="flex justify-between">
+                                    <span class="text-gray-400">Delaware Incorporation</span>
+                                    <span>$500</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-gray-400">Legal Counsel (Token)</span>
+                                    <span>$5,000</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-gray-400">MSB Registration</span>
+                                    <span>$5,000</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-gray-400">Compliance Software</span>
+                                    <span>$2,400</span>
+                                </div>
+                                <div class="flex justify-between border-t border-white/10 pt-2 font-bold">
+                                    <span>Subtotal</span>
+                                    <span class="text-cyan-400">$12,900</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="p-6 border-r border-t border-white/10">
+                            <h5 class="font-bold mb-4 text-yellow-400">Team & Development</h5>
+                            <div class="space-y-3 text-sm">
+                                <div class="flex justify-between">
+                                    <span class="text-gray-400">Founding Engineer (3mo)</span>
+                                    <span>$15,000</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-gray-400">UX/UI Designer</span>
+                                    <span>$6,000</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-gray-400">Contract DevOps</span>
+                                    <span>$3,000</span>
+                                </div>
+                                <div class="flex justify-between border-t border-white/10 pt-2 font-bold">
+                                    <span>Subtotal</span>
+                                    <span class="text-yellow-400">$24,000</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="p-6 border-t border-white/10">
+                            <h5 class="font-bold mb-4 text-purple-400">Operations & Misc</h5>
+                            <div class="space-y-3 text-sm">
+                                <div class="flex justify-between">
+                                    <span class="text-gray-400">Office/Remote Tools</span>
+                                    <span>$1,500</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-gray-400">Marketing/Brand</span>
+                                    <span>$3,000</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-gray-400">Insurance</span>
+                                    <span>$2,000</span>
+                                </div>
+                                <div class="flex justify-between border-t border-white/10 pt-2 font-bold">
+                                    <span>Subtotal</span>
+                                    <span class="text-purple-400">$6,500</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="p-6 bg-white/5 border-t border-white/10">
+                        <div class="flex justify-between items-center">
+                            <div>
+                                <div class="text-sm text-gray-400">Total Capital Required</div>
+                                <div class="text-3xl font-bold text-white">$47,500</div>
+                            </div>
+                            <div class="text-right">
+                                <div class="text-sm text-gray-400">Break-even Target</div>
+                                <div class="text-xl font-bold text-green-400">Month 6</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Roadmap Tab -->
+            <div id="content-roadmap" class="tab-content hidden">
+                <div class="space-y-6">
+                    <div class="flex gap-6">
+                        <div class="w-24 flex-shrink-0 text-right">
+                            <div class="text-orange-400 font-bold">Month 0-3</div>
+                            <div class="text-xs text-gray-500">MVP</div>
+                        </div>
+                        <div class="flex-1 glass-panel p-6 rounded-xl border-l-4 border-orange-500">
+                            <h4 class="font-bold mb-2">The Wedge: Construction Payments</h4>
+                            <ul class="text-sm text-gray-400 space-y-1">
+                                <li>• Basic escrow + milestone tracking</li>
+                                <li>• 3 pilot GCs in Texas (friendly regulatory environment)</li>
+                                <li>• $50K processed, 0.5% take rate</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="flex gap-6">
+                        <div class="w-24 flex-shrink-0 text-right">
+                            <div class="text-cyan-400 font-bold">Month 4-6</div>
+                            <div class="text-xs text-gray-500">Marketplace</div>
+                        </div>
+                        <div class="flex-1 glass-panel p-6 rounded-xl border-l-4 border-cyan-500">
+                            <h4 class="font-bold mb-2">Launch Skilled Trades Layer</h4>
+                            <ul class="text-sm text-gray-400 space-y-1">
+                                <li>• Crew verification + rating system</li>
+                                <li>• Instant payroll (daily settlement)</li>
+                                <li>• $500K monthly volume</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="flex gap-6">
+                        <div class="w-24 flex-shrink-0 text-right">
+                            <div class="text-yellow-400 font-bold">Month 7-12</div>
+                            <div class="text-xs text-gray-500">Scale</div>
+                        </div>
+                        <div class="flex-1 glass-panel p-6 rounded-xl border-l-4 border-yellow-500">
+                            <h4 class="font-bold mb-2">Embedded Finance + Cross-Border</h4>
+                            <ul class="text-sm text-gray-400 space-y-1">
+                                <li>• NEXUS Card (debit for workers)</li>
+                                <li>• Mexico/Canada expansion</li>
+                                <li>• $10M monthly volume, Series A</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="flex gap-6">
+                        <div class="w-24 flex-shrink-0 text-right">
+                            <div class="text-purple-400 font-bold">Year 2-3</div>
+                            <div class="text-xs text-gray-500">Platform</div>
+                        </div>
+                        <div class="flex-1 glass-panel p-6 rounded-xl border-l-4 border-purple-500">
+                            <h4 class="font-bold mb-2">The Operating System</h4>
+                            <ul class="text-sm text-gray-400 space-y-1">
+                                <li>• AI agents for project management</li>
+                                <li>• Full banking charter or partner bank</li>
+                                <li>• $1B+ annual volume, path to IPO</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Interactive Dashboard Preview -->
+    <section id="marketplace" class="py-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-5xl font-bold mb-4">Live <span class="text-cyan-400">Platform</span> Preview</h2>
+                <p class="text-gray-400">Experience the unified interface for contractors, workers, and finance teams.</p>
+            </div>
+            
+            <div class="glass-panel rounded-2xl overflow-hidden">
+                <div class="flex border-b border-white/10">
+                    <button onclick="switchView('contractor')" id="view-contractor" class="flex-1 py-4 text-sm font-medium bg-white/5 border-b-2 border-orange-500">Contractor View</button>
+                    <button onclick="switchView('worker')" id="view-worker" class="flex-1 py-4 text-sm font-medium text-gray-400 hover:text-white transition">Worker View</button>
+                    <button onclick="switchView('finance')" id="view-finance" class="flex-1 py-4 text-sm font-medium text-gray-400 hover:text-white transition">Finance View</button>
+                </div>
+                
+                <div class="p-8 min-h-[500px]">
+                    <!-- Contractor View -->
+                    <div id="panel-contractor" class="view-panel">
+                        <div class="grid md:grid-cols-3 gap-6 mb-8">
+                            <div class="metric-card p-6 rounded-xl">
+                                <div class="flex justify-between items-start mb-4">
+                                    <div class="text-gray-400 text-sm">Active Projects</div>
+                                    <div class="w-8 h-8 rounded-lg bg-orange-500/20 flex items-center justify-center">
+                                        <i class="fas fa-building text-orange-400 text-sm"></i>
+                                    </div>
+                                </div>
+                                <div class="text-3xl font-bold">12</div>
+                                <div class="text-xs text-green-400 mt-2">+2 this month</div>
+                            </div>
+                            
+                            <div class="metric-card p-6 rounded-xl">
+                                <div class="flex justify-between items-start mb-4">
+                                    <div class="text-gray-400 text-sm">In Escrow</div>
+                                    <div class="w-8 h-8 rounded-lg bg-cyan-500/20 flex items-center justify-center">
+                                        <i class="fas fa-lock text-cyan-400 text-sm"></i>
+                                    </div>
+                                </div>
+                                <div class="text-3xl font-bold">$2.4M</div>
+                                <div class="text-xs text-gray-400 mt-2">Across 8 milestones</div>
+                            </div>
+                            
+                            <div class="metric-card p-6 rounded-xl">
+                                <div class="flex justify-between items-start mb-4">
+                                    <div class="text-gray-400 text-sm">Pending Actions</div>
+                                    <div class="w-8 h-8 rounded-lg bg-yellow-500/20 flex items-center justify-center">
+                                        <i class="fas fa-clock text-yellow-400 text-sm"></i>
+                                    </div>
+                                </div>
+                                <div class="text-3xl font-bold">5</div>
+                                <div class="text-xs text-orange-400 mt-2">Lien waivers needed</div>
+                            </div>
+                        </div>
+                        
+                        <div class="glass-panel rounded-xl p-6">
+                            <div class="flex justify-between items-center mb-6">
+                                <h4 class="font-bold">Recent Payment Activity</h4>
+                                <button class="text-sm text-cyan-400 hover:text-cyan-300">View All</button>
+                            </div>
+                            
+                            <div class="space-y-4">
+                                <div class="flex items-center justify-between p-4 bg-white/5 rounded-lg hover:bg-white/10 transition cursor-pointer">
+                                    <div class="flex items-center space-x-4">
+                                        <div class="w-10 h-10 rounded-full bg-green-500/20 flex items-center justify-center">
+                                            <i class="fas fa-check text-green-400"></i>
+                                        </div>
+                                        <div>
+                                            <div class="font-medium">Milestone Payment Released</div>
+                                            <div class="text-sm text-gray-500">Downtown Tower - Phase 2</div>
+                                        </div>
+                                    </div>
+                                    <div class="text-right">
+                                        <div class="font-bold text-green-400">+$450,000</div>
+                                        <div class="text-xs text-gray-500">2 hours ago</div>
+                                    </div>
+                                </div>
+                                
+                                <div class="flex items-center justify-between p-4 bg-white/5 rounded-lg hover:bg-white/10 transition cursor-pointer">
+                                    <div class="flex items-center space-x-4">
+                                        <div class="w-10 h-10 rounded-full bg-orange-500/20 flex items-center justify-center">
+                                            <i class="fas fa-hourglass-half text-orange-400"></i>
+                                        </div>
+                                        <div>
+                                            <div class="font-medium">Escrow Funded</div>
+                                            <div class="text-sm text-gray-500">Westside Apartments - Foundation</div>
+                                        </div>
+                                    </div>
+                                    <div class="text-right">
+                                        <div class="font-bold">$1,200,000</div>
+                                        <div class="text-xs text-gray-500">Pending verification</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Worker View (Hidden by default) -->
+                    <div id="panel-worker" class="view-panel hidden">
+                        <div class="grid md:grid-cols-2 gap-8">
+                            <div>
+                                <div class="glass-panel rounded-xl p-6 mb-6">
+                                    <div class="flex items-center space-x-4 mb-6">
+                                        <div class="w-16 h-16 rounded-full bg-gradient-to-br from-orange-400 to-yellow-400 flex items-center justify-center text-2xl font-bold text-slate-900">
+                                            JD
+                                        </div>
+                                        <div>
+                                            <div class="font-bold text-lg">John Doe</div>
+                                            <div class="text-sm text-cyan-400">Master Electrician • 4.9★</div>
+                                            <div class="text-xs text-gray-500">Licensed in TX, CA, FL</div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="grid grid-cols-2 gap-4">
+                                        <div class="text-center p-4 bg-white/5 rounded-lg">
+                                            <div class="text-2xl font-bold text-cyan-400">$12,450</div>
+                                            <div class="text-xs text-gray-400">Earned This Month</div>
+                                        </div>
+                                        <div class="text-center p-4 bg-white/5 rounded-lg">
+                                            <div class="text-2xl font-bold text-orange-400">24</div>
+                                            <div class="text-xs text-gray-400">Jobs Completed</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="glass-panel rounded-xl p-6">
+                                    <h4 class="font-bold mb-4">Instant Cash Out</h4>
+                                    <div class="flex items-center justify-between p-4 bg-cyan-500/10 rounded-lg border border-cyan-500/30 mb-4">
+                                        <div>
+                                            <div class="font-bold">Available Balance</div>
+                                            <div class="text-2xl font-bold text-cyan-400">$1,240.00</div>
+                                        </div>
+                                        <button class="bg-cyan-500 hover:bg-cyan-600 text-slate-900 px-6 py-3 rounded-lg font-bold transition">
+                                            Cash Out
+                                        </button>
+                                    </div>
+                                    <div class="text-xs text-gray-500 flex items-center space-x-2">
+                                        <i class="fas fa-bolt text-yellow-400"></i>
+                                        <span>Arrives in minutes via NEXUS Card or Bank</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <h4 class="font-bold mb-4">Available Jobs Near You</h4>
+                                <div class="space-y-3">
+                                    <div class="glass-panel p-4 rounded-lg border-l-4 border-green-500 cursor-pointer hover:bg-white/5 transition">
+                                        <div class="flex justify-between items-start mb-2">
+                                            <div class="font-bold">Commercial Panel Upgrade</div>
+                                            <div class="text-green-400 font-bold">$850</div>
+                                        </div>
+                                        <div class="text-sm text-gray-400 mb-2">Downtown • 2 miles away • 4 hours</div>
+                                        <div class="flex space-x-2">
+                                            <span class="text-xs bg-white/10 px-2 py-1 rounded">ASAP</span>
+                                            <span class="text-xs bg-white/10 px-2 py-1 rounded">Licensed Required</span>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="glass-panel p-4 rounded-lg border-l-4 border-orange-500 cursor-pointer hover:bg-white/5 transition">
+                                        <div class="flex justify-between items-start mb-2">
+                                            <div class="font-bold">Residential Rewire</div>
+                                            <div class="text-orange-400 font-bold">$2,400</div>
+                                        </div>
+                                        <div class="text-sm text-gray-400 mb-2">Westside • 5 miles away • 2 days</div>
+                                        <div class="flex space-x-2">
+                                            <span class="text-xs bg-white/10 px-2 py-1 rounded">Starts Tomorrow</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Finance View (Hidden by default) -->
+                    <div id="panel-finance" class="view-panel hidden">
+                        <div class="grid md:grid-cols-4 gap-4 mb-8">
+                            <div class="metric-card p-4 rounded-xl text-center">
+                                <div class="text-gray-400 text-xs mb-1">Total Volume (30d)</div>
+                                <div class="text-xl font-bold text-cyan-400">$48.2M</div>
+                                <div class="text-xs text-green-400">+23%</div>
+                            </div>
+                            <div class="metric-card p-4 rounded-xl text-center">
+                                <div class="text-gray-400 text-xs mb-1">Platform Revenue</div>
+                                <div class="text-xl font-bold text-green-400">$482K</div>
+                                <div class="text-xs text-gray-400">1.0% avg take rate</div>
+                            </div>
+                            <div class="metric-card p-4 rounded-xl text-center">
+                                <div class="text-gray-400 text-xs mb-1">Active Users</div>
+                                <div class="text-xl font-bold text-orange-400">12,847</div>
+                                <div class="text-xs text-green-400">+15% MoM</div>
+                            </div>
+                            <div class="metric-card p-4 rounded-xl text-center">
+                                <div class="text-gray-400 text-xs mb-1">Fraud Rate</div>
+                                <div class="text-xl font-bold text-yellow-400">0.02%</div>
+                                <div class="text-xs text-gray-400">Industry avg: 0.5%</div>
+                            </div>
+                        </div>
+                        
+                        <div class="glass-panel rounded-xl p-6">
+                            <h4 class="font-bold mb-4">Real-Time Settlement Monitor</h4>
+                            <div class="h-64 flex items-end justify-between space-x-2">
+                                <div class="flex-1 bg-cyan-500/20 rounded-t-lg relative group cursor-pointer" style="height: 40%">
+                                    <div class="absolute -top-8 left-1/2 transform -translate-x-1/2 bg-slate-800 px-2 py-1 rounded text-xs opacity-0 group-hover:opacity-100 transition">$2.1M</div>
+                                </div>
+                                <div class="flex-1 bg-cyan-500/30 rounded-t-lg relative group cursor-pointer" style="height: 65%">
+                                    <div class="absolute -top-8 left-1/2 transform -translate-x-1/2 bg-slate-800 px-2 py-1 rounded text-xs opacity-0 group-hover:opacity-100 transition">$3.4M</div>
+                                </div>
+                                <div class="flex-1 bg-cyan-500/40 rounded-t-lg relative group cursor-pointer" style="height: 45%">
+                                    <div class="absolute -top-8 left-1/2 transform -translate-x-1/2 bg-slate-800 px-2 py-1 rounded text-xs opacity-0 group-hover:opacity-100 transition">$2.4M</div>
+                                </div>
+                                <div class="flex-1 bg-cyan-500/50 rounded-t-lg relative group cursor-pointer" style="height: 80%">
+                                    <div class="absolute -top-8 left-1/2 transform -translate-x-1/2 bg-slate-800 px-2 py-1 rounded text-xs opacity-0 group-hover:opacity-100 transition">$4.2M</div>
+                                </div>
+                                <div class="flex-1 bg-cyan-500/60 rounded-t-lg relative group cursor-pointer" style="height: 55%">
+                                    <div class="absolute -top-8 left-1/2 transform -translate-x-1/2 bg-slate-800 px-2 py-1 rounded text-xs opacity-0 group-hover:opacity-100 transition">$2.9M</div>
+                                </div>
+                                <div class="flex-1 bg-cyan-500/70 rounded-t-lg relative group cursor-pointer" style="height: 90%">
+                                    <div class="absolute -top-8 left-1/2 transform -translate-x-1/2 bg-slate-800 px-2 py-1 rounded text-xs opacity-0 group-hover:opacity-100 transition">$4.8M</div>
+                                </div>
+                                <div class="flex-1 bg-orange-500 rounded-t-lg relative group cursor-pointer" style="height: 100%">
+                                    <div class="absolute -top-8 left-1/2 transform -translate-x-1/2 bg-slate-800 px-2 py-1 rounded text-xs opacity-0 group-hover:opacity-100 transition">$5.2M</div>
+                                </div>
+                            </div>
+                            <div class="flex justify-between mt-4 text-xs text-gray-500">
+                                <span>Mon</span>
+                                <span>Tue</span>
+                                <span>Wed</span>
+                                <span>Thu</span>
+                                <span>Fri</span>
+                                <span>Sat</span>
+                                <span class="text-orange-400 font-bold">Today</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Investor Section -->
+    <section id="investors" class="py-20 bg-slate-900/50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid lg:grid-cols-2 gap-12 items-center">
+                <div>
+                    <h2 class="text-3xl md:text-5xl font-bold mb-6">The <span class="text-yellow-400">Decacorn</span> Path</h2>
+                    <p class="text-gray-400 mb-8 text-lg">Why NEXUS will be the next $40B+ company. The convergence of construction tech, fintech, and the gig economy.</p>
+                    
+                    <div class="space-y-6">
+                        <div class="flex items-start space-x-4">
+                            <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-orange-500 to-yellow-500 flex items-center justify-center flex-shrink-0 text-slate-900 font-bold">1</div>
+                            <div>
+                                <h4 class="font-bold text-lg">Massive TAM, Zero Consolidation</h4>
+                                <p class="text-sm text-gray-400">$1.6T construction market with no dominant financial infrastructure player. Procore is project management, not payments.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start space-x-4">
+                            <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-cyan-500 to-blue-500 flex items-center justify-center flex-shrink-0 text-slate-900 font-bold">2</div>
+                            <div>
+                                <h4 class="font-bold text-lg">Network Effects</h4>
+                                <p class="text-sm text-gray-400">Each GC brings 10-50 subcontractors. Each worker brings other workers. The platform becomes the standard.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start space-x-4">
+                            <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center flex-shrink-0 text-slate-900 font-bold">3</div>
+                            <div>
+                                <h4 class="font-bold text-lg">Data Moat</h4>
+                                <p class="text-sm text-gray-400">Real-time visibility into $100B+ of construction cash flow. Enables lending, insurance, and derivatives products.</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-8 p-6 glass-panel rounded-xl border border-yellow-500/30">
+                        <div class="flex justify-between items-center mb-4">
+                            <span class="text-sm text-gray-400">Projected Valuation</span>
+                            <span class="text-xs text-yellow-400 font-mono">YEAR 5</span>
+                        </div>
+                        <div class="text-4xl font-black text-yellow-400 mb-2">$42.5B</div>
+                        <div class="text-sm text-gray-400">Based on $4.2B ARR × 10x multiple (fintech + SaaS)</div>
+                    </div>
+                </div>
+                
+                <div class="glass-panel rounded-2xl p-8">
+                    <h3 class="text-xl font-bold mb-6">Revenue Model Projections</h3>
+                    
+                    <div class="space-y-4 mb-8">
+                        <div>
+                            <div class="flex justify-between text-sm mb-2">
+                                <span class="text-gray-400">Payment Processing</span>
+                                <span class="font-bold">0.5% - 1.5%</span>
+                            </div>
+                            <div class="h-2 bg-white/10 rounded-full overflow-hidden">
+                                <div class="h-full bg-orange-500 w-3/4"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-sm mb-2">
+                                <span class="text-gray-400">SaaS Subscriptions</span>
+                                <span class="font-bold">$99-$499/mo</span>
+                            </div>
+                            <div class="h-2 bg-white/10 rounded-full overflow-hidden">
+                                <div class="h-full bg-cyan-500 w-1/2"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-sm mb-2">
+                                <span class="text-gray-400">Instant Pay/Float</span>
+                                <span class="font-bold">1.5% - 3%</span>
+                            </div>
+                            <div class="h-2 bg-white/10 rounded-full overflow-hidden">
+                                <div class="h-full bg-yellow-500 w-1/3"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-sm mb-2">
+                                <span class="text-gray-400">Lending/Insurance</span>
+                                <span class="font-bold">8% - 15%</span>
+                            </div>
+                            <div class="h-2 bg-white/10 rounded-full overflow-hidden">
+                                <div class="h-full bg-purple-500 w-1/4"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="border-t border-white/10 pt-6">
+                        <div class="grid grid-cols-3 gap-4 text-center">
+                            <div>
+                                <div class="text-2xl font-bold text-white">Year 1</div>
+                                <div class="text-xs text-gray-400">$2M ARR</div>
+                            </div>
+                            <div>
+                                <div class="text-2xl font-bold text-cyan-400">Year 3</div>
+                                <div class="text-xs text-gray-400">$180M ARR</div>
+                            </div>
+                            <div>
+                                <div class="text-2xl font-bold text-yellow-400">Year 5</div>
+                                <div class="text-xs text-gray-400">$4.2B ARR</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="py-20">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <div class="glass-panel rounded-3xl p-12 neon-border relative overflow-hidden">
+                <div class="absolute inset-0 bg-gradient-to-r from-orange-500/10 via-cyan-500/10 to-yellow-500/10"></div>
+                
+                <div class="relative">
+                    <h2 class="text-4xl md:text-6xl font-black mb-6">Ready to Build the <span class="gradient-text">Future?</span></h2>
+                    <p class="text-xl text-gray-400 mb-8 max-w-2xl mx-auto">
+                        Join 50+ founding contractors and 10,000+ skilled trades workers on the waitlist. 
+                        Be the first to experience instant construction payments.
+                    </p>
+                    
+                    <div class="flex flex-col sm:flex-row gap-4 justify-center max-w-md mx-auto">
+                        <input type="email" placeholder="Enter your email" class="flex-1 px-6 py-4 rounded-full bg-white/5 border border-white/20 focus:border-orange-500 focus:outline-none text-white placeholder-gray-500">
+                        <button class="px-8 py-4 rounded-full bg-gradient-to-r from-orange-500 to-yellow-500 text-slate-900 font-bold hover:shadow-lg hover:shadow-orange-500/25 transition transform hover:scale-105">
+                            Join Waitlist
+                        </button>
+                    </div>
+                    
+                    <div class="mt-8 flex justify-center space-x-8 text-sm text-gray-500">
+                        <span class="flex items-center space-x-2">
+                            <i class="fas fa-check-circle text-green-400"></i>
+                            <span>No setup fees</span>
+                        </span>
+                        <span class="flex items-center space-x-2">
+                            <i class="fas fa-check-circle text-green-400"></i>
+                            <span>Cancel anytime</span>
+                        </span>
+                        <span class="flex items-center space-x-2">
+                            <i class="fas fa-check-circle text-green-400"></i>
+                            <span>24/7 support</span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="border-t border-white/10 py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid md:grid-cols-4 gap-8 mb-8">
+                <div>
+                    <div class="flex items-center space-x-2 mb-4">
+                        <div class="w-8 h-8 bg-gradient-to-br from-orange-500 to-yellow-500 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-bolt text-white text-sm"></i>
+                        </div>
+                        <span class="text-xl font-bold">NEXUS</span>
+                    </div>
+                    <p class="text-sm text-gray-400">The operating system for construction. Payments, marketplace, and finance in one platform.</p>
+                </div>
+                
+                <div>
+                    <h4 class="font-bold mb-4">Platform</h4>
+                    <ul class="space-y-2 text-sm text-gray-400">
+                        <li><a href="#" class="hover:text-white transition">Payments</a></li>
+                        <li><a href="#" class="hover:text-white transition">Marketplace</a></li>
+                        <li><a href="#" class="hover:text-white transition">Escrow</a></li>
+                        <li><a href="#" class="hover:text-white transition">API</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="font-bold mb-4">Company</h4>
+                    <ul class="space-y-2 text-sm text-gray-400">
+                        <li><a href="#" class="hover:text-white transition">About</a></li>
+                        <li><a href="#" class="hover:text-white transition">Careers</a></li>
+                        <li><a href="#" class="hover:text-white transition">Press</a></li>
+                        <li><a href="#" class="hover:text-white transition">Contact</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="font-bold mb-4">Legal</h4>
+                    <ul class="space-y-2 text-sm text-gray-400">
+                        <li><a href="#" class="hover:text-white transition">Privacy</a></li>
+                        <li><a href="#" class="hover:text-white transition">Terms</a></li>
+                        <li><a href="#" class="hover:text-white transition">Compliance</a></li>
+                        <li><a href="#" class="hover:text-white transition">Licenses</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center">
+                <div class="text-sm text-gray-500 mb-4 md:mb-0">
+                    © 2026 NEXUS Global Inc. All rights reserved.
+                </div>
+                <div class="flex space-x-4">
+                    <a href="#" class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-white/10 transition">
+                        <i class="fab fa-twitter"></i>
+                    </a>
+                    <a href="#" class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-white/10 transition">
+                        <i class="fab fa-linkedin"></i>
+                    </a>
+                    <a href="#" class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-white/10 transition">
+                        <i class="fab fa-github"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Counter Animation
+        function animateCounter() {
+            const counter = document.getElementById('counter');
+            let count = 0;
+            const target = 2847;
+            const increment = target / 100;
+            
+            const timer = setInterval(() => {
+                count += increment;
+                if (count >= target) {
+                    counter.textContent = target.toLocaleString();
+                    clearInterval(timer);
+                } else {
+                    counter.textContent = Math.floor(count).toLocaleString();
+                }
+            }, 20);
+        }
+        
+        // Tab Switching
+        function switchTab(tabName) {
+            // Hide all content
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+            // Show selected
+            document.getElementById('content-' + tabName).classList.remove('hidden');
+            
+            // Update tab styles
+            document.querySelectorAll('[id^="tab-"]').forEach(el => {
+                el.classList.remove('tab-active');
+                el.classList.add('text-gray-400');
+            });
+            document.getElementById('tab-' + tabName).classList.add('tab-active');
+            document.getElementById('tab-' + tabName).classList.remove('text-gray-400');
+        }
+        
+        // View Switching
+        function switchView(viewName) {
+            document.querySelectorAll('.view-panel').forEach(el => el.classList.add('hidden'));
+            document.getElementById('panel-' + viewName).classList.remove('hidden');
+            
+            document.querySelectorAll('[id^="view-"]').forEach(el => {
+                el.classList.remove('bg-white/5', 'border-b-2', 'border-orange-500');
+                el.classList.add('text-gray-400');
+            });
+            document.getElementById('view-' + viewName).classList.add('bg-white/5', 'border-b-2', 'border-orange-500');
+            document.getElementById('view-' + viewName).classList.remove('text-gray-400');
+        }
+        
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            animateCounter();
+            
+            // Intersection Observer for animations
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('animate-fade-in');
+                    }
+                });
+            });
+            
+            document.querySelectorAll('.hover-lift').forEach((el) => observer.observe(el));
+        });
+        
+        // Smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

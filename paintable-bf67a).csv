@@ -1,0 +1,7 @@
+﻿Pain Point,Current Tools,BuildBrainOS Solution,Moat
+30–50 days delay per RFI,"Email, PDF markup",RFI Predictor: Compares drawings ↔ specs ↔ emails → auto-drafts RFI before work starts,Proprietary RAG over unstructured docs + construction ontology
+Sub no-shows (40% of delays),"Manual calls, texts",Sub Co-Pilot: SMS/WhatsApp + GPS geofencing + AI arrival prediction,Real-time location + behavior modeling
+Expired insurance → $50K fines,Manual COI uploads,Compliance Engine: OCR + API sync (Vertafore) → blocks site access if expired,Legal-grade audit trail + integration moat
+Rework = 5–10% cost (blueprint misreads),Bluebeam (static),Blueprint Intelligence": LLM + CV extracts components, sequences, "dependencies,Fine-tuned Qwen-2.5-VL on 100K+ construction PDFs
+Payment delays (30–45 days),Manual app review,PayBrain: AI verifies work → Stripe payout in <24h (1% fee),Embedded fintech flywheel
+Safety violations → stop-work,Reactive reporting,Safety Monitor: Real-time photo analysis → predicts violations,OSHA rule engine + vision fine-tuning

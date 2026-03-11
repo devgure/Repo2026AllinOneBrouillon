@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BORDERLESS | AI Trade Finance Empire</title>
+    <style>
+        :root {
+            --bg-dark: #050507;
+            --bg-panel: #0f1115;
+            --bg-panel-light: #1a1d24;
+            --accent-green: #00ff9d;
+            --accent-green-dim: rgba(0, 255, 157, 0.1);
+            --accent-blue: #00d2ff;
+            --text-main: #e0e0e0;
+            --text-muted: #888;
+            --border: #333;
+            --font-mono: 'Courier New', Courier, monospace;
+            --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            font-family: var(--font-sans);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Typography & Utilities */
+        h1, h2, h3 { font-weight: 700; letter-spacing: -0.5px; }
+        .text-green { color: var(--accent-green); }
+        .text-blue { color: var(--accent-blue); }
+        .mono { font-family: var(--font-mono); font-size: 0.9em; }
+        .badge {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+        .badge-green { background: var(--accent-green-dim); color: var(--accent-green); border: 1px solid var(--accent-green); }
+        .badge-blue { background: rgba(0, 210, 255, 0.1); color: var(--accent-blue); border: 1px solid var(--accent-blue); }
+
+        /* Layout */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 40px;
+        }
+
+        .logo { font-size: 1.5rem; font-weight: 900; letter-spacing: 2px; }
+        .logo span { color: var(--accent-green); }
+
+        section { margin-bottom: 80px; }
+
+        /* Section 1: Hero */
+        .hero h1 { font-size: 3rem; margin-bottom: 10px; line-height: 1.1; }
+        .hero p { color: var(--text-muted); font-size: 1.2rem; max-width: 600px; }
+        
+        .market-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 40px;
+        }
+        .stat-card {
+            background: var(--bg-panel);
+            padding: 20px;
+            border: 1px solid var(--border);
+            border-left: 3px solid var(--accent-green);
+        }
+        .stat-val { font-size: 2rem; font-weight: bold; display: block; margin-bottom: 5px; }
+        .stat-label { font-size: 0.9rem; color: var(--text-muted); }
+
+        /* Section 2: Architecture (Mermaid-ish) */
+        .arch-container {
+            background: var(--bg-panel);
+            border: 1px solid var(--border);
+            padding: 40px;
+            border-radius: 8px;
+            overflow-x: auto;
+        }
+
+        .flow-diagram {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+            min-width: 900px; /* Force scroll on mobile */
+        }
+
+        .node {
+            background: var(--bg-panel-light);
+            border: 1px solid var(--border);
+            padding: 20px;
+            border-radius: 6px;
+            width: 180px;
+            text-align: center;
+            position: relative;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+            transition: transform 0.2s;
+        }
+        .node:hover { transform: translateY(-5px); border-color: var(--accent-green); }
+        .node-icon { font-size: 2rem; margin-bottom: 10px; display: block; }
+        .node-title { font-weight: bold; display: block; margin-bottom: 5px; color: var(--text-main); }
+        .node-desc { font-size: 0.75rem; color: var(--text-muted); }
+        
+        .node.highlight { border: 1px solid var(--accent-green); box-shadow: 0 0 15px var(--accent-green-dim); }
+        .node.danger { border: 1px solid #ff4444; box-shadow: 0 0 15px rgba(255, 68, 68, 0.2); }
+
+        .arrow {
+            flex-grow: 1;
+            height: 2px;
+            background: var(--border);
+            position: relative;
+            min-width: 40px;
+        }
+        .arrow::after {
+            content: '';
+            position: absolute;
+            right: 0;
+            top: -4px;
+            width: 0; 
+            height: 0; 
+            border-top: 5px solid transparent;
+            border-bottom: 5px solid transparent;
+            border-left: 8px solid var(--border);
+        }
+        .arrow.active { background: var(--accent-green); }
+        .arrow.active::after { border-left-color: var(--accent-green); }
+
+        .lane-label {
+            position: absolute;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-muted);
+            top: -15px;
+            left: 0;
+        }
+
+        /* Section 3: The Killer App (Interactive) */
+        .app-interface {
+            display: grid;
+            grid-template-columns: 1fr 350px;
+            gap: 20px;
+            height: 600px;
+        }
+
+        .left-panel {
+            background: var(--bg-panel);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .right-panel {
+            background: var(--bg-panel-light);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+        }
+
+        /* Upload Zone */
+        .upload-zone {
+            width: 100%;
+            max-width: 400px;
+            border: 2px dashed var(--border);
+            border-radius: 8px;
+            padding: 40px;
+            text-align: center;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .upload-zone:hover { border-color: var(--accent-green); background: var(--accent-green-dim); }
+        .upload-icon { font-size: 3rem; color: var(--text-muted); margin-bottom: 15px; }
+
+        /* Processing State */
+        .terminal {
+            font-family: var(--font-mono);
+            font-size: 0.85rem;
+            color: var(--accent-green);
+            margin-top: 20px;
+            text-align: left;
+            width: 100%;
+            height: 150px;
+            overflow: hidden;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        .terminal-line { margin-bottom: 5px; }
+
+        /* Result Cards */
+        .result-card {
+            background: var(--bg-panel);
+            padding: 15px;
+            border-radius: 6px;
+            margin-bottom: 15px;
+            border-left: 2px solid var(--border);
+            display: none;
+            animation: slideIn 0.3s forwards;
+        }
+        @keyframes slideIn { from { opacity: 0; transform: translateX(10px); } to { opacity: 1; transform: translateX(0); } }
+
+        .finance-box {
+            background: var(--accent-green);
+            color: #000;
+            padding: 20px;
+            border-radius: 6px;
+            text-align: center;
+            margin-top: auto;
+            display: none;
+            cursor: pointer;
+            font-weight: bold;
+            border: none;
+            width: 100%;
+        }
+        .finance-box:hover { filter: brightness(1.1); }
+
+        /* Section 4: 20 Day Plan */
+        .roadmap {
+            position: relative;
+            padding-left: 30px;
+        }
+        .roadmap::before {
+            content: '';
+            position: absolute;
+            left: 7px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: var(--border);
+        }
+        .phase {
+            position: relative;
+            margin-bottom: 40px;
+        }
+        .phase-marker {
+            position: absolute;
+            left: -31px;
+            top: 0;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: var(--bg-dark);
+            border: 2px solid var(--accent-blue);
+        }
+        .phase-days { color: var(--accent-blue); font-size: 0.8rem; text-transform: uppercase; font-weight: bold; margin-bottom: 5px; }
+        .phase-title { font-size: 1.2rem; font-weight: bold; margin-bottom: 10px; }
+        .phase-actions { list-style: none; }
+        .phase-actions li { margin-bottom: 8px; font-size: 0.95rem; display: flex; align-items: start; }
+        .phase-actions li::before { content: '▹'; color: var(--accent-green); margin-right: 10px; }
+
+        /* Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s;
+        }
+        .modal-overlay.open { opacity: 1; pointer-events: auto; }
+        .modal {
+            background: var(--bg-panel);
+            border: 1px solid var(--accent-green);
+            padding: 40px;
+            max-width: 500px;
+            text-align: center;
+            box-shadow: 0 0 30px rgba(0, 255, 157, 0.2);
+        }
+        .modal h2 { color: var(--accent-green); margin-bottom: 20px; }
+        .btn {
+            background: var(--accent-green);
+            color: #000;
+            border: none;
+            padding: 10px 20px;
+            font-weight: bold;
+            cursor: pointer;
+            border-radius: 4px;
+            margin-top: 20px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .app-interface { grid-template-columns: 1fr; height: auto; }
+            .left-panel { min-height: 300px; }
+            .hero h1 { font-size: 2rem; }
+            .roadmap { padding-left: 20px; }
+            .phase-marker { left: -21px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <div class="logo">BORDERLESS<span>.AI</span></div>
+        <div style="text-align: right;">
+            <div class="text-green mono">SYSTEM ONLINE</div>
+            <div style="font-size: 0.8rem; color: #666;">v1.0.4 [PROTOTYPE]</div>
+        </div>
+    </header>
+
+    <!-- HERO SECTION -->
+    <section class="hero">
+        <div class="badge badge-green" style="margin-bottom: 15px;">The $12T Opportunity</div>
+        <h1>Automating the Global Supply Chain</h1>
+        <p>Replace the $200B Customs Brokerage industry. Instantiate the Bank of Trade. Clear goods in seconds, not days.</p>
+
+        <div class="market-grid">
+            <div class="stat-card">
+                <span class="stat-val text-green">$12 Trillion</span>
+                <span class="stat-label">Global Trade Volume</span>
+            </div>
+            <div class="stat-card">
+                <span class="stat-val text-blue">36%</span>
+                <span class="stat-label">Effective APR on Duty Financing</span>
+            </div>
+            <div class="stat-card">
+                <span class="stat-val text-main">0 Days</span>
+                <span class="stat-label">Delay in Goods Release</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- ARCHITECTURE VISUALIZER -->
+    <section>
+        <h2 style="margin-bottom: 20px;">The "Killer" Stack Architecture</h2>
+        <p style="color:var(--text-muted); margin-bottom: 20px;">Visualizing the data flow from Ingestion to Settlement.</p>
+        
+        <div class="arch-container">
+            <div class="flow-diagram">
+                <!-- Node 1: Ingest -->
+                <div class="node">
+                    <div class="lane-label" style="color: #ff4444; top: -25px;">The Enemy (Legacy)</div>
+                    <span class="node-icon">📩</span>
+                    <span class="node-title">Ingestion</span>
+                    <span class="node-desc">Gmail/Outlook Scraper<br>PDF Parser</span>
+                </div>
+
+                <div class="arrow"></div>
+
+                <!-- Node 2: AI -->
+                <div class="node highlight" id="node-ai">
+                    <span class="node-icon">🧠</span>
+                    <span class="node-title text-green">The AI Brain</span>
+                    <span class="node-desc">GPT-4o / Claude 3.5<br>HS Code Classification</span>
+                </div>
+
+                <div class="arrow"></div>
+
+                <!-- Node 3: Decision -->
+                <div class="node">
+                    <span class="node-icon">⚖️</span>
+                    <span class="node-title">Compliance</span>
+                    <span class="node-desc">Regulatory Check<br>Duty Calculation</span>
+                </div>
+
+                <div class="arrow"></div>
+
+                <!-- Node 4: Finance -->
+                <div class="node highlight" id="node-money">
+                    <div class="lane-label" style="color: var(--accent-green); top: -25px;">The Unicorn</div>
+                    <span class="node-icon">💰</span>
+                    <span class="node-title text-green">Settlement</span>
+                    <span class="node-desc">Stripe Treasury<br>Instant ACH to Gov</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- THE APP DEMO -->
+    <section>
+        <h2 style="margin-bottom: 20px;">Live Demo: Clear & Finance</h2>
+        <div class="app-interface">
+            
+            <!-- Left Side: Interaction -->
+            <div class="left-panel">
+                <div id="upload-view">
+                    <div class="upload-zone" onclick="startSimulation()">
+                        <div class="upload-icon">📄</div>
+                        <h3>Upload Commercial Invoice</h3>
+                        <p class="text-muted" style="font-size: 0.9rem; margin-top: 10px;">Drag & Drop PDF or Click to Simulate</p>
+                    </div>
+                </div>
+
+                <div id="processing-view" style="display:none; text-align: center; width: 100%;">
+                    <h3 class="text-green mono">PROCESSING INVOICE...</h3>
+                    <div class="terminal" id="terminal"></div>
+                </div>
+
+                <div id="success-view" style="display:none; text-align: center; width: 100%;">
+                    <div style="font-size: 4rem; margin-bottom: 20px;">✅</div>
+                    <h2>Shipment Cleared</h2>
+                    <p class="text-muted">ACE Portal Updated. Funds Released.</p>
+                    <button class="btn" onclick="resetDemo()" style="margin-top: 20px; background: var(--bg-panel-light); color: #fff; border: 1px solid var(--border);">Clear Another</button>
+                </div>
+            </div>
+
+            <!-- Right Side: Data Stream -->
+            <div class="right-panel">
+                <h3 class="mono" style="margin-bottom: 15px; border-bottom: 1px solid var(--border); padding-bottom: 10px;">DATA STREAM</h3>
+                
+                <div id="data-stream-container">
+                    <div class="text-muted mono" style="text-align: center; margin-top: 50px;">Waiting for input...</div>
+                </div>
+
+                <div class="finance-box" id="finance-action" onclick="showSuccess()">
+                    <div style="font-size: 0.8rem; opacity: 0.8;">COST TO IMPORTER</div>
+                    <div style="font-size: 1.5rem;">$10,300.00</div>
+                    <div style="font-size: 0.8rem;">Includes Instant Duty Financing Fee</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 20 DAY BLUEPRINT -->
+    <section>
+        <h2 style="margin-bottom: 30px;">20-Day Wartime Blueprint</h2>
+        <div class="roadmap">
+            
+            <div class="phase">
+                <div class="phase-marker"></div>
+                <div class="phase-days">Days 1-5</div>
+                <div class="phase-title">The "Paper" Stack & Compliance</div>
+                <ul class="phase-actions">
+                    <li>Incorporate in Delaware (USA).</li>
+                    <li>Apply for Customs Broker License (or partner with existing license).</li>
+                    <li>Obtain Customs Bond (Insurance required to operate).</li>
+                </ul>
+            </div>
+
+            <div class="phase">
+                <div class="phase-marker"></div>
+                <div class="phase-days">Days 6-10</div>
+                <div class="phase-title">The "Data" Pipeline (The AI)</div>
+                <ul class="phase-actions">
+                    <li>Build Python script using <strong>Claude 3.5 Sonnet</strong> or <strong>GPT-4o</strong>.</li>
+                    <li>Train for HTS Code extraction from PDF invoices.</li>
+                    <li>Output: Structured JSON ready for ACE filing.</li>
+                </ul>
+            </div>
+
+            <div class="phase">
+                <div class="phase-marker"></div>
+                <div class="phase-days">Days 11-15</div>
+                <div class="phase-title">The "Money" Pipeline (The Fintech)</div>
+                <ul class="phase-actions">
+                    <li>Integrate Banking-as-a-Service API (e.g., Currencycloud).</li>
+                    <li>Logic: Calculate Duty -> Instant Push to Gov API.</li>
+                    <li>Importer gets charged $Duty + 3% Fee instantly.</li>
+                </ul>
+            </div>
+
+            <div class="phase">
+                <div class="phase-marker"></div>
+                <div class="phase-days">Days 16-20</div>
+                <div class="phase-title">The Acquisition (Warfare)</div>
+                <ul class="phase-actions">
+                    <li>Cold call Freight Forwarders.</li>
+                    <li>Pitch: "I clear shipments for free first week. 0 errors guarantee."</li>
+                    <li>Execute: Get PDFs -> Run AI -> File via partner broker.</li>
+                </ul>
+            </div>
+
+        </div>
+    </section>
+
+</div>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="finance-modal">
+    <div class="modal">
+        <h2>TRANSACTION SETTLED</h2>
+        <p class="mono" style="margin-bottom: 20px;">
+            <span class="text-muted">TX ID:</span> #8829-AF-99<br>
+            <span class="text-muted">STATUS:</span> <span class="text-green">RELEASED</span>
+        </p>
+        <p style="margin-bottom: 20px;">
+            You have successfully cleared goods and captured the float. The importer has 30 days to repay the loan.
+        </p>
+        <button class="btn" onclick="closeModal()">ACKNOWLEDGE</button>
+    </div>
+</div>
+
+<script>
+    // --- Simulation Logic ---
+
+    function startSimulation() {
+        const uploadView = document.getElementById('upload-view');
+        const processingView = document.getElementById('processing-view');
+        const terminal = document.getElementById('terminal');
+        const dataContainer = document.getElementById('data-stream-container');
+        
+        // Reset UI
+        uploadView.style.display = 'none';
+        processingView.style.display = 'block';
+        terminal.style.opacity = '1';
+        dataContainer.innerHTML = ''; 
+        document.getElementById('finance-action').style.display = 'none';
+
+        // Fake Terminal Logs
+        const logs = [
+            "Initializing OCR engine...",
+            "Extracting text from PDF [Invoice_8829.pdf]...",
+            "Detected entity: ELECTRONICS MANUFACTURING VN",
+            "Sending payload to Claude 3.5 API...",
+            "Analyzing product description: 'Microcontroller Unit 32-bit'...",
+            "[MATCH FOUND] HS Code: 8542.31.0000",
+            "Checking Section 301 Tariffs (China)... [CLEAN]",
+            "Checking Anti-Dumping... [CLEAN]",
+            "Connecting to ACE (Automated Commercial Environment)...",
+            "Calculating Landed Cost...",
+            "Transmitting ABI Message... [SUCCESS]",
+            "Requesting Duty Payment Lock from Stripe..."
+        ];
+
+        let i = 0;
+        const interval = setInterval(() => {
+            if (i < logs.length) {
+                const line = document.createElement('div');
+                line.className = 'terminal-line';
+                line.textContent = `> ${logs[i]}`;
+                terminal.appendChild(line);
+                terminal.scrollTop = terminal.scrollHeight;
+                
+                // Trigger side panel updates based on logs
+                if(logs[i].includes("HS Code")) showResultCard('ai', 'HS Code Identified', '8542.31.0000');
+                if(logs[i].includes("Calculating")) showResultCard('calc', 'Duty Calculation', '$10,000.00 (2.5%)');
+                
+                i++;
+            } else {
+                clearInterval(interval);
+                setTimeout(finalizeSimulation, 800);
+            }
+        }, 400);
+    }
+
+    function showResultCard(type, title, value) {
+        const container = document.getElementById('data-stream-container');
+        
+        const card = document.createElement('div');
+        card.className = 'result-card';
+        card.style.display = 'block';
+        
+        let icon = type === 'ai' ? '🧠' : '💰';
+        let color = type === 'ai' ? 'var(--accent-blue)' : 'var(--accent-green)';
+        
+        card.innerHTML = `
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+                <span style="color:${color}; font-size:1.2rem;">${icon}</span>
+                <span class="badge badge-green">CONFIDENCE: 99.9%</span>
+            </div>
+            <div style="margin-top:10px; font-size:0.8rem; color:#888;">${title}</div>
+            <div style="font-size:1.2rem; font-weight:bold; margin-top:5px;">${value}</div>
+        `;
+        container.appendChild(card);
+    }
+
+    function finalizeSimulation() {
+        document.getElementById('processing-view').style.display = 'none';
+        document.getElementById('finance-action').style.display = 'block';
+        
+        const container = document.getElementById('data-stream-container');
+        const summary = document.createElement('div');
+        summary.className = 'result-card';
+        summary.style.borderLeft = '3px solid var(--accent-green)';
+        summary.innerHTML = `
+            <div style="font-weight:bold; margin-bottom:5px;">Ready for Payment</div>
+            <div style="font-size:0.9rem; color:#888;">Importer funds verified via Plaid. Ready to push ACH to US Customs.</div>
+        `;
+        container.appendChild(summary);
+    }
+
+    function showSuccess() {
+        document.getElementById('finance-modal').classList.add('open');
+        document.getElementById('success-view').style.display = 'block';
+        document.getElementById('left-panel').children[0].style.display = 'none'; // hide processing/upload
+        document.getElementById('left-panel').children[1].style.display = 'none';
+        document.getElementById('finance-action').style.display = 'none';
+    }
+
+    function closeModal() {
+        document.getElementById('finance-modal').classList.remove('open');
+    }
+
+    function resetDemo() {
+        document.getElementById('success-view').style.display = 'none';
+        document.getElementById('upload-view').style.display = 'flex';
+        document.getElementById('terminal').innerHTML = '';
+        document.getElementById('data-stream-container').innerHTML = '<div class="text-muted mono" style="text-align: center; margin-top: 50px;">Waiting for input...</div>';
+    }
+</script>
+
+</body>
+</html>

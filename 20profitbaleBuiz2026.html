@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Titan Strategy | Investor Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <style>
+        :root {
+            --bg-dark: #050507;
+            --bg-card: #0E0E12;
+            --bg-hover: #16161B;
+            --accent: #00FF88;
+            --accent-dim: rgba(0, 255, 136, 0.1);
+            --text-main: #FFFFFF;
+            --text-muted: #6B7280;
+            --border: #1F2937;
+            --warning: #FFB800;
+            --danger: #FF3366;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', -apple-system, sans-serif; }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 280px;
+            background: var(--bg-card);
+            border-right: 1px solid var(--border);
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+        }
+
+        .logo {
+            font-size: 1.4rem;
+            font-weight: 800;
+            color: var(--accent);
+            margin-bottom: 40px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo::before {
+            content: '';
+            width: 8px;
+            height: 8px;
+            background: var(--accent);
+            border-radius: 50%;
+            box-shadow: 0 0 10px var(--accent);
+        }
+
+        .nav-section-title {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-muted);
+            margin-bottom: 12px;
+            margin-top: 24px;
+        }
+
+        .nav-item {
+            padding: 12px 16px;
+            margin-bottom: 4px;
+            cursor: pointer;
+            border-radius: 8px;
+            color: var(--text-muted);
+            transition: all 0.2s;
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .nav-item:hover {
+            background: var(--bg-hover);
+            color: var(--text-main);
+        }
+
+        .nav-item.active {
+            background: var(--accent-dim);
+            color: var(--accent);
+            font-weight: 600;
+        }
+
+        /* Main Content */
+        .main {
+            margin-left: 280px;
+            padding: 40px 60px;
+            flex: 1;
+            max-width: 1400px;
+        }
+
+        h1 { font-size: 2.5rem; margin-bottom: 10px; line-height: 1.2; }
+        h2 { font-size: 1.5rem; margin-bottom: 20px; color: var(--text-main); }
+        h3 { font-size: 1.1rem; color: var(--accent); margin-bottom: 15px; text-transform: uppercase; letter-spacing: 0.5px;}
+        p { color: var(--text-muted); line-height: 1.7; margin-bottom: 20px; }
+
+        .section { display: none; animation: fadeIn 0.5s; }
+        .section.active { display: block; }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* Grid & Cards */
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+        .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+        
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 24px;
+            transition: all 0.3s;
+        }
+
+        .card:hover { border-color: var(--accent); transform: translateY(-2px); }
+
+        .stat-card {
+            background: linear-gradient(135deg, var(--bg-card) 0%, var(--bg-hover) 100%);
+            border: 1px solid var(--border);
+            padding: 24px;
+            border-radius: 12px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .stat-card::after {
+            content: '';
+            position: absolute;
+            top: 0; right: 0;
+            width: 100px; height: 100px;
+            background: radial-gradient(circle, var(--accent-dim) 0%, transparent 70%);
+        }
+
+        .stat-value { font-size: 2.5rem; font-weight: 800; color: var(--text-main); }
+        .stat-label { font-size: 0.9rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; }
+
+        /* Tables */
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        .data-table th {
+            text-align: left;
+            padding: 16px;
+            border-bottom: 1px solid var(--border);
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            text-transform: uppercase;
+        }
+
+        .data-table td {
+            padding: 16px;
+            border-bottom: 1px solid var(--border);
+            font-size: 0.9rem;
+            color: var(--text-main);
+        }
+
+        .data-table tr:hover { background: var(--bg-hover); }
+
+        .tag {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        .tag-green { background: rgba(0, 255, 136, 0.15); color: var(--accent); }
+        .tag-yellow { background: rgba(255, 184, 0, 0.15); color: var(--warning); }
+        .tag-red { background: rgba(255, 51, 102, 0.15); color: var(--danger); }
+
+        /* Diagrams */
+        .diagram-container {
+            background: #0A0A0D;
+            border-radius: 12px;
+            padding: 20px;
+            border: 1px solid var(--border);
+            margin: 20px 0;
+        }
+        
+        .mermaid { background: transparent !important; }
+
+        /* Buttons */
+        .btn {
+            padding: 10px 20px;
+            border-radius: 6px;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+            margin-right: 10px;
+        }
+        .btn-primary { background: var(--accent); color: #000; }
+        .btn-outline { background: transparent; border: 1px solid var(--border); color: var(--text-main); }
+        .btn:hover { transform: scale(1.02); }
+
+        /* Lists */
+        .idea-list { list-style: none; }
+        .idea-list li {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .idea-list li:hover { border-color: var(--accent); }
+
+        .idea-badge {
+            font-size: 0.75rem;
+            background: var(--accent-dim);
+            color: var(--accent);
+            padding: 4px 8px;
+            border-radius: 4px;
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: var(--bg-dark); }
+        ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+    </style>
+</head>
+<body>
+
+<div class="sidebar">
+    <div class="logo">TITAN RESEARCH</div>
+    
+    <div class="nav-section-title">Phase I</div>
+    <div class="nav-item active" onclick="showSection('overview')">Overview & Strategy</div>
+    <div class="nav-item" onclick="showSection('pureSoftware')">20 Pure Software Unicorns</div>
+    <div class="nav-item" onclick="showSection('aiStartups')">20 AI Startups (7 Days)</div>
+    <div class="nav-item" onclick="showSection('superapp')">Super-App Architecture</div>
+    
+    <div class="nav-section-title">Phase II</div>
+    <div class="nav-item" onclick="showSection('workforce')">AI Workforce Infrastructure</div>
+    <div class="nav-item" onclick="showSection('mvpStack')">MVP Code Stack</div>
+    
+    <div class="nav-section-title">Phase III</div>
+    <div class="nav-item" onclick="showSection('palantir')">Palantir/Scale Analysis</div>
+    <div class="nav-item" onclick="showSection('ultimate')">The Ultimate Titan Strategy</div>
+</div>
+
+<div class="main">
+    
+    <!-- OVERVIEW -->
+    <div id="overview" class="section active">
+        <h1>The Trillion Dollar Playbook</h1>
+        <p>Strategy: Aggregating disjointed markets into a unified monopoly through software arbitrage and AI agent labor.</p>
+        
+        <div class="grid-3" style="margin-bottom: 40px;">
+            <div class="stat-card">
+                <div class="stat-value">$100T</div>
+                <div class="stat-label">Target Addressable Market (Global GDP)</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">40</div>
+                <div class="stat-label">Rapid Launch Ideas</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">14 Days</div>
+                <div class="stat-label">Execution Sprint</div>
+            </div>
+        </div>
+
+        <h3>The Core Thesis</h3>
+        <div class="card">
+            <p style="margin:0;">We are not building a company; we are building infrastructure. The opportunity lies in the transition from <strong>SaaS (Software as a Service)</strong> to <strong>CaaS (Cognition as a Service)</strong>. The winner will be the platform that owns the "Digital Workers," the infrastructure they run on, and the financial rails they transact on.</p>
+        </div>
+    </div>
+
+    <!-- PHASE I: PURE SOFTWARE -->
+    <div id="pureSoftware" class="section">
+        <h1>Phase I: 20 Pure Software Unicorns</h1>
+        <p>Non-AI. Pure Code. Execution Time: 10 Days. Monetization: Immediate.</p>
+        
+        <ul class="idea-list">
+            <li>
+                <div><strong>1. Automated Invoice Factoring Platform</strong><br><span style="font-size:0.85rem; color:var(--text-muted)">Algorithmic lending against receivables.</span></div>
+                <span class="idea-badge">FinTech</span>
+            </li>
+            <li>
+                <div><strong>2. PDF-to-ERP Data Pipeline</strong><br><span style="font-size:0.85rem; color:var(--text-muted)">Unstructured data extraction for SAP/Oracle.</span></div>
+                <span class="idea-badge">B2B SaaS</span>
+            </li>
+            <li>
+                <div><strong>3. Cold Email Infrastructure (Warm-up)</strong><br><span style="font-size:0.85rem; color:var(--text-muted)">Automated domain health monitoring.</span></div>
+                <span class="idea-badge">MarTech</span>
+            </li>
+            <li>
+                <div><strong>4. Niche Real Estate Lead Aggregator</strong><br><span style="font-size:0.85rem; color:var(--text-muted)">Scrape + Enrich distressed property data.</span></div>
+                <span class="idea-badge">PropTech</span>
+            </li>
+            <li>
+                <div><strong>5. Review Management System</strong><br><span style="font-size:0.85rem; color:var(--text-muted)">Auto-reply logic for Google Maps API.</span></div>
+                <span class="idea-badge">Reputation</span>
+            </li>
+            <li>
+                <div><strong>6. Compliance Reporting Generator</strong><br><span style="font-size:0.85rem; color:var(--text-muted)">OSHA/EPA automated form filling.</span></div>
+                <span class="idea-badge">RegTech</span>
+            </li>
+            <li>
+                <div><strong>7. High-Frequency QR Inventory</strong><br><span style="font-size:0.85rem; color:var(--text-muted)">Simple scan-to-track logistics.</span></div>
+                <span class="idea-badge">Logistics</span>
+            </li>
+            <li>
+                <div><strong>8. Influencer Rate Calculator</strong><br><span style="font-size:0.85rem; color:var(--text-muted)">API wrapper for engagement stats.</span></div>
+                <span class="idea-badge">Creator Eco</span>
+            </li>
+            <li>
+                <div><strong>9. Virtual Mailroom (OCR)</strong><br><span style="font-size:0.85rem; color:var(--text-muted)">Digitize physical mail via API.</span></div>
+                <span class="idea-badge">Admin</span>
+            </li>
+            <li>
+                <div><strong>10. Subscription Cancelation Service</strong><br><span style="font-size:0.85rem; color:var(--text-muted)">Scripted bank dispute generation.</span></div>
+                <span class="idea-badge">Consumer</span>
+            </li>
+            <li>
+                <div><strong>11. University Application Organizer</strong><br><span style="font-size:0.85rem; color:var(--text-muted)">Deadline & doc management dashboard.</span></div>
+                <span class="idea-badge">EdTech</span>
+            </li>
+            <li>
+                <div><strong>12. Gig Economy Shift Scheduler</strong><br><span style="font-size:0.85rem; color:var(--text-muted)">Cross-platform shift optimization.</span></div>
+                <span class="idea-badge">HRTech</span>
+            </li>
+            <li>
+                <div><strong>13. Legal Doc Template Engine</strong><br><span style="font-size:0.85rem; color:var(--text-muted)">Dynamic variable insertion for contracts.</span></div>
+                <span class="idea-badge">Legal</span>
+            </li>
+            <li>
+                <div><strong>14. Automated Crypto Tax Calc</strong><br><span style="font-size:0.85rem; color:var(--text-muted)">Chain analysis for cost basis.</span></div>
+                <span class="idea-badge">FinTech</span>
+            </li>
+            <li>
+                <div><strong>15. Local SEO Audit Tool</strong><br><span style="font-size:0.85rem; color:var(--text-muted)">Citation consistency checker.</span></div>
+                <span class="idea-badge">MarTech</span>
+            </li>
+            <li>
+                <div><strong>16. Warranty Tracker App</strong><br><span style="font-size:0.85rem; color:var(--text-muted)">Expiration alerts & claim automation.</span></div>
+                <span class="idea-badge">Consumer</span>
+            </li>
+            <li>
+                <div><strong>17. Waitlist Manager (Restaurants)</strong><br><span style="font-size:0.85rem; color:var(--text-muted)">SMS queue management.</span></div>
+                <span class="idea-badge">Hospitality</span>
+            </li>
+            <li>
+                <div><strong>18. Public Records API Wrapper</strong><br><span style="font-size:0.85rem; color:var(--text-muted)">Clean JSON from govt PDFs.</span></div>
+                <span class="idea-badge">GovTech</span>
+            </li>
+            <li>
+                <div><strong>19. Drop-Servicing CRM</strong><br><span style="font-size:0.85rem; color:var(--text-muted)">Vendor matching & margin tracking.</span></div>
+                <span class="idea-badge">B2B</span>
+            </li>
+            <li>
+                <div><strong>20. Cross-Platform Social Poster</strong><br><span style="font-size:0.85rem; color:var(--text-muted)">One-click multi-platform publishing.</span></div>
+                <span class="idea-badge">MarTech</span>
+            </li>
+        </ul>
+    </div>
+
+    <!-- PHASE I: AI STARTUPS -->
+    <div id="aiStartups" class="section">
+        <h1>Phase I: 20 AI Startups (Launch in 7 Days)</h1>
+        <p>Vertical AI Agents. Model: "Service-as-Software". Sell the outcome, not the tool.</p>
+
+        <div class="grid-2">
+            <div class="card">
+                <h3 style="color:var(--accent); margin-bottom:15px;">High Value B2B</h3>
+                <ul class="idea-list" style="margin:0;">
+                    <li><strong>1. AI Legal Clerk</strong><span class="tag tag-green">Law</span></li>
+                    <li><strong>2. AI Underwriter</strong><span class="tag tag-green">Finance</span></li>
+                    <li><strong>3. AI Supply Chain Manager</strong><span class="tag tag-green">Logistics</span></li>
+                    <li><strong>4. AI Medical Scribe</strong><span class="tag tag-green">Health</span></li>
+                    <li><strong>5. AI Code Reviewer</strong><span class="tag tag-green">Dev</span></li>
+                    <li><strong>6. AI Procurement Agent</strong><span class="tag tag-green">Ops</span></li>
+                    <li><strong>7. AI HR Onboarding Bot</strong><span class="tag tag-green">HR</span></li>
+                    <li><strong>8. AI 10-K Analyst</strong><span class="tag tag-green">Finance</span></li>
+                    <li><strong>9. AI Lead Qualifier</strong><span class="tag tag-green">Sales</span></li>
+                    <li><strong>10. AI Compliance Monitor</strong><span class="tag tag-green">Reg</span></li>
+                </ul>
+            </div>
+            <div class="card">
+                <h3 style="color:var(--warning); margin-bottom:15px;">Consumer & Prosumer</h3>
+                <ul class="idea-list" style="margin:0;">
+                    <li><strong>11. AI Personal Shopper</strong><span class="tag tag-yellow">Ecom</span></li>
+                    <li><strong>12. AI Travel Agent</strong><span class="tag tag-yellow">Travel</span></li>
+                    <li><strong>13. AI Tutor (Coding)</strong><span class="tag tag-yellow">Ed</span></li>
+                    <li><strong>14. AI Meeting Summarizer</strong><span class="tag tag-yellow">Prod</span></li>
+                    <li><strong>15. AI Content Repurposer</strong><span class="tag tag-yellow">Mark</span></li>
+                    <li><strong>16. AI Real Estate Analyzer</strong><span class="tag tag-yellow">Prop</span></li>
+                    <li><strong>17. AI UX/UI Designer</strong><span class="tag tag-yellow">Des</span></li>
+                    <li><strong>18. AI Fitness Coach</strong><span class="tag tag-yellow">Health</span></li>
+                    <li><strong>19. AI Event Planner</strong><span class="tag tag-yellow">Event</span></li>
+                    <li><strong>20. AI Relationship Manager</strong><span class="tag tag-yellow">Pers</span></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- PHASE I: SUPER APP -->
+    <div id="superapp" class="section">
+        <h1>The #1 $100B Monopoly Opportunity</h1>
+        <p>The "Enterprise Operating System" (EOS). A unified platform combining Workforce, Finance, and Logistics.</p>
+
+        <div class="diagram-container">
+            <div class="mermaid">
+                graph TD
+                    subgraph "The Super App Architecture"
+                    A[User Interface] --> B(Orchestration Layer)
+                    B --> C{Agent Marketplace}
+                    B --> D{Financial Rails}
+                    B --> E{Data Infrastructure}
+                    
+                    C --> C1[AI Legal Agent]
+                    C --> C2[AI Sales Agent]
+                    C --> C3[AI Coder]
+                    
+                    D --> D1[Payments]
+                    D --> D2[Lending]
+                    D --> D3[FX]
+                    
+                    E --> E1[Vector DB]
+                    E --> E2[LLM Gateway]
+                end
+            </div>
+        </div>
+
+        <div class="card">
+            <h3>Why this is the #1 Opportunity</h3>
+            <p>Current software is fragmented. Companies buy 50 different tools (Salesforce, Jira, Slack, Hubspot, Workday). The Super App replaces these fragmented silos with a unified agent workforce. You don't buy "CRM software"; you hire "Digital Sales Agents" who happen to use the underlying platform.</p>
+        </div>
+    </div>
+
+    <!-- PHASE II: WORKFORCE -->
+    <div id="workforce" class="section">
+        <h1>Phase II: AI Workforce Infrastructure</h1>
+        <p>Becoming the "AWS of AI Agents".</p>
+
+        <div class="grid-2">
+            <div class="card">
+                <h3>The Platform Design</h3>
+                <p>We build the infrastructure for others to deploy and monetize AI Agents.</p>
+                <ul style="color:var(--text-muted); margin-left:20px;">
+                    <li><strong>Agent Identity (DID):</strong> Verifiable ID for bots.</li>
+                    <li><strong>Agent Wallets:</strong> Autonomous financial transactions.</li>
+                    <li><strong>Compute Layer:</strong> Distributed inference (GPU grid).</li>
+                    <li><strong>Tool Library:</strong> Pre-built API connectors.</li>
+                </ul>
+            </div>
+            <div class="card">
+                <h3>Monetization Model</h3>
+                <ul style="color:var(--text-muted); margin-left:20px;">
+                    <li><strong>Compute Tax:</strong> Fee on every inference run.</li>
+                    <li><strong>Transaction Fee:</strong> % of value moved by agents.</li>
+                    <li><strong>Subscription:</strong> Enterprise access to premium agents.</li>
+                    <li><strong>Data Royalties:</strong> Fees for accessing proprietary data.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- PHASE II: MVP STACK -->
+    <div id="mvpStack" class="section">
+        <h1>MVP Code Stack (Launch in 14 Days)</h1>
+        <p>Practical, high-speed execution stack. No bloat.</p>
+
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Layer</th>
+                    <th>Technology</th>
+                    <th>Purpose</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Frontend</strong></td>
+                    <td>Next.js + Tailwind</td>
+                    <td>Fast UI, SEO friendly, React ecosystem.</td>
+                </tr>
+                <tr>
+                    <td><strong>Backend</strong></td>
+                    <td>Python FastAPI</td>
+                    <td>Native AI/ML library support, high speed.</td>
+                </tr>
+                <tr>
+                    <td><strong>Orchestration</strong></td>
+                    <td>LangChain / LangGraph</td>
+                    <td>Managing agent state and flows.</td>
+                </tr>
+                <tr>
+                    <td><strong>Memory</strong></td>
+                    <td>Pinecone / pgvector</td>
+                    <td>Long-term memory for agents (RAG).</td>
+                </tr>
+                <tr>
+                    <td><strong>Infra</strong></td>
+                    <td>AWS / Docker</td>
+                    <td>Scalable container deployment.</td>
+                </tr>
+                <tr>
+                    <td><strong>Payments</strong></td>
+                    <td>Stripe Connect</td>
+                    <td>Marketplace payments (split earnings).</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- PHASE III: PALANTIR ANALYSIS -->
+    <div id="palantir" class="section">
+        <h1>Phase III: Palantir & Scale AI Analysis</h1>
+        
+        <div class="grid-2">
+            <div class="card">
+                <h3 style="color:var(--accent);">Palantir Technologies</h3>
+                <p><strong>What they do:</strong> Data integration & ontology management for Gov/Enterprise.</p>
+                <p><strong>Product:</strong> Foundry (Commercial), Gotham (Gov).</p>
+                <p><strong>Moat:</strong> High switching costs, deep integration with sensitive data.</p>
+                <p><strong>Market Status:</strong> Profitable. Growing. Dominant in Defense.</p>
+            </div>
+            <div class="card">
+                <h3 style="color:var(--accent);">Scale AI</h3>
+                <p><strong>What they do:</strong> Data labeling & RLHF (Reinforcement Learning from Human Feedback).</p>
+                <p><strong>Product:</strong> "The Data Foundry" for AI models.</p>
+                <p><strong>Moat:</strong> Quality of data determines model quality. Essential for OpenAI/DoD.</p>
+                <p><strong>Market Status:</strong> High growth, critical infrastructure.</p>
+            </div>
+        </div>
+
+        <h3 style="margin-top:30px;">Competitor Matrix</h3>
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Company</th>
+                    <th>Strength</th>
+                    <th>Weakness</th>
+                    <th>Opportunity for Disruption</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Palantir</td>
+                    <td>Deep Gov Contracts</td>
+                    <td>Expensive, Complex UI</td>
+                    <td>Self-serve AI Analytics for Mid-Market</td>
+                </tr>
+                <tr>
+                    <td>Scale AI</td>
+                    <td>Data Quality</td>
+                    <td>Labor intensive</td>
+                    <td>Synthetic Data Generation (AI for AI)</td>
+                </tr>
+                <tr>
+                    <td>AWS</td>
+                    <td>Scale</td>
+                    <td>Complex Pricing</td>
+                    <td>Simple "Per-Outcome" Pricing</td>
+                </tr>
+                <tr>
+                    <td>Stripe</td>
+                    <td>Developer Exp</td>
+                    <td>Payments only</td>
+                    <td>Integrated Finance + Workforce</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- PHASE III: ULTIMATE STRATEGY -->
+    <div id="ultimate" class="section">
+        <h1>The Ultimate Titan Strategy</h1>
+        <p>How to become the Aggregate: Palantir + Scale + AWS + Stripe + Nvidia.</p>
+
+        <div class="card" style="border-color: var(--accent); background: linear-gradient(180deg, var(--bg-card) 0%, rgba(0,255,136,0.05) 100%);">
+            <h2>The Strategy</h2>
+            <ol style="margin-left: 20px; color: var(--text-main); line-height: 2;">
+                <li><strong>Layer 1 (Infrastructure):</strong> Build the "GPU Grid" (Aggregate idle compute like Uber aggregated cars) -> <em>Compete with AWS/Nvidia.</em></li>
+                <li><strong>Layer 2 (Data):</strong> Build "Truth Engines" (Ontology layers for industries) -> <em>Compete with Palantir.</em></li>
+                <li><strong>Layer 3 (Intelligence):</strong> Train/Finetune models using Synthetic Data -> <em>Compete with Scale AI.</em></li>
+                <li><strong>Layer 4 (Financial):</strong> Embed payments and lending into every agent transaction -> <em>Compete with Stripe.</em></li>
+                <li><strong>Layer 5 (Interface):</strong> Natural Language OS -> <em>Kill Windows/iOS.</em></li>
+            </ol>
+        </div>
+
+        <h3 style="margin-top:30px;">Final Architecture Blueprint</h3>
+        <div class="diagram-container">
+            <div class="mermaid">
+                graph TD
+                    Tit[The Titan Platform]
+                    
+                    Tit --> Infra[Compute Grid <br> (Nvidia Competitor)]
+                    Tit --> Data[Data Ontology <br> (Palantir Competitor)]
+                    Tit --> Intel[Model Training <br> (Scale Competitor)]
+                    Tit --> Fin[Transaction Rails <br> (Stripe Competitor)]
+                    
+                    Infra --> Agent[AI Agents]
+                    Data --> Agent
+                    Intel --> Agent
+                    Fin --> Agent
+                    
+                    Agent --> Out[OUTCOME SOLD]
+                    Out --> Rev[Trillion $ Revenue]
+            </div>
+        </div>
+        
+        <div style="text-align: center; margin-top: 40px;">
+            <button class="btn btn-primary" style="font-size: 1.2rem; padding: 15px 40px;">BEGIN EXECUTION</button>
+            <button class="btn btn-outline" style="font-size: 1.2rem; padding: 15px 40px;">Download Blueprint PDF</button>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    mermaid.initialize({ startOnLoad: true, theme: 'dark' });
+
+    function showSection(sectionId) {
+        document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+        document.getElementById(sectionId).classList.add('active');
+        
+        document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+        event.target.classList.add('active');
+        
+        // Re-render mermaid diagrams for the active section
+        setTimeout(() => {
+            mermaid.init(undefined, '.mermaid');
+        }, 100);
+    }
+</script>
+
+</body>
+</html>

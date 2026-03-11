@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NEXUS OS | App</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root { --primary: #10b981; --bg-dark: #0f172a; --bg-card: #1e293b; }
+        body { font-family: 'Inter', sans-serif; background-color: var(--bg-dark); color: #f8fafc; }
+        .mono { font-family: 'JetBrains Mono', monospace; }
+        .nav-item.active { background: rgba(16, 185, 129, 0.1); color: var(--primary); border-right: 3px solid var(--primary); }
+        .glass { background: rgba(30, 41, 59, 0.6); backdrop-filter: blur(8px); border: 1px solid rgba(255, 255, 255, 0.05); }
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #0f172a; }
+        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 3px; }
+    </style>
+</head>
+<body class="flex h-screen overflow-hidden">
+
+    <!-- SIDEBAR -->
+    <aside class="w-64 bg-slate-900 border-r border-slate-800 flex flex-col justify-between shrink-0">
+        <div>
+            <div class="h-16 flex items-center px-6 border-b border-slate-800">
+                <i class="fa-solid fa-cube text-emerald-500 text-xl mr-3"></i>
+                <span class="font-bold text-lg tracking-wider">NEXUS<span class="text-emerald-500">OS</span></span>
+            </div>
+            <nav class="mt-4 flex flex-col gap-1">
+                <button onclick="switchTab('dashboard')" id="btn-dashboard" class="nav-item active flex items-center px-6 py-3 text-slate-400 hover:bg-slate-800 transition-colors text-left">
+                    <i class="fa-solid fa-chart-line w-6"></i> <span>Overview</span>
+                </button>
+                <button onclick="switchTab('marketplace')" id="btn-marketplace" class="nav-item flex items-center px-6 py-3 text-slate-400 hover:bg-slate-800 transition-colors text-left">
+                    <i class="fa-solid fa-hard-hat w-6"></i> <span>Labor Market</span>
+                </button>
+                <button onclick="switchTab('bidding')" id="btn-bidding" class="nav-item flex items-center px-6 py-3 text-slate-400 hover:bg-slate-800 transition-colors text-left">
+                    <i class="fa-solid fa-gavel w-6"></i> <span>Bid Board</span>
+                </button>
+                <button onclick="switchTab('wallet')" id="btn-wallet" class="nav-item flex items-center px-6 py-3 text-slate-400 hover:bg-slate-800 transition-colors text-left">
+                    <i class="fa-solid fa-wallet w-6"></i> <span>Finance & Wallet</span>
+                </button>
+                <button onclick="switchTab('ai')" id="btn-ai" class="nav-item flex items-center px-6 py-3 text-slate-400 hover:bg-slate-800 transition-colors text-left">
+                    <i class="fa-solid fa-brain w-6"></i> <span>BuildBrain AI</span>
+                </button>
+            </nav>
+        </div>
+        <div class="p-4 border-t border-slate-800">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-full bg-emerald-900 border border-emerald-700 flex items-center justify-center font-bold text-emerald-400">JD</div>
+                <div>
+                    <p class="text-sm font-semibold">John Doe</p>
+                    <p class="text-xs text-slate-500">GC License: #A-9921</p>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="flex-1 overflow-y-auto relative bg-slate-900">
+        <!-- Header -->
+        <header class="h-16 glass sticky top-0 z-10 flex items-center justify-between px-8 border-b border-slate-700/50">
+            <h2 class="text-lg font-semibold text-slate-200" id="page-title">Executive Overview</h2>
+            <div class="flex items-center gap-4">
+                <div class="flex items-center gap-2 px-3 py-1 bg-slate-800 rounded-full text-xs text-slate-400 border border-slate-700">
+                    <div class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></div>
+                    <span class="font-mono">LIVE LEDGER</span>
+                </div>
+                <button class="w-8 h-8 rounded-full bg-slate-800 hover:bg-slate-700 flex items-center justify-center text-slate-400 transition-colors relative">
+                    <i class="fa-solid fa-bell"></i>
+                    <span class="absolute top-0 right-0 w-2 h-2 bg-red-500 rounded-full border border-slate-800"></span>
+                </button>
+            </div>
+        </header>
+
+        <div class="p-8 max-w-7xl mx-auto">
+
+            <!-- VIEW: DASHBOARD -->
+            <div id="view-dashboard" class="space-y-6 animate-fade-in">
+                <!-- KPIs -->
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+                    <div class="bg-slate-800 p-5 rounded-xl border border-slate-700">
+                        <p class="text-slate-400 text-xs font-bold uppercase">Wallet Balance (USD)</p>
+                        <h3 class="text-2xl font-bold mt-1 text-white">$<span class="counter">124,500</span></h3>
+                        <p class="text-emerald-400 text-xs mt-2">+$12k from yesterday</p>
+                    </div>
+                    <div class="bg-slate-800 p-5 rounded-xl border border-slate-700">
+                        <p class="text-slate-400 text-xs font-bold uppercase">Internal Credits (NXS)</p>
+                        <h3 class="text-2xl font-bold mt-1 text-blue-400"><span class="counter">85,000</span> NXS</h3>
+                        <p class="text-blue-400/70 text-xs mt-2">Ready for payout</p>
+                    </div>
+                    <div class="bg-slate-800 p-5 rounded-xl border border-slate-700">
+                        <p class="text-slate-400 text-xs font-bold uppercase">Active Crews</p>
+                        <h3 class="text-2xl font-bold mt-1 text-white"><span class="counter">12</span> Teams</h3>
+                        <p class="text-orange-400 text-xs mt-2">3 arriving on site</p>
+                    </div>
+                    <div class="bg-slate-800 p-5 rounded-xl border border-slate-700">
+                        <p class="text-slate-400 text-xs font-bold uppercase">Open Bids</p>
+                        <h3 class="text-2xl font-bold mt-1 text-white"><span class="counter">5</span> Projects</p>
+                        <p class="text-slate-400 text-xs mt-2">Closing in 2 days</p>
+                    </div>
+                </div>
+
+                <!-- Active Projects Table -->
+                <div class="bg-slate-800 rounded-xl border border-slate-700 overflow-hidden">
+                    <div class="px-6 py-4 border-b border-slate-700 flex justify-between items-center">
+                        <h3 class="font-semibold">Active Projects</h3>
+                        <button class="text-xs text-emerald-400 hover:text-emerald-300">View All</button>
+                    </div>
+                    <table class="w-full text-left text-sm text-slate-400">
+                        <thead class="bg-slate-900/50 text-xs uppercase">
+                            <tr>
+                                <th class="px-6 py-3">Project</th>
+                                <th class="px-6 py-3">Status</th>
+                                <th class="px-6 py-3">Budget</th>
+                                <th class="px-6 py-3">Progress</th>
+                                <th class="px-6 py-3">Next Payout</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-700">
+                            <tr class="hover:bg-slate-700/50">
+                                <td class="px-6 py-4 font-medium text-white">Sunnyvale Tower - Phase 2</td>
+                                <td class="px-6 py-4"><span class="bg-blue-900/30 text-blue-400 px-2 py-1 rounded text-xs">In Progress</span></td>
+                                <td class="px-6 py-4">$1.2M</td>
+                                <td class="px-6 py-4">
+                                    <div class="w-24 bg-slate-700 rounded-full h-1.5">
+                                        <div class="bg-emerald-500 h-1.5 rounded-full" style="width: 65%"></div>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 text-emerald-400">Oct 28</td>
+                            </tr>
+                            <tr class="hover:bg-slate-700/50">
+                                <td class="px-6 py-4 font-medium text-white">Reno Data Center Cooling</td>
+                                <td class="px-6 py-4"><span class="bg-orange-900/30 text-orange-400 px-2 py-1 rounded text-xs">Permitting</span></td>
+                                <td class="px-6 py-4">$450k</td>
+                                <td class="px-6 py-4">
+                                    <div class="w-24 bg-slate-700 rounded-full h-1.5">
+                                        <div class="bg-orange-500 h-1.5 rounded-full" style="width: 15%"></div>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 text-slate-500">--</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- VIEW: LABOR MARKETPLACE -->
+            <div id="view-marketplace" class="hidden space-y-6 animate-fade-in">
+                <div class="flex justify-between items-center">
+                    <h3 class="text-xl font-bold">Find Skilled Trades</h3>
+                    <div class="flex gap-2">
+                        <button class="px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-sm text-slate-300">Electricians</button>
+                        <button class="px-4 py-2 bg-emerald-600 text-white rounded-lg text-sm font-bold">Plumbers</button>
+                        <button class="px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-sm text-slate-300">Welders</button>
+                    </div>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <!-- Worker Card -->
+                    <div class="bg-slate-800 rounded-xl border border-slate-700 overflow-hidden group hover:border-emerald-500/50 transition-all">
+                        <div class="h-32 bg-slate-700 relative">
+                            <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=200&fit=crop" class="w-full h-full object-cover opacity-60">
+                            <div class="absolute bottom-4 left-4">
+                                <h4 class="font-bold text-white text-lg">Mike Ross</h4>
+                                <p class="text-xs text-slate-300">Master Electrician • Class A</p>
+                            </div>
+                        </div>
+                        <div class="p-4">
+                            <div class="flex justify-between mb-4">
+                                <span class="text-yellow-400 text-sm"><i class="fa-solid fa-star"></i> 4.9 (124)</span>
+                                <span class="text-emerald-400 font-bold">$65/hr</span>
+                            </div>
+                            <div class="flex gap-2 mb-4">
+                                <span class="px-2 py-1 bg-slate-900 rounded text-xs text-slate-400">High Voltage</span>
+                                <span class="px-2 py-1 bg-slate-900 rounded text-xs text-slate-400">Commercial</span>
+                            </div>
+                            <button onclick="showModal('dispatch')" class="w-full py-2 bg-slate-700 hover:bg-emerald-600 text-white rounded-lg text-sm font-bold transition-colors">Dispatch Now</button>
+                        </div>
+                    </div>
+                     <!-- Worker Card -->
+                     <div class="bg-slate-800 rounded-xl border border-slate-700 overflow-hidden group hover:border-emerald-500/50 transition-all">
+                        <div class="h-32 bg-slate-700 relative">
+                            <img src="https://images.unsplash.com/photo-1580489944761-15a19d654956?w=400&h=200&fit=crop" class="w-full h-full object-cover opacity-60">
+                            <div class="absolute bottom-4 left-4">
+                                <h4 class="font-bold text-white text-lg">Sarah Jenkins</h4>
+                                <p class="text-xs text-slate-300">Certified Welder • TIG/MIG</p>
+                            </div>
+                        </div>
+                        <div class="p-4">
+                            <div class="flex justify-between mb-4">
+                                <span class="text-yellow-400 text-sm"><i class="fa-solid fa-star"></i> 5.0 (42)</span>
+                                <span class="text-emerald-400 font-bold">$78/hr</span>
+                            </div>
+                            <div class="flex gap-2 mb-4">
+                                <span class="px-2 py-1 bg-slate-900 rounded text-xs text-slate-400">Pipeline</span>
+                                <span class="px-2 py-1 bg-slate-900 rounded text-xs text-slate-400">Structural</span>
+                            </div>
+                            <button onclick="showModal('dispatch')" class="w-full py-2 bg-slate-700 hover:bg-emerald-600 text-white rounded-lg text-sm font-bold transition-colors">Dispatch Now</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- VIEW: BIDDING -->
+            <div id="view-bidding" class="hidden space-y-6 animate-fade-in">
+                <h3 class="text-xl font-bold mb-4">Open Opportunities</h3>
+                <div class="bg-slate-800 rounded-xl border border-slate-700 overflow-hidden">
+                    <table class="w-full text-left">
+                        <thead class="bg-slate-900/50 text-xs uppercase text-slate-400">
+                            <tr>
+                                <th class="px-6 py-3">Project</th>
+                                <th class="px-6 py-3">Location</th>
+                                <th class="px-6 py-3">Type</th>
+                                <th class="px-6 py-3">Est. Budget</th>
+                                <th class="px-6 py-3">Deadline</th>
+                                <th class="px-6 py-3 text-right">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-700 text-sm">
+                            <tr>
+                                <td class="px-6 py-4 font-bold text-white">Highway 101 Retrofit</td>
+                                <td class="px-6 py-4 text-slate-400">San Francisco, CA</td>
+                                <td class="px-6 py-4"><span class="bg-orange-900/30 text-orange-400 px-2 py-1 rounded text-xs">Structural</span></td>
+                                <td class="px-6 py-4 text-emerald-400 font-mono">$4.5M+</td>
+                                <td class="px-6 py-4 text-slate-400">2 Days</td>
+                                <td class="px-6 py-4 text-right"><button class="bg-slate-700 hover:bg-emerald-600 text-white px-3 py-1 rounded text-xs">View Specs</button></td>
+                            </tr>
+                            <tr>
+                                <td class="px-6 py-4 font-bold text-white">Luxury Condo Plumbing</td>
+                                <td class="px-6 py-4 text-slate-400">Manhattan, NY</td>
+                                <td class="px-6 py-4"><span class="bg-blue-900/30 text-blue-400 px-2 py-1 rounded text-xs">Plumbing</span></td>
+                                <td class="px-6 py-4 text-emerald-400 font-mono">$850k</td>
+                                <td class="px-6 py-4 text-slate-400">5 Days</td>
+                                <td class="px-6 py-4 text-right"><button class="bg-slate-700 hover:bg-emerald-600 text-white px-3 py-1 rounded text-xs">View Specs</button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- VIEW: WALLET -->
+            <div id="view-wallet" class="hidden space-y-6 animate-fade-in">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <!-- Fiat Card -->
+                    <div class="bg-gradient-to-br from-slate-800 to-slate-900 p-8 rounded-2xl border border-slate-700 relative overflow-hidden">
+                        <div class="relative z-10">
+                            <p class="text-slate-400 text-xs font-bold uppercase">Available Cash (USD)</p>
+                            <h2 class="text-4xl font-bold text-white mt-2 mb-6">$124,500.00</h2>
+                            <div class="flex gap-3">
+                                <button class="flex-1 bg-emerald-600 hover:bg-emerald-500 text-white py-2 rounded font-medium text-sm">Add Funds</button>
+                                <button class="flex-1 bg-slate-700 hover:bg-slate-600 text-white py-2 rounded font-medium text-sm">Withdraw</button>
+                            </div>
+                        </div>
+                        <i class="fa-brands fa-cc-visa absolute -bottom-10 -right-10 text-9xl text-white opacity-5"></i>
+                    </div>
+                    
+                    <!-- Credits Card (The Loophole) -->
+                    <div class="bg-gradient-to-br from-blue-900 to-slate-900 p-8 rounded-2xl border border-blue-700 relative overflow-hidden">
+                        <div class="relative z-10">
+                            <div class="flex justify-between items-start">
+                                <p class="text-blue-200 text-xs font-bold uppercase">Internal Credits (NXS)</p>
+                                <i class="fa-solid fa-circle-info text-blue-400 cursor-help" title="Closed-loop platform credits. 1 NXS = $1 USD"></i>
+                            </div>
+                            <h2 class="text-4xl font-bold text-white mt-2 mb-6">85,000 NXS</h2>
+                            <p class="text-xs text-blue-300 mb-4">Instant P2P transfers. Zero fees. Settle via USDC for international partners.</p>
+                            <div class="flex gap-3">
+                                <button class="flex-1 bg-blue-600 hover:bg-blue-500 text-white py-2 rounded font-medium text-sm">Send Credits</button>
+                                <button class="flex-1 bg-slate-700 hover:bg-slate-600 text-white py-2 rounded font-medium text-sm">Convert to USDC</button>
+                            </div>
+                        </div>
+                        <i class="fa-solid fa-coins absolute -bottom-10 -right-10 text-9xl text-white opacity-5"></i>
+                    </div>
+                </div>
+                
+                <!-- Recent Tx -->
+                <div class="bg-slate-800 rounded-xl border border-slate-700 p-6">
+                    <h3 class="font-semibold mb-4">Recent Ledger Activity</h3>
+                    <div class="space-y-3">
+                        <div class="flex justify-between items-center p-3 bg-slate-900/50 rounded-lg border border-slate-700/50">
+                            <div class="flex items-center gap-3">
+                                <div class="w-8 h-8 rounded-full bg-emerald-500/20 flex items-center justify-center text-emerald-400"><i class="fa-solid fa-arrow-down"></i></div>
+                                <div>
+                                    <p class="text-sm font-bold text-white">Payment Received (Apex Dev)</p>
+                                    <p class="text-xs text-slate-500">ACH / Stripe Connect</p>
+                                </div>
+                            </div>
+                            <span class="text-emerald-400 font-mono">+$45,000.00</span>
+                        </div>
+                        <div class="flex justify-between items-center p-3 bg-slate-900/50 rounded-lg border border-slate-700/50">
+                            <div class="flex items-center gap-3">
+                                <div class="w-8 h-8 rounded-full bg-blue-500/20 flex items-center justify-center text-blue-400"><i class="fa-solid fa-coins"></i></div>
+                                <div>
+                                    <p class="text-sm font-bold text-white">Payout to Mike Ross</p>
+                                    <p class="text-xs text-slate-500">NXS Internal Transfer</p>
+                                </div>
+                            </div>
+                            <span class="text-blue-400 font-mono">-2,600 NXS</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+             <!-- VIEW: AI AGENT -->
+             <div id="view-ai" class="hidden h-[calc(100vh-140px)] flex flex-col animate-fade-in">
+                <div class="bg-slate-800 p-4 border-b border-slate-700 flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-full bg-emerald-500 flex items-center justify-center shadow-lg shadow-emerald-500/30">
+                        <i class="fa-solid fa-robot text-white"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-bold">BuildBrain AI</h3>
+                        <p class="text-xs text-slate-400">Analyzing Blueprints & Lien Waivers...</p>
+                    </div>
+                </div>
+                <div class="flex-1 overflow-y-auto p-6 space-y-4" id="ai-chat">
+                    <div class="flex gap-3">
+                        <div class="w-8 h-8 rounded-full bg-slate-700 flex-shrink-0 flex items-center justify-center"><i class="fa-solid fa-robot text-emerald-500 text-xs"></i></div>
+                        <div class="bg-slate-700 p-3 rounded-lg rounded-tl-none text-sm text-slate-300 max-w-[80%]">
+                            I have reviewed the "Sunnyvale Tower" change order request #442. The price increase is 15% above market rate for concrete work. Do you want me to flag this for negotiation?
+                        </div>
+                    </div>
+                </div>
+                <div class="p-4 bg-slate-800 border-t border-slate-700">
+                    <div class="flex gap-2">
+                        <input type="text" placeholder="Ask BuildBrain..." class="flex-1 bg-slate-900 border border-slate-700 rounded-lg px-4 py-2 text-sm text-white focus:border-emerald-500 outline-none">
+                        <button class="bg-emerald-600 hover:bg-emerald-500 text-white px-4 rounded-lg text-sm font-bold"><i class="fa-solid fa-paper-plane"></i></button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- MODAL -->
+    <div id="modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm hidden items-center justify-center z-50">
+        <div class="bg-slate-800 rounded-xl border border-slate-700 p-6 w-full max-w-md relative animate-fade-in">
+            <button onclick="closeModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
+            <h3 class="text-xl font-bold mb-4">Dispatch Worker</h3>
+            <form class="space-y-4">
+                <div>
+                    <label class="block text-xs text-slate-400 mb-1">Project</label>
+                    <select class="w-full bg-slate-900 border border-slate-700 rounded px-3 py-2 text-sm text-white"><option>Sunnyvale Tower</option><option>Reno Data Center</option></select>
+                </div>
+                <div>
+                    <label class="block text-xs text-slate-400 mb-1">Payment Method</label>
+                    <div class="flex gap-2">
+                        <button type="button" class="flex-1 bg-emerald-600/20 border border-emerald-500/50 text-emerald-400 text-xs py-2 rounded">NXS Credits (Instant)</button>
+                        <button type="button" class="flex-1 bg-slate-700 border border-slate-600 text-slate-400 text-xs py-2 rounded">Standard ACH</button>
+                    </div>
+                </div>
+                <button type="button" onclick="confirmDispatch()" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-3 rounded-lg mt-2">Confirm & Lock Funds</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Simple SPA Logic
+        function switchTab(tabId) {
+            // Hide all views
+            ['dashboard', 'marketplace', 'bidding', 'wallet', 'ai'].forEach(id => {
+                document.getElementById('view-' + id).classList.add('hidden');
+                document.getElementById('btn-' + id).classList.remove('active', 'bg-slate-800', 'text-emerald-500');
+                document.getElementById('btn-' + id).classList.add('text-slate-400');
+            });
+            // Show selected
+            document.getElementById('view-' + tabId).classList.remove('hidden');
+            const btn = document.getElementById('btn-' + tabId);
+            btn.classList.add('active');
+            btn.classList.remove('text-slate-400');
+            
+            // Update Title
+            const titles = { dashboard: 'Executive Overview', marketplace: 'Labor Exchange', bidding: 'Procurement', wallet: 'Financial Ledger', ai: 'BuildBrain AI' };
+            document.getElementById('page-title').innerText = titles[tabId];
+        }
+
+        function showModal(type) {
+            document.getElementById('modal').classList.remove('hidden');
+            document.getElementById('modal').classList.add('flex');
+        }
+
+        function closeModal() {
+            document.getElementById('modal').classList.add('hidden');
+            document.getElementById('modal').classList.remove('flex');
+        }
+
+        function confirmDispatch() {
+            closeModal();
+            alert('Funds locked in Escrow via NXS Credits. Worker notified.');
+        }
+    </script>
+</body>
+</html>

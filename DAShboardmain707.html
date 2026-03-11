@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NEXUS Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --primary: #00d4ff;
+            --secondary: #7b2cbf;
+            --bg-dark: #0a192f;
+            --bg-card: #112240;
+            --text-primary: #e6f1ff;
+            --text-secondary: #a8b2d1;
+            --success: #64ffda;
+            --warning: #f6c744;
+            --error: #ff6b6b;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-primary);
+            display: flex;
+            height: 100vh;
+        }
+        
+        /* Sidebar */
+        .sidebar {
+            width: 260px;
+            background: var(--bg-card);
+            padding: 2rem 1.5rem;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 3rem;
+        }
+        
+        .nav-section {
+            margin-bottom: 2rem;
+        }
+        
+        .nav-title {
+            font-size: 0.7rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 1rem;
+        }
+        
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            padding: 0.8rem 1rem;
+            border-radius: 8px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-bottom: 0.3rem;
+        }
+        
+        .nav-item:hover, .nav-item.active {
+            background: rgba(0, 212, 255, 0.1);
+            color: var(--primary);
+        }
+        
+        .nav-item.active {
+            border-left: 3px solid var(--primary);
+        }
+        
+        /* Main Content */
+        .main {
+            flex: 1;
+            overflow-y: auto;
+            padding: 2rem;
+        }
+        
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+        
+        .header h1 {
+            font-size: 2rem;
+            font-weight: 600;
+        }
+        
+        .header-actions {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+        
+        .search-box {
+            background: var(--bg-card);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 0.6rem 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .search-box input {
+            background: transparent;
+            border: none;
+            color: var(--text-primary);
+            outline: none;
+            width: 200px;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            padding: 0.6rem 1.5rem;
+            border-radius: 6px;
+            font-weight: 500;
+            cursor: pointer;
+        }
+        
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .stat-card {
+            background: var(--bg-card);
+            border-radius: 12px;
+            padding: 1.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .stat-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+        }
+        
+        .stat-title {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+        
+        .stat-change {
+            font-size: 0.8rem;
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+        }
+        
+        .stat-change.positive {
+            background: rgba(100, 255, 218, 0.1);
+            color: var(--success);
+        }
+        
+        .stat-change.negative {
+            background: rgba(255, 107, 107, 0.1);
+            color: var(--error);
+        }
+        
+        .stat-value {
+            font-size: 2.2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+        
+        .stat-label {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+        
+        /* Content Grid */
+        .content-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 1.5rem;
+        }
+        
+        .card {
+            background: var(--bg-card);
+            border-radius: 12px;
+            padding: 1.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+        
+        .card-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+        
+        .card-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        .btn-outline {
+            background: transparent;
+            color: var(--text-secondary);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 0.4rem 0.8rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.8rem;
+        }
+        
+        .btn-outline:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+        
+        /* Projects Table */
+        .projects-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .projects-table th {
+            text-align: left;
+            padding: 0.8rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+            font-size: 0.85rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .projects-table td {
+            padding: 1rem 0.8rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.02);
+        }
+        
+        .project-name {
+            font-weight: 500;
+        }
+        
+        .project-status {
+            display: inline-block;
+            padding: 0.3rem 0.6rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+        
+        .status-active {
+            background: rgba(100, 255, 218, 0.1);
+            color: var(--success);
+        }
+        
+        .status-pending {
+            background: rgba(246, 199, 68, 0.1);
+            color: var(--warning);
+        }
+        
+        .status-completed {
+            background: rgba(0, 212, 255, 0.1);
+            color: var(--primary);
+        }
+        
+        /* Activity List */
+        .activity-item {
+            display: flex;
+            gap: 1rem;
+            padding: 1rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.02);
+        }
+        
+        .activity-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(0, 212, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+        
+        .activity-content {
+            flex: 1;
+        }
+        
+        .activity-title {
+            font-weight: 500;
+            margin-bottom: 0.3rem;
+        }
+        
+        .activity-time {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+        
+        /* Chart Placeholder */
+        .chart-placeholder {
+            height: 200px;
+            background: rgba(0, 212, 255, 0.05);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-secondary);
+        }
+        
+        @media (max-width: 1200px) {
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .sidebar {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <div class="logo">NEXUS</div>
+        
+        <div class="nav-section">
+            <div class="nav-title">Overview</div>
+            <div class="nav-item active">📊 Dashboard</div>
+            <div class="nav-item">📈 Analytics</div>
+            <div class="nav-item">🔔 Notifications</div>
+        </div>
+        
+        <div class="nav-section">
+            <div class="nav-title">Projects</div>
+            <div class="nav-item">📁 All Projects</div>
+            <div class="nav-item">🔨 Active Sites</div>
+            <div class="nav-item">📋 Bidding</div>
+            <div class="nav-item">✅ Completed</div>
+        </div>
+        
+        <div class="nav-section">
+            <div class="nav-title">Marketplace</div>
+            <div class="nav-item">👷 Workers</div>
+            <div class="nav-item">🚧 Jobs</div>
+            <div class="nav-item">🤝 Matching</div>
+        </div>
+        
+        <div class="nav-section">
+            <div class="nav-title">Finance</div>
+            <div class="nav-item">💳 Wallet</div>
+            <div class="nav-item">💸 Payments</div>
+            <div class="nav-item">🏦 Escrow</div>
+            <div class="nav-item">📊 Reports</div>
+        </div>
+        
+        <div class="nav-section">
+            <div class="nav-title">Compliance</div>
+            <div class="nav-item">📄 Documents</div>
+            <div class="nav-item">✅ Verification</div>
+            <div class="nav-item">📋 Lien Waivers</div>
+        </div>
+        
+        <div class="nav-section">
+            <div class="nav-title">AI Tools</div>
+            <div class="nav-item">🤖 Estimator</div>
+            <div class="nav-item">🔍 Risk Analysis</div>
+            <div class="nav-item">📊 Predictions</div>
+        </div>
+        
+        <div style="margin-top: auto; padding-top: 2rem; border-top: 1px solid rgba(255,255,255,0.05);">
+            <div class="nav-item">⚙️ Settings</div>
+            <div class="nav-item">❓ Help Center</div>
+            <div class="nav-item">👤 Profile</div>
+        </div>
+    </div>
+    
+    <!-- Main Content -->
+    <div class="main">
+        <div class="header">
+            <h1>Dashboard</h1>
+            <div class="header-actions">
+                <div class="search-box">
+                    <span>🔍</span>
+                    <input type="text" placeholder="Search projects, workers...">
+                </div>
+                <button class="btn-primary">+ New Project</button>
+            </div>
+        </div>
+        
+        <!-- Stats Grid -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-header">
+                    <div class="stat-title">Total Revenue</div>
+                    <div class="stat-change positive">+12.5%</div>
+                </div>
+                <div class="stat-value">$1.2M</div>
+                <div class="stat-label">vs last month $1.07M</div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-header">
+                    <div class="stat-title">Active Projects</div>
+                    <div class="stat-change positive">+3</div>
+                </div>
+                <div class="stat-value">24</div>
+                <div class="stat-label">8 bidding, 16 active</div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-header">
+                    <div class="stat-title">Workers On Platform</div>
+                    <div class="stat-change positive">+28</div>
+                </div>
+                <div class="stat-value">1,247</div>
+                <div class="stat-label">423 active this week</div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-header">
+                    <div class="stat-title">Payment Volume</div>
+                    <div class="stat-change positive">+8.3%</div>
+                </div>
+                <div class="stat-value">$3.8M</div>
+                <div class="stat-label">Processed this month</div>
+            </div>
+        </div>
+        
+        <!-- Content Grid -->
+        <div class="content-grid">
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">Recent Projects</div>
+                    <div class="card-actions">
+                        <button class="btn-outline">View All</button>
+                        <button class="btn-outline">Export</button>
+                    </div>
+                </div>
+                
+                <table class="projects-table">
+                    <thead>
+                        <tr>
+                            <th>Project Name</th>
+                            <th>Status</th>
+                            <th>Budget</th>
+                            <th>Progress</th>
+                            <th>Workers</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><div class="project-name">Highland Tower Development</div></td>
+                            <td><span class="project-status status-active">Active</span></td>
+                            <td>$2.4M</td>
+                            <td>68%</td>
+                            <td>42</td>
+                        </tr>
+                        <tr>
+                            <td><div class="project-name">Downtown Office Complex</div></td>
+                            <td><span class="project-status status-active">Active</span></td>
+                            <td>$1.8M</td>
+                            <td>45%</td>
+                            <td>28</td>
+                        </tr>
+                        <tr>
+                            <td><div class="project-name">Riverside Apartments</div></td>
+                            <td><span class="project-status status-pending">Bidding</span></td>
+                            <td>$3.2M</td>
+                            <td>0%</td>
+                            <td>-</td>
+                        </tr>
+                        <tr>
+                            <td><div class="project-name">Industrial Park Phase 2</div></td>
+                            <td><span class="project-status status-completed">Completed</span></td>
+                            <td>$4.1M</td>
+                            <td>100%</td>
+                            <td>65</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">Recent Activity</div>
+                    <button class="btn-outline">View All</button>
+                </div>
+                
+                <div class="activity-list">
+                    <div class="activity-item">
+                        <div class="activity-icon">💰</div>
+                        <div class="activity-content">
+                            <div class="activity-title">Payment received: $45,000</div>
+                            <div class="activity-time">Highland Tower - Milestone 3 • 2h ago</div>
+                        </div>
+                    </div>
+                    
+                    <div class="activity-item">
+                        <div class="activity-icon">👷</div>
+                        <div class="activity-content">
+                            <div class="activity-title">New worker joined: John Smith (Electrician)</div>
+                            <div class="activity-time">Verified & ready for jobs • 3h ago</div>
+                        </div>
+                    </div>
+                    
+                    <div class="activity-item">
+                        <div class="activity-icon">✅</div>
+                        <div class="activity-content">
+                            <div class="activity-title">Milestone verified by AI</div>
+                            <div class="activity-time">Downtown Office - Foundation complete • 5h ago</div>
+                        </div>
+                    </div>
+                    
+                    <div class="activity-item">
+                        <div class="activity-icon">📋</div>
+                        <div class="activity-content">
+                            <div class="activity-title">Lien waiver generated automatically</div>
+                            <div class="activity-time">Industrial Park Phase 2 • 1d ago</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Additional Cards -->
+        <div class="content-grid" style="margin-top: 1.5rem;">
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">Revenue Analytics</div>
+                    <div class="card-actions">
+                        <button class="btn-outline">This Month</button>
+                        <button class="btn-outline">Export</button>
+                    </div>
+                </div>
+                <div class="chart-placeholder">
+                    📈 Revenue chart will render here<br>
+                    <small style="color: var(--text-secondary)">Integration with Chart.js or Recharts</small>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">AI Insights</div>
+                </div>
+                <div style="display: flex; flex-direction: column; gap: 1rem;">
+                    <div style="background: rgba(100, 255, 218, 0.1); padding: 1rem; border-radius: 8px;">
+                        <div style="font-weight: 500; margin-bottom: 0.5rem;">⚠️ Project Risk Alert</div>
+                        <div style="font-size: 0.9rem; color: var(--text-secondary);">Highland Tower: 15% chance of delay due to material shortage. AI recommends ordering materials now.</div>
+                    </div>
+                    <div style="background: rgba(0, 212, 255, 0.1); padding: 1rem; border-radius: 8px;">
+                        <div style="font-weight: 500; margin-bottom: 0.5rem;">💡 Optimization Opportunity</div>
+                        <div style="font-size: 0.9rem; color: var(--text-secondary);">You could save $12,500 by consolidating concrete orders across 3 active projects.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

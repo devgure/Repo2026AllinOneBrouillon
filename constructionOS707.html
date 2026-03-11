@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>IronFlow OS – AI Workforce for Construction Ops</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    :root {
+      --bg: #0b1020;
+      --bg-elevated: #141a30;
+      --accent: #4f9cff;
+      --accent-soft: rgba(79,156,255,0.15);
+      --text-main: #f5f7ff;
+      --text-muted: #9ca3c7;
+      --danger: #ff6b6b;
+      --success: #35d399;
+      --warning: #facc15;
+      --border-subtle: #252a43;
+      --radius: 10px;
+    }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+    body {
+      background: radial-gradient(circle at top, #192044 0, #050716 55%);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    .app-shell {
+      display: grid;
+      grid-template-columns: 260px 1fr;
+      min-height: 100vh;
+    }
+    .sidebar {
+      background: rgba(6,10,30,0.95);
+      border-right: 1px solid var(--border-subtle);
+      padding: 20px 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .logo-mark {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      background: conic-gradient(from 140deg, #4f9cff, #35d399, #facc15, #4f9cff);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #050716;
+      font-weight: 800;
+      font-size: 18px;
+    }
+    .logo-text {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+    .logo-text span:first-child {
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+    .logo-text span:last-child {
+      font-weight: 700;
+      font-size: 16px;
+    }
+    .sidebar-section-title {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+    }
+    .nav-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .nav-item {
+      border-radius: 8px;
+      padding: 8px 10px;
+      font-size: 13px;
+      color: var(--text-muted);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .nav-item span {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .nav-item.active {
+      background: var(--accent-soft);
+      color: var(--text-main);
+      border: 1px solid var(--accent);
+    }
+    .nav-item:hover {
+      background: rgba(255,255,255,0.03);
+    }
+    .badge {
+      font-size: 11px;
+      padding: 2px 6px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.06);
+      color: var(--text-muted);
+    }
+    .badge-pill {
+      background: rgba(79,156,255,0.14);
+      border-color: rgba(79,156,255,0.5);
+      color: #dbeafe;
+    }
+    .sidebar-footer {
+      margin-top: auto;
+      border-top: 1px solid var(--border-subtle);
+      padding-top: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .user-pill {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .user-avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, #4f9cff, #35d399);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 600;
+      font-size: 14px;
+    }
+    .user-meta {
+      display: flex;
+      flex-direction: column;
+      gap: 1px;
+      font-size: 12px;
+    }
+    .user-meta span:first-child {
+      font-weight: 500;
+    }
+    .user-meta span:last-child {
+      color: var(--text-muted);
+      font-size: 11px;
+    }
+    .btn-outline {
+      border-radius: 999px;
+      border: 1px solid var(--border-subtle);
+      background: transparent;
+      color: var(--text-muted);
+      font-size: 11px;
+      padding: 4px 9px;
+      cursor: pointer;
+    }
+    .btn-outline:hover {
+      border-color: var(--accent);
+      color: var(--text-main);
+    }
+
+    .main {
+      padding: 18px 22px;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+    .top-bar {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      justify-content: space-between;
+    }
+    .top-bar-left {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .top-title {
+      font-size: 18px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .top-subtitle {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+    .pill {
+      font-size: 11px;
+      padding: 2px 8px;
+      border-radius: 999px;
+      background: rgba(34,197,94,0.08);
+      color: #bbf7d0;
+      border: 1px solid rgba(34,197,94,0.4);
+    }
+    .top-bar-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .btn-primary {
+      border-radius: 999px;
+      border: none;
+      background: linear-gradient(135deg, #4f9cff, #35d399);
+      color: #050716;
+      font-size: 13px;
+      padding: 8px 14px;
+      cursor: pointer;
+      font-weight: 600;
+    }
+    .btn-ghost {
+      border-radius: 999px;
+      border: 1px solid var(--border-subtle);
+      background: rgba(10,15,40,0.9);
+      color: var(--text-main);
+      font-size: 12px;
+      padding: 7px 12px;
+      cursor: pointer;
+    }
+    .btn-primary:hover {
+      filter: brightness(1.05);
+    }
+    .btn-ghost:hover {
+      border-color: var(--accent);
+    }
+
+    .grid {
+      display: grid;
+      gap: 14px;
+    }
+    @media (min-width: 960px) {
+      .grid-3 {
+        grid-template-columns: 2.2fr 1.5fr;
+      }
+    }
+    @media (max-width: 959px) {
+      .app-shell {
+        grid-template-columns: 1fr;
+      }
+      .sidebar {
+        display: none;
+      }
+    }
+
+    .card {
+      background: radial-gradient(circle at top left, rgba(79,156,255,0.16), #090e23 60%);
+      border-radius: var(--radius);
+      border: 1px solid var(--border-subtle);
+      padding: 14px 14px 12px;
+      box-shadow: 0 22px 50px rgba(0,0,0,0.45);
+    }
+    .card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 8px;
+    }
+    .card-title {
+      font-size: 13px;
+      font-weight: 500;
+    }
+    .card-subtitle {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+    .chip-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 10px;
+    }
+    .chip {
+      font-size: 11px;
+      padding: 4px 8px;
+      border-radius: 999px;
+      background: rgba(15,23,42,0.9);
+      border: 1px solid rgba(148,163,184,0.2);
+      color: #e5e7eb;
+    }
+    .chip-green {
+      border-color: rgba(34,197,94,0.5);
+      background: rgba(22,163,74,0.09);
+      color: #bbf7d0;
+    }
+
+    .metric-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 10px;
+    }
+    .metric-pill {
+      flex: 1;
+      min-width: 120px;
+      background: rgba(15,23,42,0.9);
+      border-radius: 10px;
+      padding: 8px 10px;
+      border: 1px solid rgba(31,41,55,0.9);
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+    .metric-label {
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+    .metric-value {
+      font-size: 15px;
+      font-weight: 600;
+    }
+    .metric-tag {
+      font-size: 10px;
+      margin-top: 2px;
+    }
+
+    .list {
+      margin-top: 8px;
+      border-radius: 8px;
+      border: 1px solid var(--border-subtle);
+      overflow: hidden;
+      background: rgba(8,12,32,0.95);
+    }
+    .list-header, .list-row {
+      display: grid;
+      grid-template-columns: 2.2fr 1fr 0.9fr 0.9fr;
+      font-size: 11px;
+      padding: 7px 8px;
+      align-items: center;
+    }
+    .list-header {
+      background: rgba(15,23,42,0.95);
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+    .list-row:nth-child(odd) {
+      background: rgba(15,23,42,0.65);
+    }
+    .status-pill {
+      font-size: 10px;
+      padding: 2px 6px;
+      border-radius: 999px;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .status-open {
+      background: rgba(59,130,246,0.14);
+      color: #bfdbfe;
+    }
+    .status-risk {
+      background: rgba(250,204,21,0.16);
+      color: #fef9c3;
+    }
+    .status-blocker {
+      background: rgba(248,113,113,0.16);
+      color: #fee2e2;
+    }
+    .small-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 999px;
+      background: currentColor;
+    }
+
+    .timeline {
+      margin-top: 10px;
+      height: 42px;
+      border-radius: 8px;
+      background: linear-gradient(90deg, rgba(79,156,255,0.22), rgba(34,197,94,0.18));
+      position: relative;
+      overflow: hidden;
+    }
+    .timeline-track {
+      position: absolute;
+      inset: 0;
+      opacity: 0.16;
+      background-image: repeating-linear-gradient(
+        to right,
+        rgba(148,163,184,0.4) 0,
+        rgba(148,163,184,0.4) 1px,
+        transparent 1px,
+        transparent 12px
+      );
+    }
+    .timeline-labels {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 10px;
+      font-size: 11px;
+      color: #e5e7eb;
+    }
+    .timeline-highlight {
+      position: absolute;
+      top: 4px;
+      bottom: 4px;
+      left: 20%;
+      right: 10%;
+      border-radius: 999px;
+      background: rgba(15,23,42,0.55);
+      border: 1px solid rgba(15,23,42,0.8);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      color: #e5e7eb;
+    }
+
+    .callout {
+      margin-top: 12px;
+      font-size: 11px;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+    .callout strong {
+      color: #e5e7eb;
+    }
+  </style>
+</head>
+<body>
+<div class="app-shell">
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="logo">
+      <div class="logo-mark">IF</div>
+      <div class="logo-text">
+        <span>IRONFLOW OS</span>
+        <span>AI Workforce</span>
+      </div>
+    </div>
+
+    <div>
+      <div class="sidebar-section-title">Workspace</div>
+      <ul class="nav-list">
+        <li class="nav-item active">
+          <span>📊 Dashboard</span>
+          <span class="badge badge-pill">Live</span>
+        </li>
+        <li class="nav-item">
+          <span>📨 RFIs</span>
+          <span class="badge">12 open</span>
+        </li>
+        <li class="nav-item">
+          <span>📑 Change Orders</span>
+          <span class="badge">5 pending</span>
+        </li>
+        <li class="nav-item">
+          <span>💵 Pay Applications</span>
+          <span class="badge">Cycle 08</span>
+        </li>
+        <li class="nav-item">
+          <span>📅 Daily Reports</span>
+          <span class="badge">3 sites</span>
+        </li>
+      </ul>
+    </div>
+
+    <div>
+      <div class="sidebar-section-title">AI Workers</div>
+      <ul class="nav-list">
+        <li class="nav-item">
+          <span>🤖 RFI Agent</span>
+          <span class="badge">Auto 74%</span>
+        </li>
+        <li class="nav-item">
+          <span>🤖 Change Order Agent</span>
+          <span class="badge">Pilot</span>
+        </li>
+        <li class="nav-item">
+          <span>🤖 Pay App Agent</span>
+          <span class="badge">Beta</span>
+        </li>
+      </ul>
+    </div>
+
+    <div class="sidebar-footer">
+      <div class="user-pill">
+        <div class="user-avatar">PM</div>
+        <div class="user-meta">
+          <span>Wartime Founder</span>
+          <span>Super Admin · IronFlow</span>
+        </div>
+      </div>
+      <button class="btn-outline">Environment: Staging</button>
+    </div>
+  </aside>
+
+  <!-- Main -->
+  <main class="main">
+    <header class="top-bar">
+      <div class="top-bar-left">
+        <div class="top-title">
+          IronFlow Command Center
+          <span class="pill">AI handling live workflow</span>
+        </div>
+        <div class="top-subtitle">
+          Insert AI directly into RFIs, Change Orders, and Pay Apps. No rip‑and‑replace. No fluff.
+        </div>
+      </div>
+      <div class="top-bar-actions">
+        <button class="btn-ghost">Upload Sample Project</button>
+        <button class="btn-primary">Add AI Worker</button>
+      </div>
+    </header>
+
+    <section class="grid grid-3">
+      <!-- Left: Ops snapshot -->
+      <div class="card">
+        <div class="card-header">
+          <div>
+            <div class="card-title">Today’s Operations Snapshot</div>
+            <div class="card-subtitle">Where AI is saving hours right now</div>
+          </div>
+          <span class="badge">Site: All active jobs</span>
+        </div>
+
+        <div class="metric-row">
+          <div class="metric-pill">
+            <div class="metric-label">RFIs processed by AI (24h)</div>
+            <div class="metric-value">37</div>
+            <div class="metric-tag">82% no human edits</div>
+          </div>
+          <div class="metric-pill">
+            <div class="metric-label">Change orders drafted (7d)</div>
+            <div class="metric-value">14</div>
+            <div class="metric-tag">Est. $420k tracked impact</div>
+          </div>
+          <div class="metric-pill">
+            <div class="metric-label">Hours saved this week</div>
+            <div class="metric-value">61.5</div>
+            <div class="metric-tag">≈ 1.5 FTE back‑office</div>
+          </div>
+        </div>
+
+        <div class="chip-row">
+          <span class="chip chip-green">AI covering intake + triage</span>
+          <span class="chip">Contract search grounded on specs</span>
+          <span class="chip">Export to your templates</span>
+        </div>
+
+        <div class="timeline">
+          <div class="timeline-track"></div>
+          <div class="timeline-labels">
+            <span>Manual‑only ops</span>
+            <span>Hybrid AI + human</span>
+            <span>AI‑first workflow</span>
+          </div>
+          <div class="timeline-highlight">
+            You are here: RFIs 70% AI‑handled
+          </div>
+        </div>
+
+        <div class="callout">
+          <strong>Next move:</strong> switch Change Orders and Pay Apps onto IronFlow AI workers to push toward a fully AI‑first back office.
+        </div>
+      </div>
+
+      <!-- Right: Live queue -->
+      <div class="card">
+        <div class="card-header">
+          <div>
+            <div class="card-title">Live Queue · AI Workers</div>
+            <div class="card-subtitle">Review, approve, or escalate</div>
+          </div>
+          <span class="badge">3 items require review</span>
+        </div>
+
+        <div class="list">
+          <div class="list-header">
+            <span>Item</span>
+            <span>Worker</span>
+            <span>Status</span>
+            <span>Savings</span>
+          </div>
+          <div class="list-row">
+            <span>RFI‑117 · Roof drain detail clarification</span>
+            <span>RFI Agent</span>
+            <span>
+              <span class="status-pill status-open">
+                <span class="small-dot"></span> Auto‑drafted
+              </span>
+            </span>
+            <span>18 min saved</span>
+          </div>
+          <div class="list-row">
+            <span>CO‑034 · Added fireproofing scope</span>
+            <span>Change Order Agent</span>
+            <span>
+              <span class="status-pill status-risk">
+                <span class="small-dot"></span> Needs review
+              </span>
+            </span>
+            <span>$36k flagged</span>
+          </div>
+          <div class="list-row">
+            <span>PAY‑08 · Tower B level 12 concrete</span>
+            <span>Pay App Agent</span>
+            <span>
+              <span class="status-pill status-blocker">
+                <span class="small-dot"></span> Blocked · mismatch
+              </span>
+            </span>
+            <span>$12k variance</span>
+          </div>
+        </div>
+
+        <div class="chip-row" style="margin-top: 10px;">
+          <span class="chip">1‑click export to PDF / Excel</span>
+          <span class="chip">Audit trail for every decision</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Bottom strip: “Founder view” -->
+    <section class="card">
+      <div class="card-header">
+        <div>
+          <div class="card-title">Founder Console · AI Penetration</div>
+          <div class="card-subtitle">Wartime view of where IronFlow is embedded in the cash flow</div>
+        </div>
+        <span class="badge">Jobsite rollout · Phase 1</span>
+      </div>
+
+      <div class="metric-row">
+        <div class="metric-pill">
+          <div class="metric-label">Projects with AI enabled</div>
+          <div class="metric-value">7 / 12</div>
+          <div class="metric-tag">Target: 100% of portfolio</div>
+        </div>
+        <div class="metric-pill">
+          <div class="metric-label">Back‑office automation coverage</div>
+          <div class="metric-value">54%</div>
+          <div class="metric-tag">RFIs + COs + Pay Apps</div>
+        </div>
+        <div class="metric-pill">
+          <div class="metric-label">Monthly value “taxed” by IronFlow</div>
+          <div class="metric-value">$2.8M</div>
+          <div class="metric-tag">Construction cash stream under management</div>
+        </div>
+      </div>
+
+      <div class="chip-row">
+        <span class="chip chip-green">Goal: become mandatory layer for every project admin workflow</span>
+        <span class="chip">Next: add Safety & Daily Reports</span>
+      </div>
+    </section>
+  </main>
+
+</div>
+</body>
+</html>

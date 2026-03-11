@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Strategic Intelligence Hub | Investor Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        bg: '#050508',
+                        surface: '#0a0a0f',
+                        card: '#101018',
+                        border: '#1a1a28',
+                        accent: '#00e5a0',
+                        accentDim: '#00b37d',
+                        highlight: '#ff3366',
+                        gold: '#ffd700',
+                        muted: '#64748b',
+                        info: '#3b82f6'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                        display: ['Space Grotesk', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #050508; color: #e2e8f0; }
+        .gradient-text { background: linear-gradient(135deg, #00e5a0, #00b37d); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+        .data-table th { position: sticky; top: 0; background: #101018; z-index: 10; }
+        .tab-active { border-bottom: 2px solid #00e5a0; color: #00e5a0; }
+        .progress-bar { height: 4px; background: #1a1a28; border-radius: 2px; }
+        .progress-fill { height: 100%; background: linear-gradient(90deg, #00e5a0, #00b37d); border-radius: 2px; }
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: #0a0a0f; }
+        ::-webkit-scrollbar-thumb { background: #1a1a28; border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: #00e5a0; }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+        .card-hover:hover { border-color: rgba(0, 229, 160, 0.3); box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3); }
+    </style>
+</head>
+<body class="antialiased">
+    <!-- Sidebar Navigation -->
+    <nav class="fixed left-0 top-0 h-full w-64 bg-surface border-r border-border z-50 flex flex-col">
+        <div class="p-6 border-b border-border">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 bg-accent rounded-lg flex items-center justify-center">
+                    <span class="font-bold text-bg text-lg">B</span>
+                </div>
+                <div>
+                    <div class="font-display font-bold text-white">Blueprint</div>
+                    <div class="text-xs text-muted">Intelligence Hub</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="flex-1 py-4 overflow-y-auto">
+            <div class="px-4 mb-2 text-xs text-muted uppercase tracking-wider">Navigation</div>
+            <button onclick="showTab('overview')" class="nav-btn w-full text-left px-6 py-3 text-sm hover:bg-card transition-colors flex items-center gap-3 text-white">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/></svg>
+                Overview
+            </button>
+            <button onclick="showTab('day1')" class="nav-btn w-full text-left px-6 py-3 text-sm hover:bg-card transition-colors flex items-center gap-3 text-muted">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                Day 1 Profit Models
+            </button>
+            <button onclick="showTab('ai-startups')" class="nav-btn w-full text-left px-6 py-3 text-sm hover:bg-card transition-colors flex items-center gap-3 text-muted">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+                AI Startups ($10M ARR)
+            </button>
+            <button onclick="showTab('moonshots')" class="nav-btn w-full text-left px-6 py-3 text-sm hover:bg-card transition-colors flex items-center gap-3 text-muted">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
+                $10B Moonshots
+            </button>
+            <button onclick="showTab('monopoly')" class="nav-btn w-full text-left px-6 py-3 text-sm hover:bg-card transition-colors flex items-center gap-3 text-muted">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+                Monopoly Opportunity
+            </button>
+            <button onclick="showTab('architecture')" class="nav-btn w-full text-left px-6 py-3 text-sm hover:bg-card transition-colors flex items-center gap-3 text-muted">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/></svg>
+                Super-App Architecture
+            </button>
+        </div>
+        
+        <div class="p-4 border-t border-border">
+            <div class="text-xs text-muted">Last Updated</div>
+            <div class="text-sm font-mono text-white" id="timestamp"></div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="ml-64">
+        <!-- Overview Tab -->
+        <div id="overview" class="tab-content active p-8">
+            <div class="max-w-6xl">
+                <div class="mb-8">
+                    <h1 class="font-display text-4xl font-bold text-white mb-2">Strategic Command Center</h1>
+                    <p class="text-muted">Comprehensive roadmap from zero-capital bootstrap to $10B market dominance.</p>
+                </div>
+
+                <!-- Quick Stats -->
+                <div class="grid grid-cols-4 gap-4 mb-8">
+                    <div class="bg-card border border-border rounded-xl p-5 card-hover transition-all">
+                        <div class="text-xs text-muted uppercase tracking-wider mb-1">Day 1 Models</div>
+                        <div class="text-3xl font-bold gradient-text font-display">15</div>
+                        <div class="text-xs text-accent mt-1">$0 Capital Required</div>
+                    </div>
+                    <div class="bg-card border border-border rounded-xl p-5 card-hover transition-all">
+                        <div class="text-xs text-muted uppercase tracking-wider mb-1">AI Startups</div>
+                        <div class="text-3xl font-bold text-white font-display">10</div>
+                        <div class="text-xs text-muted mt-1">$10M ARR Target</div>
+                    </div>
+                    <div class="bg-card border border-border rounded-xl p-5 card-hover transition-all">
+                        <div class="text-xs text-muted uppercase tracking-wider mb-1">Moonshots</div>
+                        <div class="text-3xl font-bold text-highlight font-display">3</div>
+                        <div class="text-xs text-muted mt-1">$10B Valuation</div>
+                    </div>
+                    <div class="bg-card border border-border rounded-xl p-5 card-hover transition-all">
+                        <div class="text-xs text-muted uppercase tracking-wider mb-1">Total TAM</div>
+                        <div class="text-3xl font-bold text-gold font-display">$15T</div>
+                        <div class="text-xs text-muted mt-1">Combined Markets</div>
+                    </div>
+                </div>
+
+                <!-- Strategy Flow -->
+                <div class="bg-card border border-border rounded-xl p-6 mb-8">
+                    <h2 class="font-display font-bold text-lg mb-4 text-white">The Execution Flywheel</h2>
+                    <div class="flex items-center justify-between">
+                        <div class="text-center flex-1">
+                            <div class="w-12 h-12 bg-accent/20 rounded-xl flex items-center justify-center mx-auto mb-2">
+                                <span class="text-accent font-bold">1</span>
+                            </div>
+                            <div class="text-sm font-medium">Bootstrap Day 1</div>
+                            <div class="text-xs text-muted mt-1">Generate Cash</div>
+                        </div>
+                        <svg class="w-8 h-8 text-border" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+                        <div class="text-center flex-1">
+                            <div class="w-12 h-12 bg-info/20 rounded-xl flex items-center justify-center mx-auto mb-2">
+                                <span class="text-info font-bold">2</span>
+                            </div>
+                            <div class="text-sm font-medium">Build AI Startup</div>
+                            <div class="text-xs text-muted mt-1">$10M ARR</div>
+                        </div>
+                        <svg class="w-8 h-8 text-border" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+                        <div class="text-center flex-1">
+                            <div class="w-12 h-12 bg-highlight/20 rounded-xl flex items-center justify-center mx-auto mb-2">
+                                <span class="text-highlight font-bold">3</span>
+                            </div>
+                            <div class="text-sm font-medium">Scale to Moonshot</div>
+                            <div class="text-xs text-muted mt-1">$10B Valuation</div>
+                        </div>
+                        <svg class="w-8 h-8 text-border" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+                        <div class="text-center flex-1">
+                            <div class="w-12 h-12 bg-gold/20 rounded-xl flex items-center justify-center mx-auto mb-2">
+                                <span class="text-gold font-bold">4</span>
+                            </div>
+                            <div class="text-sm font-medium">Monopoly</div>
+                            <div class="text-xs text-muted mt-1">Global Control</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Preview Charts -->
+                <div class="grid grid-cols-2 gap-6">
+                    <div class="bg-card border border-border rounded-xl p-6">
+                        <h3 class="font-semibold mb-4 text-white">Revenue Velocity by Model</h3>
+                        <canvas id="revenueChart" height="200"></canvas>
+                    </div>
+                    <div class="bg-card border border-border rounded-xl p-6">
+                        <h3 class="font-semibold mb-4 text-white">Risk vs Reward Matrix</h3>
+                        <canvas id="riskChart" height="200"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Day 1 Profit Models Tab -->
+        <div id="day1" class="tab-content p-8">
+            <div class="max-w-6xl">
+                <div class="mb-8">
+                    <h1 class="font-display text-3xl font-bold text-white mb-2">15 Day 1 Profit Models</h1>
+                    <p class="text-muted">Pure software businesses generating cash from day one. No capital investment required.</p>
+                </div>
+
+                <div class="bg-card border border-border rounded-xl overflow-hidden mb-8">
+                    <div class="overflow-x-auto">
+                        <table class="data-table w-full text-sm">
+                            <thead>
+                                <tr class="border-b border-border">
+                                    <th class="text-left py-4 px-4 text-muted font-medium uppercase text-xs">Model</th>
+                                    <th class="text-left py-4 px-4 text-muted font-medium uppercase text-xs">Mechanism</th>
+                                    <th class="text-left py-4 px-4 text-muted font-medium uppercase text-xs">Day 1 Revenue</th>
+                                    <th class="text-left py-4 px-4 text-muted font-medium uppercase text-xs">Cost</th>
+                                    <th class="text-left py-4 px-4 text-muted font-medium uppercase text-xs">Risk</th>
+                                    <th class="text-left py-4 px-4 text-muted font-medium uppercase text-xs">Scale</th>
+                                </tr>
+                            </thead>
+                            <tbody id="day1Table">
+                                <!-- Filled by JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Detailed Breakdown -->
+                <div class="grid grid-cols-2 gap-6">
+                    <div class="bg-card border border-accent/30 rounded-xl p-6">
+                        <h3 class="font-semibold mb-4 text-accent">The "Agency-in-a-Box" Deep Dive</h3>
+                        <p class="text-sm text-muted mb-4">The fastest path to cash. You sell "Booked Meetings" to B2B companies. They pay $500 setup + $100 per meeting.</p>
+                        <div class="space-y-3">
+                            <div class="flex justify-between items-center py-2 border-b border-border/50">
+                                <span class="text-muted">Tool Stack</span>
+                                <span class="text-white font-mono text-sm">Open Source Scraper + SendGrid Free Tier</span>
+                            </div>
+                            <div class="flex justify-between items-center py-2 border-b border-border/50">
+                                <span class="text-muted">Cost per Lead</span>
+                                <span class="text-accent font-mono text-sm">$0.00</span>
+                            </div>
+                            <div class="flex justify-between items-center py-2 border-b border-border/50">
+                                <span class="text-muted">Sale Price</span>
+                                <span class="text-white font-mono text-sm">$100 - $300</span>
+                            </div>
+                            <div class="flex justify-between items-center py-2">
+                                <span class="text-muted">Profit Margin</span>
+                                <span class="text-accent font-bold">100%</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-card border border-border rounded-xl p-6">
+                        <h3 class="font-semibold mb-4 text-white">Bootstrapping Rules</h3>
+                        <div class="space-y-4 text-sm">
+                            <div class="flex gap-3">
+                                <div class="w-6 h-6 bg-accent/20 rounded flex items-center justify-center flex-shrink-0 mt-0.5">
+                                    <span class="text-accent text-xs font-bold">1</span>
+                                </div>
+                                <div>
+                                    <div class="font-medium text-white">Pre-sell First</div>
+                                    <div class="text-muted">Get paid before you build. Deposit secures the work.</div>
+                                </div>
+                            </div>
+                            <div class="flex gap-3">
+                                <div class="w-6 h-6 bg-accent/20 rounded flex items-center justify-center flex-shrink-0 mt-0.5">
+                                    <span class="text-accent text-xs font-bold">2</span>
+                                </div>
+                                <div>
+                                    <div class="font-medium text-white">Use Free Tiers</div>
+                                    <div class="text-muted">Vercel, Supabase, Mailgun, Twilio all have free tiers.</div>
+                                </div>
+                            </div>
+                            <div class="flex gap-3">
+                                <div class="w-6 h-6 bg-accent/20 rounded flex items-center justify-center flex-shrink-0 mt-0.5">
+                                    <span class="text-accent text-xs font-bold">3</span>
+                                </div>
+                                <div>
+                                    <div class="font-medium text-white">No Code Initially</div>
+                                    <div class="text-muted">Manual + Automation. Automate only what repeats.</div>
+                                </div>
+                            </div>
+                            <div class="flex gap-3">
+                                <div class="w-6 h-6 bg-accent/20 rounded flex items-center justify-center flex-shrink-0 mt-0.5">
+                                    <span class="text-accent text-xs font-bold">4</span>
+                                </div>
+                                <div>
+                                    <div class="font-medium text-white">Cash Flow > Valuation</div>
+                                    <div class="text-muted">Profit pays bills. Don't chase fake startup metrics.</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- AI Startups Tab -->
+        <div id="ai-startups" class="tab-content p-8">
+            <div class="max-w-6xl">
+                <div class="mb-8">
+                    <h1 class="font-display text-3xl font-bold text-white mb-2">10 AI Startups to $10M ARR</h1>
+                    <p class="text-muted">Vertical AI agents replacing expensive human labor. Sell outcomes, not tools.</p>
+                </div>
+
+                <div class="grid gap-4" id="aiStartupsGrid">
+                    <!-- Filled by JS -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Moonshots Tab -->
+        <div id="moonshots" class="tab-content p-8">
+            <div class="max-w-6xl">
+                <div class="mb-8">
+                    <h1 class="font-display text-3xl font-bold text-white mb-2">3 Moonshots to $10B</h1>
+                    <p class="text-muted">High-risk, high-reward structural plays that redefine industries.</p>
+                </div>
+
+                <div class="space-y-6">
+                    <div class="bg-card border border-gold/30 rounded-xl p-8">
+                        <div class="flex items-start gap-6">
+                            <div class="w-16 h-16 bg-gold/10 rounded-xl flex items-center justify-center flex-shrink-0">
+                                <span class="text-gold font-bold text-2xl font-display">#1</span>
+                            </div>
+                            <div class="flex-1">
+                                <h3 class="text-xl font-bold text-white mb-2">The Digital Labor Exchange</h3>
+                                <p class="text-muted mb-4">A marketplace where companies rent AI Agents instead of hiring humans. One agent does accounting, one does coding, one does sales.</p>
+                                <div class="grid grid-cols-3 gap-4 text-sm">
+                                    <div>
+                                        <div class="text-muted mb-1">Why $10B</div>
+                                        <div class="text-white">Captures global labor arbitrage. Turns $50k salary into $5k subscription.</div>
+                                    </div>
+                                    <div>
+                                        <div class="text-muted mb-1">Competition</div>
+                                        <div class="text-white">Fragmented. No dominant player yet.</div>
+                                    </div>
+                                    <div>
+                                        <div class="text-muted mb-1">Risk</div>
+                                        <div class="text-highlight">Regulatory (Labor laws), Trust</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="text-right">
+                                <div class="text-3xl font-bold text-gold font-display">$10B</div>
+                                <div class="text-xs text-muted">Target Valuation</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-card border border-border rounded-xl p-8 hover:border-highlight/30 transition-colors">
+                        <div class="flex items-start gap-6">
+                            <div class="w-16 h-16 bg-highlight/10 rounded-xl flex items-center justify-center flex-shrink-0">
+                                <span class="text-highlight font-bold text-2xl font-display">#2</span>
+                            </div>
+                            <div class="flex-1">
+                                <h3 class="text-xl font-bold text-white mb-2">The Personal Sovereign Cloud</h3>
+                                <p class="text-muted mb-4">A platform where users own their data. Companies must pay the user to access their data for ads or AI training.</p>
+                                <div class="grid grid-cols-3 gap-4 text-sm">
+                                    <div>
+                                        <div class="text-muted mb-1">Why $10B</div>
+                                        <div class="text-white">Disrupts Google/Meta ad model. Becomes the toll booth for internet data.</div>
+                                    </div>
+                                    <div>
+                                        <div class="text-muted mb-1">Competition</div>
+                                        <div class="text-white">Big Tech fights this. Regulatory tailwinds (GDPR, etc).</div>
+                                    </div>
+                                    <div>
+                                        <div class="text-muted mb-1">Risk</div>
+                                        <div class="text-highlight">Adoption, Big Tech retaliation</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="text-right">
+                                <div class="text-3xl font-bold text-highlight font-display">$10B</div>
+                                <div class="text-xs text-muted">Target Valuation</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-card border border-border rounded-xl p-8 hover:border-accent/30 transition-colors">
+                        <div class="flex items-start gap-6">
+                            <div class="w-16 h-16 bg-accent/10 rounded-xl flex items-center justify-center flex-shrink-0">
+                                <span class="text-accent font-bold text-2xl font-display">#3</span>
+                            </div>
+                            <div class="flex-1">
+                                <h3 class="text-xl font-bold text-white mb-2">The Global Transaction Validator</h3>
+                                <p class="text-muted mb-4">A real-time, AI-driven "Truth Layer" for global trade. Verifies goods, funds, and compliance simultaneously.</p>
+                                <div class="grid grid-cols-3 gap-4 text-sm">
+                                    <div>
+                                        <div class="text-muted mb-1">Why $10B</div>
+                                        <div class="text-white">Replaces Letters of Credit. Becomes trust layer for $25T trade market.</div>
+                                    </div>
+                                    <div>
+                                        <div class="text-muted mb-1">Competition</div>
+                                        <div class="text-white">Banks, Swift. Slow incumbents.</div>
+                                    </div>
+                                    <div>
+                                        <div class="text-muted mb-1">Risk</div>
+                                        <div class="text-highlight">High regulatory, Bank partnerships</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="text-right">
+                                <div class="text-3xl font-bold text-accent font-display">$10B</div>
+                                <div class="text-xs text-muted">Target Valuation</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Monopoly Tab -->
+        <div id="monopoly" class="tab-content p-8">
+            <div class="max-w-6xl">
+                <div class="mb-8">
+                    <h1 class="font-display text-3xl font-bold text-white mb-2">The Monopoly Opportunity</h1>
+                    <p class="text-muted">The single most dangerous position to occupy in the AI economy.</p>
+                </div>
+
+                <div class="bg-gradient-to-br from-accent/10 to-surface border border-accent/30 rounded-xl p-8 mb-8">
+                    <h2 class="text-2xl font-bold gradient-text mb-4">The Universal Semantic Layer</h2>
+                    <p class="text-lg text-white mb-6">The middleware that translates any database query into natural language and back.</p>
+                    
+                    <div class="grid grid-cols-3 gap-6">
+                        <div class="bg-bg/50 rounded-lg p-4">
+                            <h4 class="font-semibold text-white mb-2">The Problem</h4>
+                            <p class="text-sm text-muted">Data is locked in silos (Salesforce, SAP, Oracle). AI cannot easily access it.</p>
+                        </div>
+                        <div class="bg-bg/50 rounded-lg p-4">
+                            <h4 class="font-semibold text-white mb-2">The Solution</h4>
+                            <p class="text-sm text-muted">A universal API that understands any schema and translates it to natural language.</p>
+                        </div>
+                        <div class="bg-bg/50 rounded-lg p-4">
+                            <h4 class="font-semibold text-accent mb-2">The Moat</h4>
+                            <p class="text-sm text-muted">Once embedded, companies cannot leave. You control access to all corporate data.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-card border border-border rounded-xl p-6">
+                    <h3 class="font-semibold text-white mb-4">Why This is Dangerous</h3>
+                    <ul class="space-y-3 text-sm text-muted">
+                        <li class="flex items-start gap-3">
+                            <svg class="w-5 h-5 text-highlight flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
+                            <span>You become the "Google" of enterprise data.</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <svg class="w-5 h-5 text-highlight flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
+                            <span>Every AI agent needs your layer to function.</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <svg class="w-5 h-5 text-highlight flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
+                            <span>Network effects: More data = better translation = more customers.</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <svg class="w-5 h-5 text-highlight flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
+                            <span>Potential to tax every transaction in the digital economy.</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Architecture Tab -->
+        <div id="architecture" class="tab-content p-8">
+            <div class="max-w-6xl">
+                <div class="mb-8">
+                    <h1 class="font-display text-3xl font-bold text-white mb-2">Super-App Architecture</h1>
+                    <p class="text-muted">Technical blueprint for the $100B OmniNode platform.</p>
+                </div>
+
+                <!-- Architecture Diagram -->
+                <div class="bg-card border border-border rounded-xl p-8 mb-8">
+                    <h3 class="font-semibold mb-6 text-white">The 4 Pillars of OmniNode</h3>
+                    
+                    <div class="grid grid-cols-4 gap-4">
+                        <!-- Pillar 1 -->
+                        <div class="text-center">
+                            <div class="h-40 bg-gradient-to-b from-accent/20 to-transparent rounded-lg flex flex-col justify-between p-4 border border-accent/20">
+                                <div class="text-accent font-bold">INPUT</div>
+                                <div class="text-xs text-muted space-y-1">
+                                    <div>PDFs</div>
+                                    <div>Voice</div>
+                                    <div>Video</div>
+                                    <div>APIs</div>
+                                </div>
+                            </div>
+                            <div class="mt-3 text-sm font-medium text-white">Ingestion Layer</div>
+                        </div>
+
+                        <!-- Pillar 2 -->
+                        <div class="text-center">
+                            <div class="h-40 bg-gradient-to-b from-info/20 to-transparent rounded-lg flex flex-col justify-between p-4 border border-info/20">
+                                <div class="text-info font-bold">COGNITION</div>
+                                <div class="text-xs text-muted space-y-1">
+                                    <div>Agent Router</div>
+                                    <div>Task Planner</div>
+                                    <div>LLM Cluster</div>
+                                </div>
+                            </div>
+                            <div class="mt-3 text-sm font-medium text-white">Reasoning Layer</div>
+                        </div>
+
+                        <!-- Pillar 3 -->
+                        <div class="text-center">
+                            <div class="h-40 bg-gradient-to-b from-highlight/20 to-transparent rounded-lg flex flex-col justify-between p-4 border border-highlight/20">
+                                <div class="text-highlight font-bold">EXECUTION</div>
+                                <div class="text-xs text-muted space-y-1">
+                                    <div>API Actions</div>
+                                    <div>Signatures</div>
+                                    <div>Payments</div>
+                                </div>
+                            </div>
+                            <div class="mt-3 text-sm font-medium text-white">Action Layer</div>
+                        </div>
+
+                        <!-- Pillar 4 -->
+                        <div class="text-center">
+                            <div class="h-40 bg-gradient-to-b from-gold/20 to-transparent rounded-lg flex flex-col justify-between p-4 border border-gold/20">
+                                <div class="text-gold font-bold">AUDIT</div>
+                                <div class="text-xs text-muted space-y-1">
+                                    <div>Immutable Log</div>
+                                    <div>Blockchain</div>
+                                    <div>Compliance</div>
+                                </div>
+                            </div>
+                            <div class="mt-3 text-sm font-medium text-white">Trust Layer</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tech Stack -->
+                <div class="grid grid-cols-2 gap-6">
+                    <div class="bg-card border border-border rounded-xl p-6">
+                        <h3 class="font-semibold mb-4 text-white">Recommended Stack</h3>
+                        <div class="space-y-3 text-sm">
+                            <div class="flex justify-between py-2 border-b border-border/50">
+                                <span class="text-muted">Frontend</span>
+                                <span class="font-mono text-white">Next.js / Tailwind</span>
+                            </div>
+                            <div class="flex justify-between py-2 border-b border-border/50">
+                                <span class="text-muted">Backend</span>
+                                <span class="font-mono text-white">Python / FastAPI</span>
+                            </div>
+                            <div class="flex justify-between py-2 border-b border-border/50">
+                                <span class="text-muted">Database</span>
+                                <span class="font-mono text-white">Postgres + pgvector</span>
+                            </div>
+                            <div class="flex justify-between py-2 border-b border-border/50">
+                                <span class="text-muted">LLM</span>
+                                <span class="font-mono text-white">OpenAI / Claude / Llama 3</span>
+                            </div>
+                            <div class="flex justify-between py-2">
+                                <span class="text-muted">Infrastructure</span>
+                                <span class="font-mono text-white">AWS / Vercel</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-card border border-border rounded-xl p-6">
+                        <h3 class="font-semibold mb-4 text-white">Revenue Model</h3>
+                        <div class="space-y-3 text-sm">
+                            <div class="flex justify-between py-2 border-b border-border/50">
+                                <span class="text-muted">Tier 1</span>
+                                <span class="text-accent font-mono">$99/mo - Self Serve</span>
+                            </div>
+                            <div class="flex justify-between py-2 border-b border-border/50">
+                                <span class="text-muted">Tier 2</span>
+                                <span class="text-accent font-mono">$2,500/mo - Teams</span>
+                            </div>
+                            <div class="flex justify-between py-2 border-b border-border/50">
+                                <span class="text-muted">Tier 3</span>
+                                <span class="text-accent font-mono">$25,000/mo - Enterprise</span>
+                            </div>
+                            <div class="flex justify-between py-2 border-b border-border/50">
+                                <span class="text-muted">Outcome Fee</span>
+                                <span class="text-accent font-mono">5% of value captured</span>
+                            </div>
+                            <div class="flex justify-between py-2">
+                                <span class="text-muted">Target ARPU</span>
+                                <span class="text-white font-bold">$1,000/mo</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            updateTimestamp();
+            renderDay1Table();
+            renderAIStartups();
+            initCharts();
+        });
+
+        function updateTimestamp() {
+            document.getElementById('timestamp').textContent = new Date().toLocaleDateString('en-US', {
+                year: 'numeric', month: 'short', day: 'numeric'
+            });
+        }
+
+        function showTab(tabId) {
+            // Hide all
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+            // Show selected
+            document.getElementById(tabId).classList.add('active');
+            // Update nav
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('text-white');
+                btn.classList.add('text-muted');
+            });
+            event.target.closest('.nav-btn').classList.remove('text-muted');
+            event.target.closest('.nav-btn').classList.add('text-white');
+        }
+
+        // Day 1 Data
+        const day1Models = [
+            { name: "Agency-in-a-Box", mechanism: "Sell 'Booked Meetings' to B2B", revenue: "$500 Setup + $100/meeting", cost: "$20 (Domain)", risk: "Low", scale: "High" },
+            { name: "Job Board Aggregator", mechanism: "Scrape jobs, sell featured posts", revenue: "$50-200/post", cost: "$20", risk: "Low", scale: "Medium" },
+            { name: "Data Enrichment API", mechanism: "Wrap public data, sell API access", revenue: "$29/mo subscription", cost: "$0", risk: "Low", scale: "High" },
+            { name: "Invoice Factoring Leads", mechanism: "Connect businesses to lenders", revenue: "2-5% referral fee", cost: "$0", risk: "Zero", scale: "High" },
+            { name: "Programmatic SEO Sites", mechanism: "Auto-gen pages, sell leads/ads", revenue: "Adsense + Lead Sales", cost: "$10", risk: "Medium", scale: "High" },
+            { name: "Compliance Checker", mechanism: "Scan sites, sell audit reports", revenue: "$99/report", cost: "$20", risk: "Low", scale: "Medium" },
+            { name: "Drop Servicing Platform", mechanism: "Route orders to freelancers", revenue: "30% arbitrage", cost: "$0", risk: "Low", scale: "Medium" },
+            { name: "Micro-SaaS Plugin", mechanism: "Shopify/Slack app", revenue: "$9.99/mo", cost: "$0", risk: "Low", scale: "High" },
+            { name: "Newsletter Marketplace", mechanism: "Directory of newsletters", revenue: "$50 verification fee", cost: "$0", risk: "Low", scale: "Medium" },
+            { name: "Skip Tracing Service", mechanism: "Find phone numbers for investors", revenue: "$0.50/number", cost: "$0", risk: "Low", scale: "Medium" },
+            { name: "Signal Arbitrage Bot", mechanism: "Resell crypto/finance signals", revenue: "$50/mo access", cost: "$0", risk: "Medium", scale: "Medium" },
+            { name: "Template Store", mechanism: "Sell Notion/Airtable templates", revenue: "$20-100/template", cost: "$0", risk: "Zero", scale: "Low" },
+            { name: "API Glue Service", mechanism: "Connect apps that don't talk", revenue: "$19/mo", cost: "$0", risk: "Low", scale: "High" },
+            { name: "Domain Generator AI", mechanism: "Suggest names, affiliate commissions", revenue: "Affiliate fee", cost: "$0", risk: "Zero", scale: "Medium" },
+            { name: "User Testing Recruitment", mechanism: "Recruit testers for companies", revenue: "$50/tester", cost: "$0", risk: "Low", scale: "Medium" }
+        ];
+
+        function renderDay1Table() {
+            const tbody = document.getElementById('day1Table');
+            tbody.innerHTML = day1Models.map(m => `
+                <tr class="border-b border-border/50 hover:bg-surface/50">
+                    <td class="py-4 px-4 font-medium text-white">${m.name}</td>
+                    <td class="py-4 px-4 text-muted">${m.mechanism}</td>
+                    <td class="py-4 px-4 text-accent font-mono">${m.revenue}</td>
+                    <td class="py-4 px-4 text-muted">${m.cost}</td>
+                    <td class="py-4 px-4"><span class="px-2 py-1 rounded text-xs ${m.risk === 'Zero' ? 'bg-accent/10 text-accent' : m.risk === 'Low' ? 'bg-info/10 text-info' : 'bg-gold/10 text-gold'}">${m.risk}</span></td>
+                    <td class="py-4 px-4 text-muted">${m.scale}</td>
+                </tr>
+            `).join('');
+        }
+
+        // AI Startups Data
+        const aiStartups = [
+            { name: "AI Paralegal", target: "Small Law Firms", value: "Document Review", price: "$500/mo", arr: "$10M", customers: "1,667" },
+            { name: "AI Medical Scribe", target: "Doctors", value: "EHR Notes", price: "$99/mo", arr: "$10M", customers: "8,418" },
+            { name: "AI Customs Broker", target: "Importers", value: "HS Code Class.", price: "$5/shipment", arr: "$10M", customers: "2M ships" },
+            { name: "AI RFP Responder", target: "Gov Contractors", value: "Proposals", price: "$1,000/mo", arr: "$10M", customers: "834" },
+            { name: "AI Insurance Appraiser", target: "Insurers", value: "Estimates", price: "$5/estimate", arr: "$10M", customers: "2M claims" },
+            { name: "AI Blue Collar Recruiter", target: "Construction", value: "Screening", price: "$500/hire", arr: "$10M", customers: "20,000" },
+            { name: "AI Grant Writer", target: "Non-Profits", value: "Applications", price: "5% Success", arr: "$10M", customers: "Varies" },
+            { name: "AI Bookkeeper", target: "SMBs", value: "Accounting", price: "$200/mo", arr: "$10M", customers: "4,167" },
+            { name: "AI Content Repurposer", target: "Creators", value: "Multi-platform", price: "$49/mo", arr: "$10M", customers: "17,007" },
+            { name: "AI Support Agent", target: "E-commerce", value: "Tier 1 Support", price: "$0.50/resolution", arr: "$10M", customers: "20M tickets" }
+        ];
+
+        function renderAIStartups() {
+            const grid = document.getElementById('aiStartupsGrid');
+            grid.innerHTML = aiStartups.map(s => `
+                <div class="bg-card border border-border rounded-lg p-4 hover:border-accent/30 transition-colors">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <h4 class="font-semibold text-white">${s.name}</h4>
+                            <div class="text-xs text-muted mt-1">Target: ${s.target}</div>
+                        </div>
+                        <div class="text-right">
+                            <div class="text-accent font-mono font-bold">${s.price}</div>
+                            <div class="text-xs text-muted">${s.customers} customers</div>
+                        </div>
+                    </div>
+                    <div class="mt-3 flex items-center justify-between text-sm">
+                        <span class="text-muted">Value Prop:</span>
+                        <span class="text-white">${s.value}</span>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function initCharts() {
+            // Revenue Chart
+            const revCtx = document.getElementById('revenueChart').getContext('2d');
+            new Chart(revCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['Agency-in-Box', 'Job Board', 'Data API', 'Factoring', 'Compliance'],
+                    datasets: [{
+                        label: 'Time to First $ (Days)',
+                        data: [1, 3, 7, 1, 14],
+                        backgroundColor: '#00e5a0',
+                        borderRadius: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        y: { grid: { color: '#1a1a28' }, ticks: { color: '#64748b' } },
+                        x: { grid: { display: false }, ticks: { color: '#64748b' } }
+                    }
+                }
+            });
+
+            // Risk Chart
+            const riskCtx = document.getElementById('riskChart').getContext('2d');
+            new Chart(riskCtx, {
+                type: 'scatter',
+                data: {
+                    datasets: [{
+                        label: 'Models',
+                        data: [
+                            {x: 1, y: 50}, {x: 2, y: 80}, {x: 1.5, y: 30}, {x: 3, y: 90}, {x: 2.5, y: 60}
+                        ],
+                        backgroundColor: '#ff3366',
+                        pointRadius: 8
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { 
+                        legend: { display: false },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return `Risk: ${context.raw.x}, Reward: $${context.raw.y}k`;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: { 
+                            title: { display: true, text: 'Reward ($k/mo)', color: '#64748b' },
+                            grid: { color: '#1a1a28' }, 
+                            ticks: { color: '#64748b' } 
+                        },
+                        x: { 
+                            title: { display: true, text: 'Risk Level', color: '#64748b' },
+                            grid: { color: '#1a1a28' }, 
+                            ticks: { color: '#64748b' } 
+                        }
+                    }
+                }
+            });
+        }
+    </script>
+</body>
+</html>
