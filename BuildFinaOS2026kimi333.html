@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BuildBrain OS | The Operating System for the Physical Economy</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #0a0a0a; color: #fff; overflow-x: hidden; }
+        .hero { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 2rem; background: radial-gradient(ellipse at center, #1a1a2e 0%, #0a0a0a 100%); position: relative; }
+        .hero::before { content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E"); opacity: 0.4; }
+        .logo { font-size: 4rem; font-weight: 900; background: linear-gradient(135deg, #FF6B35 0%, #FFD700 50%, #00D4AA 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 1rem; letter-spacing: -0.02em; }
+        .tagline { font-size: 1.5rem; color: #888; margin-bottom: 3rem; max-width: 700px; }
+        .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 2rem; max-width: 1200px; width: 100%; margin-bottom: 3rem; }
+        .stat { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 2rem; backdrop-filter: blur(10px); }
+        .stat-value { font-size: 2.5rem; font-weight: 800; color: #FF6B35; }
+        .stat-label { font-size: 0.9rem; color: #666; text-transform: uppercase; letter-spacing: 0.1em; margin-top: 0.5rem; }
+        .cta { display: inline-flex; gap: 1rem; flex-wrap: wrap; justify-content: center; }
+        .btn { padding: 1rem 2rem; border-radius: 8px; font-weight: 600; text-decoration: none; transition: all 0.3s; cursor: pointer; border: none; font-size: 1rem; }
+        .btn-primary { background: linear-gradient(135deg, #FF6B35 0%, #FFD700 100%); color: #0a0a0a; }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 10px 40px rgba(255, 107, 53, 0.3); }
+        .btn-secondary { background: transparent; color: #fff; border: 1px solid rgba(255,255,255,0.3); }
+        .btn-secondary:hover { background: rgba(255,255,255,0.1); }
+        .section { padding: 6rem 2rem; max-width: 1200px; margin: 0 auto; }
+        .section-title { font-size: 3rem; font-weight: 800; margin-bottom: 1rem; background: linear-gradient(135deg, #fff 0%, #888 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .problem-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; margin-top: 3rem; }
+        .problem-card { background: rgba(255,255,255,0.02); border-left: 3px solid #FF6B35; padding: 2rem; border-radius: 0 12px 12px 0; }
+        .problem-title { font-size: 1.25rem; font-weight: 700; margin-bottom: 0.5rem; color: #fff; }
+        .problem-desc { color: #888; line-height: 1.6; }
+        .solution-showcase { background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); border-radius: 24px; padding: 3rem; margin-top: 3rem; border: 1px solid rgba(255, 107, 53, 0.2); }
+        .architecture { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; margin-top: 2rem; }
+        .layer { background: rgba(0,0,0,0.3); border-radius: 12px; padding: 1.5rem; border: 1px solid rgba(255,255,255,0.05); }
+        .layer-number { font-size: 0.75rem; color: #FF6B35; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.5rem; }
+        .layer-title { font-size: 1.1rem; font-weight: 700; margin-bottom: 0.5rem; }
+        .layer-desc { font-size: 0.9rem; color: #888; }
+        .revenue-table { width: 100%; border-collapse: collapse; margin-top: 2rem; }
+        .revenue-table th, .revenue-table td { padding: 1rem; text-align: left; border-bottom: 1px solid rgba(255,255,255,0.1); }
+        .revenue-table th { color: #FF6B35; font-weight: 600; text-transform: uppercase; font-size: 0.85rem; letter-spacing: 0.05em; }
+        .revenue-table td { color: #ccc; }
+        .highlight { color: #FF6B35; font-weight: 700; }
+        .footer { text-align: center; padding: 4rem 2rem; border-top: 1px solid rgba(255,255,255,0.1); color: #666; }
+        .code-block { background: #0d1117; border-radius: 8px; padding: 1.5rem; font-family: 'JetBrains Mono', monospace; font-size: 0.85rem; overflow-x: auto; margin-top: 2rem; }
+        @media (max-width: 768px) { .logo { font-size: 2.5rem; } .section-title { font-size: 2rem; } .stats { grid-template-columns: 1fr; } }
+    </style>
+<base target="_blank">
+</head>
+<body>
+    <section class="hero">
+        <div class="logo">BuildBrain OS</div>
+        <div class="tagline">The Operating System for the Physical Economy. Financial infrastructure for the $46T construction, government, and trades economy.</div>
+        <div class="stats">
+            <div class="stat">
+                <div class="stat-value">$46T</div>
+                <div class="stat-label">Total Addressable Market</div>
+            </div>
+            <div class="stat">
+                <div class="stat-value">90 Days</div>
+                <div class="stat-label">Average Payment Delay</div>
+            </div>
+            <div class="stat">
+                <div class="stat-value">30%</div>
+                <div class="stat-label">Industry Fraud Rate</div>
+            </div>
+            <div class="stat">
+                <div class="stat-value">$0</div>
+                <div class="stat-label">Our Solution Delay</div>
+            </div>
+        </div>
+        <div class="cta">
+            <button class="btn btn-primary" onclick="scrollToDemo()">View Live Demo</button>
+            <button class="btn btn-secondary" onclick="downloadDeck()">Download Investor Deck</button>
+        </div>
+    </section>
+
+    <section class="section">
+        <h2 class="section-title">The Problem: Cash Flow Hemorrhaging</h2>
+        <div class="problem-grid">
+            <div class="problem-card">
+                <div class="problem-title">The 90-Day Death Cycle</div>
+                <div class="problem-desc">Subcontractors complete work but wait 60-120 days for payment. 30% of construction businesses fail due to cash flow, not lack of work.</div>
+            </div>
+            <div class="problem-card">
+                <div class="problem-title">Government PDF Hell</div>
+                <div class="problem-desc">$13T in government contracts trapped in 500-page RFPs. Companies spend $50K-$300K per proposal with 90% failure rate.</div>
+            </div>
+            <div class="problem-card">
+                <div class="problem-title">Labor Arbitrage Failure</div>
+                <div class="problem-desc">General Contractors lose bids because they can't find crews. Subcontractors sit idle. No real-time matching exists for skilled trades.</div>
+            </div>
+            <div class="problem-card">
+                <div class="problem-title">Permitting Bottleneck</div>
+                <div class="problem-desc">Projects delayed 3-18 months by manual plan reviews. $200B in annual permitting costs, 80% administrative waste.</div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section">
+        <h2 class="section-title">The Solution: 7-Layer Infrastructure</h2>
+        <div class="solution-showcase">
+            <div class="architecture">
+                <div class="layer">
+                    <div class="layer-number">Layer 7</div>
+                    <div class="layer-title">Government Intelligence</div>
+                    <div class="layer-desc">Bloomberg Terminal for gov contracts. AI RFP discovery, automated proposal writing, compliance scoring.</div>
+                </div>
+                <div class="layer">
+                    <div class="layer-number">Layer 6</div>
+                    <div class="layer-title">AI Intelligence</div>
+                    <div class="layer-desc">Palantir-style analytics. Predict delays, optimize crews, prevent fraud before it happens.</div>
+                </div>
+                <div class="layer">
+                    <div class="layer-number">Layer 5</div>
+                    <div class="layer-title">Labor Marketplace</div>
+                    <div class="layer-desc">Uber for trades. Real-time matching of vetted, insured crews to commercial projects.</div>
+                </div>
+                <div class="layer">
+                    <div class="layer-number">Layer 4</div>
+                    <div class="layer-title">Embedded Finance</div>
+                    <div class="layer-desc">Smart escrow, instant payroll, material financing. We hold the float.</div>
+                </div>
+                <div class="layer">
+                    <div class="layer-number">Layer 3</div>
+                    <div class="layer-title">Compliance Engine</div>
+                    <div class="layer-desc">Automated KYC, AML, lien waivers, insurance verification. Regulatory shield.</div>
+                </div>
+                <div class="layer">
+                    <div class="layer-number">Layer 2</div>
+                    <div class="layer-title">Payment Rails</div>
+                    <div class="layer-desc">Hybrid open/closed loop. ACH, RTP, FedNow, internal ledger, USDC settlement.</div>
+                </div>
+                <div class="layer">
+                    <div class="layer-number">Layer 1</div>
+                    <div class="layer-title">Vertical SaaS</div>
+                    <div class="layer-desc">Project management, blueprint AI, permit automation. The wedge.</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section">
+        <h2 class="section-title">Revenue Model: The Toll Booth Strategy</h2>
+        <table class="revenue-table">
+            <thead>
+                <tr>
+                    <th>Revenue Stream</th>
+                    <th>Mechanism</th>
+                    <th>Year 5 Target</th>
+                    <th>ARR Contribution</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>SaaS Subscriptions</td>
+                    <td>$299-$999/mo per contractor</td>
+                    <td>50,000 customers</td>
+                    <td class="highlight">$300M</td>
+                </tr>
+                <tr>
+                    <td>Gov Contract Intelligence</td>
+                    <td>$499-$2,999/mo + 5% success fee</td>
+                    <td>10,000 gov contractors</td>
+                    <td class="highlight">$500M</td>
+                </tr>
+                <tr>
+                    <td>Payment Processing</td>
+                    <td>60bps on $50B GMV</td>
+                    <td>$50B volume</td>
+                    <td class="highlight">$250M</td>
+                </tr>
+                <tr>
+                    <td>Float Income</td>
+                    <td>5% yield on $2B held</td>
+                    <td>$2B avg float</td>
+                    <td class="highlight">$100M</td>
+                </tr>
+                <tr>
+                    <td>Labor Marketplace</td>
+                    <td>15% take rate on $10B GMV</td>
+                    <td>$10B labor volume</td>
+                    <td class="highlight">$1.5B</td>
+                </tr>
+                <tr>
+                    <td>Material Financing</td>
+                    <td>2% on $5B factored</td>
+                    <td>$5B financed</td>
+                    <td class="highlight">$150M</td>
+                </tr>
+                <tr>
+                    <td>AI Proposal Generation</td>
+                    <td>$500-$2,000 per proposal</td>
+                    <td>100,000 proposals/year</td>
+                    <td class="highlight">$100M</td>
+                </tr>
+                <tr style="border-top: 2px solid #FF6B35;">
+                    <td><strong>Total Year 5 ARR</strong></td>
+                    <td></td>
+                    <td></td>
+                    <td class="highlight"><strong>$2.9B</strong></td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
+
+    <section class="section">
+        <h2 class="section-title">Technical Architecture</h2>
+        <div class="code-block">
+┌─────────────────────────────────────────────────────────────┐
+│                    BUILDBRAIN OS ARCHITECTURE               │
+├─────────────────────────────────────────────────────────────┤
+│  CLIENT LAYER                                                │
+│  ┌─────────────┐ ┌─────────────┐ ┌─────────────────────┐   │
+│  │   Web App   │ │  Mobile App │ │   Contractor Kiosk  │   │
+│  │  (Next.js)  │ │  (React Nat)│ │   (Tablet/QR)       │   │
+│  └──────┬──────┘ └──────┬──────┘ └──────────┬──────────┘   │
+│         └─────────────────┴───────────────────┘              │
+│                           │                                  │
+│  API GATEWAY (Kong/AWS)    │                                  │
+│                           ▼                                  │
+│  ┌─────────────────────────────────────────────────────┐    │
+│  │              MICROSERVICES LAYER                     │    │
+│  │  ┌──────────┐ ┌──────────┐ ┌──────────┐ ┌────────┐ │    │
+│  │  │  Auth    │ │ Payments │ │ Projects │ │Marketpl│ │    │
+│  │  │Service   │ │Service   │ │Service   │ │Service │ │    │
+│  │  └──────────┘ └──────────┘ └──────────┘ └────────┘ │    │
+│  │  ┌──────────┐ ┌──────────┐ ┌──────────┐ ┌────────┐ │    │
+│  │  │Government│ │Compliance│ │  AI/ML   │ │Notifier│ │    │
+│  │  │Service   │ │Service   │ │Service   │ │Service │ │    │
+│  │  └──────────┘ └──────────┘ └──────────┘ └────────┘ │    │
+│  └─────────────────────────────────────────────────────┘    │
+│                           │                                  │
+│  DATA LAYER                ▼                                  │
+│  ┌──────────┐ ┌──────────┐ ┌──────────┐ ┌──────────────┐    │
+│  │PostgreSQL│ │   Redis  │ │ClickHouse│ │   MinIO      │    │
+│  │(Primary) │ │  (Cache) │ │(Analytics│ │  (Files)     │    │
+│  └──────────┘ └──────────┘ └──────────┘ └──────────────┘    │
+└─────────────────────────────────────────────────────────────┘
+        </div>
+    </section>
+
+    <div class="footer">
+        <p>BuildBrain Technologies, Inc. | Delaware C-Corp | Pre-Seed Round Open</p>
+        <p style="margin-top: 1rem; font-size: 0.9rem;">Contact: founders@buildbrain.co | (555) BRAIN-01</p>
+    </div>
+
+    <script>
+        function scrollToDemo() { window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' }); }
+        function downloadDeck() { alert('Investor deck downloading... (In production, this would trigger PDF download)'); }
+        
+        // Animated counter effect
+        const stats = document.querySelectorAll('.stat-value');
+        const animateValue = (obj, start, end, duration) => {
+            let startTimestamp = null;
+            const step = (timestamp) => {
+                if (!startTimestamp) startTimestamp = timestamp;
+                const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+                obj.innerHTML = Math.floor(progress * (end - start) + start).toLocaleString();
+                if (progress < 1) window.requestAnimationFrame(step);
+            };
+            window.requestAnimationFrame(step);
+        };
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    if (entry.target.textContent.includes('46')) animateValue(entry.target, 0, 46, 2000);
+                    if (entry.target.textContent.includes('90')) animateValue(entry.target, 0, 90, 2000);
+                    if (entry.target.textContent.includes('30')) animateValue(entry.target, 0, 30, 2000);
+                }
+            });
+        });
+        
+        stats.forEach(stat => observer.observe(stat));
+    </script>
+</body>
+</html>
